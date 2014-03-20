@@ -4,5 +4,5 @@ import model._
 
 
 trait Starbucks {
-  def auth(userName: String, password: String): StarbucksAccount
+  def getAccountData(authInfo: AuthInfo): StarbucksAccount
 }

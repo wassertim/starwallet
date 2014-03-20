@@ -1,10 +1,8 @@
 package model
 
 case class StarbucksAccount(
-  cardNumber: String,
+  userName: String,
   starsCount: Int,
-  cardBalance: Double,
-  cardStatus: String,
-  couponList: Seq[Coupon],
-  transactionList: Seq[Transaction]
+  cards: Seq[Card],
+  couponList: Seq[Coupon]
 )
