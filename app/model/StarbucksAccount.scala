@@ -4,5 +4,5 @@ case class StarbucksAccount(
   userName: String,
   starsCount: Int,
   cards: Seq[Card],
-  couponList: Seq[Coupon]
+  coupons: Seq[Coupon]
 )

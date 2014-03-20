@@ -62,7 +62,7 @@ class Starbucks extends service.common.Starbucks {
   def getCard(cardsPage: Document): Card = {
     val cardNumber: String = cardsPage.select("#lblCardNumber").text
     val cardBalance: Double = cardsPage.select("#lblCardBalance").text.replace(",", ".").replace(" руб.", "").toDouble
-    val cardStatus: String = cardsPage.select("#lblCardStatus").text
+    val isActive: Boolean = cardsPage.select("#lblCardStatus").text.trim.toLowerCase == "активна"
     val transactionList: Seq[Transaction] = {
       val trs = cardsPage.select(".data_table .td, .data_table .alt")
       trs.map {
@@ -78,7 +78,7 @@ class Starbucks extends service.common.Starbucks {
           )
       }
     }
-    Card(cardNumber, cardBalance, cardStatus, transactionList)
+    Card(cardNumber, cardBalance, isActive, transactionList)
   }
 
   def couponList(cardsPage: Document, cookies: Seq[Cookie]): Seq[Coupon] = {
@@ -92,7 +92,7 @@ class Starbucks extends service.common.Starbucks {
           tds.get(0).text.trim,
           formatter.parseDateTime(tds.get(1).text.trim),
           formatter.parseDateTime(tds.get(2).text.trim),
-          tds.get(3).text.trim,
+          tds.get(3).text.trim.toLowerCase == "активен",
           tds.get(4).text.trim
         )
     }

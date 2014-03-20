@@ -1,3 +1,3 @@
 package model
 
-case class Card(number: String, balance: Double, status: String, transactions: Seq[Transaction])
+case class Card(number: String, balance: Double, isActive: Boolean, transactions: Seq[Transaction])
