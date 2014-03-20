@@ -1,6 +1,5 @@
 import sbt._
 import Keys._
-import java.nio.file.Paths
 import play.Project._
 
 name := "starbucks"
