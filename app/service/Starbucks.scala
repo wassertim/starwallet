@@ -4,18 +4,37 @@ import play.api.libs.ws.WS
 import org.jsoup.Jsoup
 import model._
 import org.joda.time.format.DateTimeFormat
-import java.text.DecimalFormat
+
 import org.jsoup.nodes.Document
 import scala.collection.JavaConversions._
 import com.ning.http.client.Cookie
 
+
+import model.Transaction
+import model.Coupon
+import model.StarbucksAccount
+import scala.Some
+import model.AuthInfo
+import model.Card
+import javax.net.ssl._
+import java.security.cert.X509Certificate
+import java.security.{SecureRandom, Security}
+import model.Transaction
+import model.Coupon
+import model.StarbucksAccount
+import scala.Some
+import model.AuthInfo
+import model.Card
+
+
 class Starbucks extends service.common.Starbucks {
   val mainUrl = "https://plas-tek.ru/cabinet.aspx?style=starbucks"
 
-  def auth(userName: String, password: String) = {
+  private def auth(userName: String, password: String) = {
     val loginUrl = s"$mainUrl&mainlogin=true"
     val loginPageResponse = WS.client.prepareGet(loginUrl).execute().get()
     val (loginDoc, cookies) = (Jsoup.parse(loginPageResponse.getResponseBody), loginPageResponse.getCookies)
+
     val authenticatedResponse = WS.client.preparePost(loginUrl)
       .addParameter("ToolkitScriptManager1_HiddenField", loginDoc.getElementsByAttributeValue("name", "ToolkitScriptManager1_HiddenField").`val`)
       .addParameter("offset", loginDoc.getElementsByAttributeValue("name", "offset").`val`)
@@ -32,7 +51,7 @@ class Starbucks extends service.common.Starbucks {
     (Jsoup.parse(authenticatedResponse.execute().get.getResponseBody), cookies)
   }
 
-  def changeScreen(screenName: String, cardsPage: Document, cookies: Seq[Cookie]) = {
+  private def changeScreen(screenName: String, cardsPage: Document, cookies: Seq[Cookie]) = {
     val response = WS.client.preparePost(mainUrl)
       .addParameter("ToolkitScriptManager1_HiddenField", cardsPage.getElementsByAttributeValue("name", "ToolkitScriptManager1_HiddenField").`val`)
       .addParameter("offset", cardsPage.getElementsByAttributeValue("name", "offset").`val`)
@@ -45,21 +64,21 @@ class Starbucks extends service.common.Starbucks {
     doc
   }
 
-  def cardList(cardsPage: Document, cookies: Seq[Cookie]): List[Card] = {
+  private def cardList(cardsPage: Document, cookies: Seq[Cookie]): List[Card] = {
     getCard(cardsPage) :: cardsPage.select(".card_numbers a").tail.map(
       a =>
         getCard(changeScreen(a.attr("id").replace("_", "$"), cardsPage, cookies))
     ).toList
   }
 
-  def getDouble(value: String) = {
+  private def getDouble(value: String) = {
     "[0-9]+\\.[0-9][0-9]".r findFirstIn value.trim.replace(",", ".") match {
       case Some(x) => x.toDouble
       case None => 0d
     }
   }
 
-  def getCard(cardsPage: Document): Card = {
+  private def getCard(cardsPage: Document): Card = {
     val cardNumber: String = cardsPage.select("#lblCardNumber").text
     val cardBalance: Double = cardsPage.select("#lblCardBalance").text.replace(",", ".").replace(" руб.", "").toDouble
     val isActive: Boolean = cardsPage.select("#lblCardStatus").text.trim.toLowerCase == "активна"
@@ -81,7 +100,7 @@ class Starbucks extends service.common.Starbucks {
     Card(cardNumber, cardBalance, isActive, transactionList)
   }
 
-  def couponList(cardsPage: Document, cookies: Seq[Cookie]): Seq[Coupon] = {
+  private def couponList(cardsPage: Document, cookies: Seq[Cookie]): Seq[Coupon] = {
     val couponsPage = changeScreen("btnCouponsTab", cardsPage, cookies)
     val trs = couponsPage.select(".data_table .td, .data_table .alt")
     trs.map {
@@ -98,7 +117,7 @@ class Starbucks extends service.common.Starbucks {
     }
   }
 
-  def starsCount(implicit cardsPage: Document): Int = {
+  private def starsCount(implicit cardsPage: Document): Int = {
     val starsText = cardsPage.select("#pnlCardInfo > div").text
     "[0-9]+".r findFirstIn starsText match {
       case Some(x) => x.toInt
