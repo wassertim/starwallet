@@ -20,7 +20,7 @@
             that.isLoading = false;
             that.alert = {
               type: 'error',
-              message: 'Логин и/или пароль не верны'
+              message: 'Incorrect email or password'
             };
           }
         });

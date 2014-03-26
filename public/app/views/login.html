@@ -1,4 +1,5 @@
 <div>
+  <div class="alert alert-danger" ng-show="vm.alert">{{vm.alert.message}}</div>
   <form class="form-signin" name="signinForm" ng-submit="vm.signIn()">
     <h2 class="form-signin-heading">Please sign in</h2>
     <input type="text" class="form-control" placeholder="Email address" ng-model="vm.user.name" required autofocus>
