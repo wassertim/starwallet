@@ -29,5 +29,12 @@ angular.module('starbucks', [
         url: '/login',
         controller: 'AuthController',
         templateUrl: vw('views/login.html')
+      }).state('signOut', {
+        url: 'signout',
+        controller: ['authService', '$state', function(authService, $state) {
+          authService.signOut().then(function(){
+            $state.go('login');
+          });
+        }]
       });
     });

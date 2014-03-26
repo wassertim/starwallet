@@ -12,6 +12,11 @@
           userId: 1
         }
       });
+    },
+    signOut: function() {
+      return this.pw.wrap(function(){
+        return {};
+      });
     }
   };
   app.service('AuthService', AuthService);
