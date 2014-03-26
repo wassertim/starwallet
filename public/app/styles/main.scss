@@ -1,6 +1,7 @@
 $icon-font-path: "/bower_components/sass-bootstrap/fonts/";
 
 @import "../bower_components/sass-bootstrap/lib/bootstrap";
+@import "components/form-signin";
 @mixin img-retina($file-1x, $file-2x, $width-1x, $height-1x) {
   background-image: url("#{$file-1x}");
 

@@ -31,8 +31,8 @@ angular.module('starbucks', [
         templateUrl: vw('views/login.html')
       }).state('signOut', {
         url: 'signout',
-        controller: ['authService', '$state', function(authService, $state) {
-          authService.signOut().then(function(){
+        controller: ['AuthService', '$state', function (authService, $state) {
+          authService.signOut().then(function () {
             $state.go('login');
           });
         }]
