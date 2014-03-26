@@ -17,4 +17,4 @@
 
   app.controller('MainController', MainController);
   return MainController;
-}(angular.module('frontApp')));
+}(angular.module('starbucks')));

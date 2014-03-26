@@ -1,0 +1,30 @@
+<div>
+  <div class="form-group">
+    <label>Name:</label>
+    <span>{{vm.accountInfo.userName}}</span>
+  </div>
+  <div class="form-group">
+    <label>Stars:</label>
+    <span>{{vm.accountInfo.starsCount}}</span>
+  </div>
+  <div class="form-group">
+    <label>Stars:</label>
+    <span>{{vm.accountInfo.starsCount}}</span>
+  </div>
+  <div class="form-group">
+    <label>Cards:</label>
+    <ul class="list-group">
+      <li class="list-group-item" ng-repeat="card in vm.accountInfo.cards">
+        {{card.number}}
+      </li>
+    </ul>
+  </div>
+  <div class="form-group">
+    <label>Coupons:</label>
+    <ul class="list-group">
+      <li class="list-group-item" ng-repeat="coupon in vm.accountInfo.coupons">
+        {{coupon.number}}
+      </li>
+    </ul>
+  </div>
+</div>

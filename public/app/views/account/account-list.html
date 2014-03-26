@@ -1,0 +1,5 @@
+<ul class="list-group">
+  <li class="list-group-item" ng-repeat="item in list">
+    <a ng-href="{{href('accountDisplay', { account:item.name, userId:vm.userId })}}">{{item.name}}</a>
+  </li>
+</ul>
