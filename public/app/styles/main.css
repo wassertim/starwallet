@@ -4990,6 +4990,19 @@ td.visible-print {
   th.hidden-print,
   td.hidden-print {
     display: none !important; } }
+.navbar-default .navbar-brand {
+  padding: 10px 0 0 10px; }
+
+i.icon-brand {
+  background-image: url("../images/logo-smallpng");
+  width: 30px;
+  height: 30px;
+  display: inline-block; }
+  @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 2 / 1), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+    i.icon-brand {
+      background-image: url("../images/logo-big.png");
+      background-size: 30px 30px; } }
+
 .browsehappy {
   margin: 0.2em 0;
   background: #ccc;
@@ -4998,7 +5011,7 @@ td.visible-print {
 
 /* Space out content a bit */
 body {
-  padding-top: 20px;
+  padding-top: 60px;
   padding-bottom: 20px; }
 
 /* Everything but the jumbotron gets side spacing for mobile first views */

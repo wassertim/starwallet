@@ -1,7 +1,28 @@
 $icon-font-path: "/bower_components/sass-bootstrap/fonts/";
 
 @import "../bower_components/sass-bootstrap/lib/bootstrap";
+@mixin img-retina($file-1x, $file-2x, $width-1x, $height-1x) {
+  background-image: url("#{$file-1x}");
 
+  @media only screen and (-webkit-min-device-pixel-ratio: 2),
+  only screen and (min--moz-device-pixel-ratio: 2),
+  only screen and (-o-min-device-pixel-ratio: 2/1),
+  only screen and (min-device-pixel-ratio: 2),
+  only screen and (min-resolution: 192dpi),
+  only screen and (min-resolution: 2dppx) {
+    background-image: url("#{$file-2x}");
+    background-size: $width-1x $height-1x;
+  }
+}
+.navbar-default .navbar-brand {
+  padding:10px 0 0 10px;
+}
+i.icon-brand {
+  @include img-retina("../images/logo-smallpng", "../images/logo-big.png", 30px, 30px);
+  width: 30px;
+  height: 30px;
+  display: inline-block;
+}
 .browsehappy {
     margin: 0.2em 0;
     background: #ccc;
@@ -11,7 +32,7 @@ $icon-font-path: "/bower_components/sass-bootstrap/fonts/";
 
 /* Space out content a bit */
 body {
-    padding-top: 20px;
+    padding-top: 60px;
     padding-bottom: 20px;
 }
 
