@@ -1,9 +1,12 @@
 (function (app) {
-  AccountDisplayController.$inject = ['$scope', '$stateParams', 'AccountService'];
-  function AccountDisplayController($scope, $stateParams, accountService) {
+  AccountDisplayController.$inject = ['$scope', '$stateParams', 'AccountService', '$state'];
+  function AccountDisplayController($scope, $stateParams, accountService, $state) {
     $scope.vm = this;
     this.accountService = accountService;
     this.getAccountInfo($stateParams['account']);
+    $scope.href = function(state, params){
+      return $state.href(state, angular.extend($stateParams, params));
+    };
   }
 
   AccountDisplayController.prototype = {

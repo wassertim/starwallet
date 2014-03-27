@@ -2,7 +2,9 @@
   AccountController.$inject = ['$scope', 'AccountService', '$stateParams', '$state'];
   function AccountController($scope, accountService, $stateParams, $state) {
     $scope.vm = this;
-    $scope.href = $state.href;
+    $scope.href = function(state, params){
+      return $state.href(state, angular.extend($stateParams, params));
+    };
     this.accountService = accountService;
     this.list($stateParams['userId']);
   }

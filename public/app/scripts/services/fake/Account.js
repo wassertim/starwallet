@@ -7,6 +7,14 @@
   }
 
   AccountService.prototype = {
+    get: function(accountId) {
+      return this.pw.wrap(function(){
+        return {
+          name: accountId,
+          password: 'test'
+        }
+      });
+    },
     list: function(userId) {
       return this.pw.wrap(function(){
         return [
@@ -27,6 +35,21 @@
             number: '342323223434'
           }]
         }
+      });
+    },
+    add: function(accountInfo) {
+      return this.pw.wrap(function(){
+        return accountInfo.name;
+      });
+    },
+    update: function(accountInfo) {
+      return this.pw.wrap(function(){
+
+      });
+    },
+    remove: function(accountId) {
+      return this.pw.wrap(function(){
+
       });
     }
   };
