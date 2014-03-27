@@ -20,8 +20,8 @@ angular.module('starbucks', [
     url: '/u:userId/account',
     controller: 'AccountController',
     templateUrl: vw('views/account/account-list.html')
-  }).state('accountDisplay', {
-    url: '/u:userId/account/:account',
+  }).state('accountList.accountDisplay', {
+    url: '/:account',
     controller: 'AccountDisplayController',
     templateUrl: vw('views/account/account-display.html')
   }).state('login', {
