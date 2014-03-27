@@ -1,13 +1,10 @@
 <div>
   <div class="alert alert-danger" ng-show="vm.alert">{{vm.alert.message}}</div>
   <form class="form-signin" name="signinForm" ng-submit="vm.signIn()">
-    <h3 class="form-signin-heading">Please sign in or <a ui-sref="signUp">sign up</a></h3>
+    <h3 class="form-signin-heading">Please sign up or <a ui-sref="login">sign in</a></h3>
     <hr/>
     <input type="text" class="form-control" placeholder="Email address" ng-model="vm.user.name" required autofocus>
     <input type="password" class="form-control" placeholder="Password" ng-model="vm.user.password" required>
-    <label class="checkbox">
-      <input type="checkbox" value="remember-me"> Remember me
-    </label>
-    <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Sign up</button>
   </form>
 </div>
