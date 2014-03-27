@@ -27,6 +27,20 @@
         }
       });
     },
+    signIn: function(user) {
+      return this.pw.wrap(function(){
+        if (user.name === 'test' && user.password === 'test') {
+          return {
+            isAuthenticated: true,
+            userId: 1
+          }
+        } else {
+          return {
+            isAuthenticated: false
+          }
+        }
+      });
+    },
     signOut: function() {
       return this.pw.wrap(function(){
         return {};
