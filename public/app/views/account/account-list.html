@@ -1,11 +1,12 @@
-<div class="col-md-3">
+<div class="col-md-4">
   <ul class="list-group">
+    <li class="list-group-item"><a ui-sref="addAccount"><span class="fa fa-plus"></span> Add account</a></li>
     <li class="list-group-item" ng-repeat="item in vm.list">
       <a ng-href="{{href('accountDisplay', { account:item.name, userId:vm.userId })}}" class="visible-sm visible-xs">{{item.name}}</a>
       <a ng-href="{{href('accountList.accountDisplay', {account:item.name, userId:vm.userId})}}" class="visible-lg visible-md">{{item.name}}</a>
     </li>
   </ul>
 </div>
-<div class="col-md-9">
+<div class="col-md-8">
   <div ui-view></div>
 </div>
