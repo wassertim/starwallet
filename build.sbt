@@ -11,7 +11,8 @@ libraryDependencies ++= Seq(
   anorm,
   cache,
   "org.jsoup" % "jsoup" % "1.7.2",
-  "com.tzavellas" % "sse-guice" % "0.7.1"
+  "com.tzavellas" % "sse-guice" % "0.7.1",
+  "com.typesafe.slick" % "slick_2.10" % "2.0.1"
 )     
 
 play.Project.playScalaSettings

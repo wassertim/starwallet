@@ -6,6 +6,7 @@
     this.accountService = accountService;
     this.$state = $state;
     this.params = $stateParams;
+
     this.revealPassword = false;
     $scope.href = function(state, params){
       return $state.href(state, angular.extend($stateParams, params));
@@ -26,7 +27,7 @@
       var that = this;
       if (!this.params['accountId']) {
         this.accountService.add(account).then(function(accountId){
-          that.$state.go('editAccount', angular.extend(that.params, {accountName: accountId}))
+          that.$state.go('editAccount', angular.extend(that.params, {accountId: accountId}))
         });
       } else {
         this.accountService.update(account).then(function(){
