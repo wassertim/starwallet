@@ -27,7 +27,7 @@
         }
       });
     },
-    signIn: function(user) {
+    signUp: function(user) {
       return this.pw.wrap(function(){
         if (user.name === 'test' && user.password === 'test') {
           return {
