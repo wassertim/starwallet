@@ -4,7 +4,8 @@
 GET         /api/jsRoutes        @controllers.Application.javascriptRoutes
 POST        /api/signup        @controllers.User.signUp
 POST        /api/checkAuth        @controllers.User.checkAuth
-POST        /api/signIn         @controllers.User.signIn
+POST        /api/signIn        @controllers.User.signIn
+GET         /api/signOut        @controllers.User.signOut
 # Home page
 #GET        /                @controllers.Application.index
 

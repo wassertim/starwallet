@@ -28,6 +28,10 @@ class User @Inject()(val userService: UserService) extends Controller {
 
   }
 
+  def signOut = Action {
+    request =>
+      Ok("").withNewSession
+  }
   def signUp = Action(BodyParsers.parse.json) {
     request =>
       val user = Json.parse[AuthInfo](request.body.toString())

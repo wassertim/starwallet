@@ -22,8 +22,8 @@
       });
     },
     signOut: function () {
-      return this.pw.wrap(function () {
-        return {};
+      return this.$http(routes.User.signOut()).then(function(response){
+        return response.data;
       });
     }
   };
