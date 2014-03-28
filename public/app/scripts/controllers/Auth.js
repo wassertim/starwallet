@@ -8,7 +8,7 @@
 
   AuthController.prototype = {
     signIn: function () {
-      if (!this.user || !this.user.name || !this.user.password)
+      if (!this.user || !this.user.userName || !this.user.password)
         return;
       var that = this;
       that.alert = undefined;
@@ -26,7 +26,7 @@
       });
     },
     signUp: function () {
-      if (!this.user || !this.user.name || !this.user.password)
+      if (!this.user || !this.user.userName || !this.user.password)
         return;
       var that = this;
       that.alert = undefined;

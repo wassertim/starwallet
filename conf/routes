@@ -1,10 +1,13 @@
 # Routes
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
-
+GET         /api/jsRoutes        @controllers.Application.javascriptRoutes
+POST        /api/signup        @controllers.User.signUp
+POST        /api/checkAuth        @controllers.User.checkAuth
+POST        /api/signIn         @controllers.User.signIn
 # Home page
 #GET        /                @controllers.Application.index
 
 # Map static resources from the /public folder to the /assets URL path
-GET        /*file           controllers.Assets.at(path="/public/app", file)
-GET        /                controllers.Assets.at(path="/public/app", file="index.html")
+GET         /*file        controllers.dev.DAssets.at(path="/public/app", file)
+GET         /        controllers.dev.DAssets.at(path="/public/app", file="index.html")
