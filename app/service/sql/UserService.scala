@@ -21,6 +21,7 @@ class UserService extends BaseService with service.common.UserService {
       onError("")
     }
   }
+
   def authenticate(login: String, password: String) = {
     getPassword(login) match {
       case Some(hashedPassword) => {
@@ -39,11 +40,11 @@ class UserService extends BaseService with service.common.UserService {
     """.as[Int].first == 0
   }
 
-  private def getPassword(email: String): Option[String] = database withDynSession  {
+  private def getPassword(email: String): Option[String] = database withDynSession {
     sql"SELECT password FROM users WHERE email = ${email.trim.toLowerCase}".as[String].firstOption
   }
 
-  def get(login: String) = database withDynSession  {
+  def get(login: String) = database withDynSession {
     implicit val getUserEntity = GetResult(r => Identity(r.<<, r.<<, true))
     sql"""
       SELECT
