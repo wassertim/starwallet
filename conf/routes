@@ -2,10 +2,14 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 GET         /api/jsRoutes        @controllers.Application.javascriptRoutes
+# Security
 POST        /api/signup        @controllers.User.signUp
 POST        /api/checkAuth        @controllers.User.checkAuth
 POST        /api/signIn        @controllers.User.signIn
 GET         /api/signOut        @controllers.User.signOut
+
+# Account
+POST        /api/account        @controllers.Account.add
 # Home page
 #GET        /                @controllers.Application.index
 

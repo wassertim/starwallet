@@ -1,8 +1,8 @@
 import com.google.inject.Guice
 import com.tzavellas.sse.guice.ScalaModule
 import play.api.GlobalSettings
-import service.fake.Starbucks
-import service.sql.UserService
+import service.sql._
+import service.Starbucks
 
 
 object Global extends GlobalSettings {
@@ -11,6 +11,7 @@ object Global extends GlobalSettings {
     def configure() = {
       bind[service.common.Starbucks].toInstance(new Starbucks)
       bind[service.common.UserService].toInstance(new UserService)
+      bind[service.common.AccountService].toInstance(new AccountService)
     }
   }
 

@@ -19,10 +19,10 @@ class User @Inject()(val userService: UserService) extends Controller {
   def signIn = Action(BodyParsers.parse.json) {
     request =>
       val user = Json.parse[AuthInfo](request.body.toString())
-      val auth = userService.authenticate(user)
-      val ok = Ok(Json.generate(auth))
-      if (auth.isAuthenticated)
-        ok.withSession("identity" -> Json.generate(auth))
+      val identity = userService.authenticate(user)
+      val ok = Ok(Json.generate(identity))
+      if (identity.isAuthenticated)
+        ok.withSession("identity" -> Json.generate(identity))
       else
         ok
 
