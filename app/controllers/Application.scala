@@ -19,7 +19,9 @@ class Application @Inject()(val starbucks: service.common.Starbucks) extends Con
           routes.javascript.User.checkAuth,
           routes.javascript.User.signIn,
           routes.javascript.User.signOut,
-          routes.javascript.Account.add
+          routes.javascript.Account.add,
+          routes.javascript.Account.get,
+          routes.javascript.Account.list
         )
       ).as("text/javascript")
   }

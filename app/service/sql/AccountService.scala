@@ -9,12 +9,12 @@ import slick.jdbc.{StaticQuery => Q, GetResult}
 import Q.interpolation
 
 class AccountService extends BaseService with service.common.AccountService {
-  override def getAuthInfo(accountLogin: String, userId: Int): AuthInfo = ???
+  implicit val getAuthInfo = GetResult(r => AuthInfo(r.<<, r.<<, r.<<))
 
-  override def list(userId: Int): Seq[AuthInfo] = database withDynSession {
-    implicit val getAuthInfo = GetResult(r => AuthInfo(r.<<, r.<<))
+  def list(userId: Int): Seq[AuthInfo] = database withDynSession {
     sql"""
       select
+        id,
         user_name,
         password
       from
@@ -24,13 +24,26 @@ class AccountService extends BaseService with service.common.AccountService {
     """.as[AuthInfo].list
   }
 
-  override def add(info: AuthInfo): Int = database withDynSession {
+  def add(info: AuthInfo, userId: Int): Int = database withDynSession {
     sqlu"""
       insert into
-        accounts(user_name, password)
+        accounts(user_name, password, user_id)
       values
-        (${info.userName}, ${info.password});
+        (${info.userName}, ${info.password}, ${userId});
     """.execute
     sql"select last_insert_id();".as[Int].first
+  }
+
+  def get(id: Int): Option[AuthInfo] = database withDynSession {
+    sql"""
+      select
+        id,
+        user_name,
+        password
+      from
+        accounts
+      where
+        id = ${id};
+    """.as[AuthInfo].firstOption
   }
 }

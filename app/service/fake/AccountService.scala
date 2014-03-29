@@ -3,9 +3,10 @@ package service.fake
 import model.AuthInfo
 
 class AccountService extends service.common.AccountService {
-  override def getAuthInfo(accountLogin: String, userId: Int): AuthInfo = AuthInfo("test", "test")
 
-  override def list(userId: Int): Seq[AuthInfo] = List(AuthInfo("test1", "test1"), AuthInfo("test2", "test2"))
+  def list(userId: Int): Seq[AuthInfo] = List(AuthInfo(1, "test1", "test1"), AuthInfo(2, "test2", "test2"))
 
-  override def add(info: AuthInfo): Int = 1
+  def add(info: AuthInfo, userId: Int): Int = 1
+
+  def get(id: Int): Option[AuthInfo] = ???
 }

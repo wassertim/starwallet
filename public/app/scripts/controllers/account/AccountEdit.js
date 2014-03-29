@@ -18,7 +18,7 @@
     getForm: function(){
       var that = this;
       if (this.params['accountId']) {
-        this.accountService.get(this.params['accountId']).then(function(accountInfo){
+        this.accountService.get(this.params['accountId'], this.params['userId']).then(function(accountInfo){
           that.account = accountInfo;
         })
       }
@@ -26,11 +26,12 @@
     save: function(account){
       var that = this;
       if (!this.params['accountId']) {
-        this.accountService.add(account).then(function(accountId){
+        account.id = 0;
+        this.accountService.add(account, this.params['userId']).then(function(accountId){
           that.$state.go('editAccount', angular.extend(that.params, {accountId: accountId}))
         });
       } else {
-        this.accountService.update(account).then(function(){
+        this.accountService.update(account, this.params['userId']).then(function(){
 
         });
       }

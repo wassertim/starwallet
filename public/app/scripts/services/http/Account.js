@@ -7,42 +7,18 @@
   }
 
   AccountService.prototype = {
-    get: function (accountId) {
-      return this.pw.wrap(function () {
-        return {
-          name: accountId,
-          password: 'test'
-        }
+    get: function (accountId, userId) {
+      return this.$http(routes.Account.get(accountId, userId)).then(function(response){
+        return response.data;
       });
     },
     list: function (userId) {
-      return this.pw.wrap(function () {
-        return [
-          {id: 1, name: 'account1'},
-          {id: 2, name: 'account2'}
-        ]
+      return this.$http(routes.Account.list(userId)).then(function(response){
+        return response.data;
       });
     },
-    getAccountInfo: function (account) {
-      return this.pw.wrap(function () {
-        return {
-          userName: account,
-          starsCount: 5,
-          cards: [
-            {
-              number: '342354342323'
-            }
-          ],
-          coupons: [
-            {
-              number: '342323223434'
-            }
-          ]
-        }
-      });
-    },
-    add: function (accountInfo) {
-      return this.$http(angular.extend(routes.Account.add(), {data:accountInfo})).then(function (response) {
+    add: function (accountInfo, userId) {
+      return this.$http(angular.extend(routes.Account.add(userId), {data:accountInfo})).then(function (response) {
         return response.data;
       });
     },

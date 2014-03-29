@@ -1,3 +1,3 @@
 package model
 
-case class AuthInfo(userName: String, password: String)
+case class AuthInfo(id: Int, userName: String, password: String)

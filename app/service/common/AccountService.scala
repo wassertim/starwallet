@@ -3,10 +3,9 @@ package service.common
 import model.AuthInfo
 
 trait AccountService {
-  def add(info: AuthInfo): Int
+  def get(id: Int): Option[AuthInfo]
+
+  def add(info: AuthInfo, userId: Int): Int
 
   def list(userId: Int): Seq[AuthInfo]
-
-  def getAuthInfo(accountLogin: String, userId: Int): AuthInfo
-
 }
