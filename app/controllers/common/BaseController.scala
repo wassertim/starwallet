@@ -9,10 +9,10 @@ import com.codahale.jerkson.Json
 
 
 class BaseController extends Controller {
-  def withUser(f: Identity => Request[AnyContent] => SimpleResult): EssentialAction =
-    withUser(parse.anyContent)(f)
+  def authenticated(f: Identity => Request[AnyContent] => SimpleResult): EssentialAction =
+    authenticated(parse.anyContent)(f)
 
-  def withUser[A](bp: BodyParser[A])(f: Identity => Request[A] => SimpleResult) = Action(bp) {
+  def authenticated[A](bp: BodyParser[A])(f: Identity => Request[A] => SimpleResult) = Action(bp) {
     implicit request =>
       getIdentity(request) match {
         case Some(id) => f(id)(request)

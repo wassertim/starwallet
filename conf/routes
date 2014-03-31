@@ -8,10 +8,14 @@ POST        /api/checkAuth        @controllers.User.checkAuth
 POST        /api/signIn        @controllers.User.signIn
 GET         /api/signOut        @controllers.User.signOut
 
+
+# Identity
+POST        /api/u:userId/identity        @controllers.Identity.add(userId: Int)
+GET         /api/u:userId/identity/:id        @controllers.Identity.get(id: Int, userId: Int)
+GET         /api/u:userId/identity        @controllers.Identity.list(userId: Int)
+
 # Account
-POST        /api/u:userId/account        @controllers.Identity.add(userId: Int)
-GET         /api/u:userId/account/:id        @controllers.Identity.get(id: Int, userId: Int)
-GET         /api/u:userId/account            @controllers.Identity.list(userId: Int)
+GET         /api/account/:id            @controllers.Account.getByIdentityId(id: Int)
 # Home page
 #GET        /                @controllers.Application.index
 

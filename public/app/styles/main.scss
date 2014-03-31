@@ -40,6 +40,13 @@ body {
     padding-bottom: 20px;
 }
 
+.sidebar {
+  position: fixed;
+  width: 210px;
+  overflow-y: scroll;
+  top: 48px;
+  bottom: -19px;
+}
 /* Everything but the jumbotron gets side spacing for mobile first views */
 .header,
 .marketing,

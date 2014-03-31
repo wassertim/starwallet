@@ -6,7 +6,7 @@ import com.codahale.jerkson.Json
 import model.AuthInfo
 
 class Identity @Inject()(accountService: service.common.IdentityService) extends BaseController {
-  def add(userId: Int) = withUser(parse.json) {
+  def add(userId: Int) = authenticated(parse.json) {
     identity =>
       request =>
         val authInfo = Json.parse[AuthInfo](request.body.toString())
@@ -14,7 +14,7 @@ class Identity @Inject()(accountService: service.common.IdentityService) extends
         Ok(Json.generate(id))
   }
 
-  def get(id: Int, userId: Int) = withUser {
+  def get(id: Int, userId: Int) = authenticated {
     identity =>
       request =>
         accountService.get(id) match {
@@ -24,7 +24,7 @@ class Identity @Inject()(accountService: service.common.IdentityService) extends
 
   }
 
-  def list(userId: Int) = withUser {
+  def list(userId: Int) = authenticated {
     identity =>
       request =>
         Ok(Json.generate(accountService.list(userId)))
