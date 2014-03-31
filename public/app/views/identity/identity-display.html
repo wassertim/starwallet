@@ -9,10 +9,17 @@
   </div>
 
   <div class="form-group">
-    <label>Cards:</label>
     <ul class="list-group">
       <li class="list-group-item" ng-repeat="card in vm.accountInfo.cards">
-        {{card.number}}
+        <div class="item-container clearfix">
+        <div class="thumbnail">
+          <img style="width: 54px;height: 33px" src="https://plas-tek.ru/cardimage.ashx?c={{card.number}}"/>
+        </div>
+        <div>
+        номер: {{card.number}}
+        </div>
+          <div>баланс: {{card.balance}}.00 rub.</div>
+        </div>
       </li>
     </ul>
   </div>

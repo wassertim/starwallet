@@ -22,7 +22,7 @@ $fa-font-path:        "../bower_components/font-awesome/fonts" !default;
   padding:10px 0 0 10px;
 }
 i.icon-brand {
-  @include img-retina("../images/logo-smallpng", "../images/logo-big.png", 30px, 30px);
+  @include img-retina("../images/logo-small.png", "../images/logo-big.png", 30px, 30px);
   width: 30px;
   height: 30px;
   display: inline-block;
@@ -39,13 +39,21 @@ body {
     padding-top: 60px;
     padding-bottom: 20px;
 }
+.thumbnail {
+  padding: 1px;
+  float: left;
+  margin:0 10px 0 0;
+}
+.item-container {
 
+}
 .sidebar {
   position: fixed;
   width: 33%;
   overflow-y: scroll;
   top: 48px;
   bottom: -22px;
+  -webkit-overflow-scrolling: touch;
 }
 /* Everything but the jumbotron gets side spacing for mobile first views */
 .header,

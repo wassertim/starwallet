@@ -6344,7 +6344,7 @@ td.visible-print {
   padding: 10px 0 0 10px; }
 
 i.icon-brand {
-  background-image: url("../images/logo-smallpng");
+  background-image: url("../images/logo-small.png");
   width: 30px;
   height: 30px;
   display: inline-block; }
@@ -6364,12 +6364,18 @@ body {
   padding-top: 60px;
   padding-bottom: 20px; }
 
+.thumbnail {
+  padding: 1px;
+  float: left;
+  margin: 0 10px 0 0; }
+
 .sidebar {
   position: fixed;
   width: 33%;
   overflow-y: scroll;
   top: 48px;
-  bottom: -22px; }
+  bottom: -22px;
+  -webkit-overflow-scrolling: touch; }
 
 /* Everything but the jumbotron gets side spacing for mobile first views */
 .header,
