@@ -20,12 +20,12 @@
   IdentityListController.prototype = {
     list: function(userId){
       var that = this;
-      this.identityService.list(userId).then(function(list){
-        that.list = list;
+      this.identityService.list(userId).then(function(items){
+        that.items = items;
         that.setActive(+that.$state.params.accountId);
-        return list;
-      }).then(function(list){
-        _.forEach(list, function(item){
+        return items;
+      }).then(function(items){
+        _.forEach(items, function(item){
           //TODO: Cache this info on the server
           that.accountService.getByIdentityId(item.id).then(function(accountInfo){
             item.activeCouponsCount = _.filter(accountInfo.coupons, 'isActive').length;
@@ -34,9 +34,11 @@
       });
     },
     setActive: function(id){
-      _.forEach(this.list, function(item){
+      if (this.items) {
+        _.forEach(this.items, function (item) {
           item.isActive = item.id === id;
-      });
+        });
+      }
     }
   };
   app.controller('IdentityListController', IdentityListController);
