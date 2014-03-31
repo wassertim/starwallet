@@ -6375,6 +6375,7 @@ body {
   overflow-y: scroll;
   top: 48px;
   bottom: -22px;
+  margin-left: -20px;
   -webkit-overflow-scrolling: touch; }
 
 /* Everything but the jumbotron gets side spacing for mobile first views */
