@@ -6366,10 +6366,10 @@ body {
 
 .sidebar {
   position: fixed;
-  width: 210px;
+  width: 33%;
   overflow-y: scroll;
   top: 48px;
-  bottom: -19px; }
+  bottom: -22px; }
 
 /* Everything but the jumbotron gets side spacing for mobile first views */
 .header,

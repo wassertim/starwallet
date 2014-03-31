@@ -2,7 +2,6 @@ package controllers
 
 import play.api.mvc._
 import com.google.inject.Inject
-import scala.reflect.io.File
 import play.api.Routes
 
 class Application @Inject()(val starbucks: service.common.Starbucks) extends Controller {
