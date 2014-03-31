@@ -1,14 +1,17 @@
 <div class="row">
-<div class="col-sm-4">
-  <ul class="list-group sidebar">
-    <li class="list-group-item"><a ng-href="{{href('addAccount')}}"><span class="fa fa-plus"></span> Add account</a></li>
-    <li class="list-group-item" ng-repeat="item in vm.list">
+  <div class="col-sm-4">
+    <div class="list-group sidebar">
+      <a class="list-group-item" ng-href="{{href('addAccount')}}"><span class="fa fa-plus"></span> Add account</a>
 
-      <a ng-href="{{href('accountList.accountDisplay', {accountId:item.id})}}" >{{item.userName}} <span class="label label-danger pull-right" ng-show="item.activeCouponsCount">{{item.activeCouponsCount}}</span> </a>
-    </li>
-  </ul>
-</div>
-<div class="col-sm-8">
-  <div ui-view></div>
-</div>
+
+      <a class="list-group-item" ng-class="{active:item.isActive}" ng-repeat="item in vm.list"
+         ng-href="{{href('accountList.accountDisplay', {accountId:item.id})}}">{{item.userName}} <span
+              class="label label-danger pull-right" ng-show="item.activeCouponsCount">{{item.activeCouponsCount}}</span>
+      </a>
+
+    </div>
+  </div>
+  <div class="col-sm-8">
+    <div ui-view></div>
+  </div>
 </div>

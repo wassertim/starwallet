@@ -3,6 +3,7 @@
   function AccountDisplayController($scope, $stateParams, accountService, $state) {
     $scope.vm = this;
     this.accountService = accountService;
+    this.accountId = $state.params.accountId;
     this.get($stateParams['accountId']);
     $scope.href = function(state, params){
       return $state.href(state, angular.extend($stateParams, params));
