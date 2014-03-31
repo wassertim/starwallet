@@ -8,7 +8,7 @@ import Database.dynamicSession
 import slick.jdbc.{StaticQuery => Q, GetResult}
 import Q.interpolation
 
-class AccountService extends BaseService with service.common.AccountService {
+class IdentityService extends BaseService with service.common.IdentityService {
   implicit val getAuthInfo = GetResult(r => AuthInfo(r.<<, r.<<, r.<<))
 
   def list(userId: Int): Seq[AuthInfo] = database withDynSession {

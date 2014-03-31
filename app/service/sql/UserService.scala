@@ -1,6 +1,6 @@
 package service.sql
 
-import model.{Identity, AuthInfo}
+import model._
 import service.sql.common.BaseService
 
 import scala.slick.driver.JdbcDriver.simple._
@@ -11,7 +11,7 @@ import org.mindrot.jbcrypt.BCrypt
 
 class UserService extends BaseService with service.common.UserService {
 
-  override def register[T](user: AuthInfo, onSuccess: (Int) => T, onError: (String) => T): T = database withDynSession {
+  override def register[T](user: Login, onSuccess: (Int) => T, onError: (String) => T): T = database withDynSession {
     if (isValid(user)) {
       sqlu"""
       insert into users(email, password) values(${user.userName.trim.toLowerCase}, ${saltedPassword(user.password)});
@@ -34,7 +34,7 @@ class UserService extends BaseService with service.common.UserService {
     }
   }
 
-  def isValid(info: AuthInfo): Boolean = database withDynSession {
+  def isValid(info: Login): Boolean = database withDynSession {
     sql"""
       select count(*) from users where email = ${info.userName.trim.toLowerCase}
     """.as[Int].first == 0

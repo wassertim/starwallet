@@ -11,7 +11,7 @@ class AccountServiceSpec extends Specification {
   private lazy val injector = Guice.createInjector(new InjectionModule)
   "AccountService" should {
     "return authInfo" in {
-      val accountService = injector.getInstance(classOf[AccountService])
+      val accountService = injector.getInstance(classOf[IdentityService])
       val starbucksService = injector.getInstance(classOf[Starbucks])
       val accountLogin = "testLogin"
       val userId = 1
@@ -20,7 +20,7 @@ class AccountServiceSpec extends Specification {
       starbucksAccount.cards.size must be greaterThan 0
     }
     "return list of authInfo" in {
-      val accountService = injector.getInstance(classOf[AccountService])
+      val accountService = injector.getInstance(classOf[IdentityService])
       val userId = 1
       val list = accountService.list(userId)
       list.size must be equalTo 2

@@ -9,9 +9,9 @@ POST        /api/signIn        @controllers.User.signIn
 GET         /api/signOut        @controllers.User.signOut
 
 # Account
-POST        /api/u:userId/account        @controllers.Account.add(userId: Int)
-GET         /api/u:userId/account/:id        @controllers.Account.get(id: Int, userId: Int)
-GET         /api/u:userId/account            @controllers.Account.list(userId: Int)
+POST        /api/u:userId/account        @controllers.Identity.add(userId: Int)
+GET         /api/u:userId/account/:id        @controllers.Identity.get(id: Int, userId: Int)
+GET         /api/u:userId/account            @controllers.Identity.list(userId: Int)
 # Home page
 #GET        /                @controllers.Application.index
 

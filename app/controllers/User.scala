@@ -18,7 +18,7 @@ class User @Inject()(val userService: UserService) extends Controller {
 
   def signIn = Action(BodyParsers.parse.json) {
     request =>
-      val user = Json.parse[AuthInfo](request.body.toString())
+      val user = Json.parse[Login](request.body.toString())
       val identity = userService.authenticate(user)
       val ok = Ok(Json.generate(identity))
       if (identity.isAuthenticated)
@@ -34,7 +34,7 @@ class User @Inject()(val userService: UserService) extends Controller {
   }
   def signUp = Action(BodyParsers.parse.json) {
     request =>
-      val user = Json.parse[AuthInfo](request.body.toString())
+      val user = Json.parse[Login](request.body.toString())
       userService.register(user, userId => {
         val identity = Identity(userId, user.userName, true)
         Ok(Json.generate(identity)).withSession("identity" -> Json.generate(identity))

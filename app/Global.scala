@@ -11,7 +11,7 @@ object Global extends GlobalSettings {
     def configure() = {
       bind[service.common.Starbucks].toInstance(new Starbucks)
       bind[service.common.UserService].toInstance(new UserService)
-      bind[service.common.AccountService].toInstance(new AccountService)
+      bind[service.common.IdentityService].toInstance(new IdentityService)
     }
   }
 

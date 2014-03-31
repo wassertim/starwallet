@@ -5,7 +5,7 @@ import controllers.common.BaseController
 import com.codahale.jerkson.Json
 import model.AuthInfo
 
-class Account @Inject()(accountService: service.common.AccountService) extends BaseController {
+class Identity @Inject()(accountService: service.common.IdentityService) extends BaseController {
   def add(userId: Int) = withUser(parse.json) {
     identity =>
       request =>

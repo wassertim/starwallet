@@ -18,12 +18,12 @@ angular.module('starbucks', [
     controller: 'MainController'
   }).state('accountList', {
     url: '/u:userId/account',
-    controller: 'AccountController',
-    templateUrl: vw('views/account/account-list.html')
+    controller: 'IdentityListController',
+    templateUrl: vw('views/identity/identity-list.html')
   }).state('accountList.accountDisplay', {
     url: '/:accountId',
-    controller: 'AccountDisplayController',
-    templateUrl: vw('views/account/account-display.html')
+    controller: 'IdentityDisplayController',
+    templateUrl: vw('views/identity/identity-display.html')
   }).state('login', {
     url: '/login',
     controller: 'AuthController',
@@ -41,11 +41,11 @@ angular.module('starbucks', [
     }]
   }).state('addAccount', {
     url: '/u:userId/account-edit',
-    controller: 'AccountEditController',
-    templateUrl: vw('views/account/account-edit.html')
+    controller: 'IdentityEditController',
+    templateUrl: vw('views/identity/identity-edit.html')
   }).state('editAccount', {
     url: '/u:userId/account-edit/:accountId',
-    controller: 'AccountEditController',
-    templateUrl: vw('views/account/account-edit.html')
+    controller: 'IdentityEditController',
+    templateUrl: vw('views/identity/identity-edit.html')
   });
 });

@@ -1,9 +1,9 @@
 (function (app) {
-  AccountEditController.$inject = ['$scope', '$stateParams', 'AccountService', '$state', '$window'];
-  function AccountEditController($scope, $stateParams, accountService, $state, $window) {
+  IdentityEditController.$inject = ['$scope', '$stateParams', 'IdentityService', '$state', '$window'];
+  function IdentityEditController($scope, $stateParams, identityService, $state, $window) {
     $scope.vm = this;
     this.$window = $window;
-    this.accountService = accountService;
+    this.identityService = identityService;
     this.$state = $state;
     this.params = $stateParams;
 
@@ -14,11 +14,11 @@
     this.getForm();
   }
 
-  AccountEditController.prototype = {
+  IdentityEditController.prototype = {
     getForm: function(){
       var that = this;
       if (this.params['accountId']) {
-        this.accountService.get(this.params['accountId'], this.params['userId']).then(function(accountInfo){
+        this.identityService.get(this.params['accountId'], this.params['userId']).then(function(accountInfo){
           that.account = accountInfo;
         })
       }
@@ -27,11 +27,11 @@
       var that = this;
       if (!this.params['accountId']) {
         account.id = 0;
-        this.accountService.add(account, this.params['userId']).then(function(accountId){
+        this.identityService.add(account, this.params['userId']).then(function(accountId){
           that.$state.go('editAccount', angular.extend(that.params, {accountId: accountId}))
         });
       } else {
-        this.accountService.update(account, this.params['userId']).then(function(){
+        this.identityService.update(account, this.params['userId']).then(function(){
 
         });
       }
@@ -39,12 +39,12 @@
     remove: function(accountId){
       var that = this;
       if (this.$window.confirm("Do you really want to delete this account?")) {
-        this.accountService.remove(accountId).then(function () {
+        this.identityService.remove(accountId).then(function () {
           that.$state.go('accountList', that.params);
         });
       }
     }
   };
-  app.controller('AccountEditController', AccountEditController);
-  return AccountEditController;
+  app.controller('IdentityEditController', IdentityEditController);
+  return IdentityEditController;
 }(angular.module('starbucks')));

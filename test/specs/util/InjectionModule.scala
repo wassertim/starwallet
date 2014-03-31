@@ -6,6 +6,6 @@ import service.fake._
 class InjectionModule extends ScalaModule {
   def configure() = {
     bind[service.common.Starbucks].toInstance(new Starbucks)
-    bind[service.common.AccountService].toInstance(new AccountService)
+    bind[service.common.IdentityService].toInstance(new IdentityService)
   }
 }
