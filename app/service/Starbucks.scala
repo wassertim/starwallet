@@ -5,7 +5,7 @@ import org.jsoup.Jsoup
 import model._
 import org.joda.time.format.DateTimeFormat
 
-import org.jsoup.nodes.Document
+import org.jsoup.nodes.{Element, Document}
 import scala.collection.JavaConversions._
 import com.ning.http.client.Cookie
 
@@ -30,8 +30,7 @@ import model.Card
 class Starbucks extends service.common.Starbucks {
   val mainUrl = "https://plas-tek.ru/cabinet.aspx?style=starbucks"
 
-  private def auth(authInfo: AuthInfo) = auth(authInfo.userName, authInfo.password)
-  private def auth(userName: String, password: String) = {
+  private def auth(authInfo: AuthInfo) = {
     val loginUrl = s"$mainUrl&mainlogin=true"
     val loginPageResponse = WS.client.prepareGet(loginUrl).execute().get()
     val (loginDoc, cookies) = (Jsoup.parse(loginPageResponse.getResponseBody), loginPageResponse.getCookies)
@@ -45,8 +44,8 @@ class Starbucks extends service.common.Starbucks {
       .addParameter("__VIEWSTATE", loginDoc.getElementsByAttributeValue("name", "__VIEWSTATE").`val`())
       .addParameter("ImageButton19", "")
       .addParameter("ImageButton9", "")
-      .addParameter("LoginTextBox1", userName)
-      .addParameter("PasswordTextBox2", password)
+      .addParameter("LoginTextBox1", authInfo.userName)
+      .addParameter("PasswordTextBox2", authInfo.password)
       .addParameter("LoginLinkButtonDynamic", "Войти")
     cookies.map(cookie => authenticatedResponse.addCookie(cookie))
     (Jsoup.parse(authenticatedResponse.execute().get.getResponseBody), cookies)
@@ -113,11 +112,18 @@ class Starbucks extends service.common.Starbucks {
           formatter.parseDateTime(tds.get(1).text.trim),
           formatter.parseDateTime(tds.get(2).text.trim),
           tds.get(3).text.trim.toLowerCase == "активен",
-          tds.get(4).text.trim
+          tds.get(4).text.trim,
+          getKey(tds.get(5))
         )
     }
   }
+  private def getKey(el: Element) = {
+    "Q[0-9]*[A-Za-z0-9]*".r findFirstIn el.select("a").attr("href") match {
+      case Some(x) => x
+      case _ => ""
+    }
 
+  }
   private def starsCount(implicit cardsPage: Document): Int = {
     val starsText = cardsPage.select("#pnlCardInfo > div").text
     "[0-9]+".r findFirstIn starsText match {
@@ -128,7 +134,7 @@ class Starbucks extends service.common.Starbucks {
 
   def getAccountData(authInfo: AuthInfo) = {
     val (cardsPage, cookies) = auth(authInfo)
-    StarbucksAccount(authInfo.userName, starsCount, cardList(cardsPage, cookies), couponList(cardsPage, cookies))
+    StarbucksAccount(authInfo.userName, starsCount(cardsPage), cardList(cardsPage, cookies), couponList(cardsPage, cookies))
   }
 }
 
