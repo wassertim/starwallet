@@ -4,7 +4,7 @@
     <li class="list-group-item"><a ng-href="{{href('addAccount')}}"><span class="fa fa-plus"></span> Add account</a></li>
     <li class="list-group-item" ng-repeat="item in vm.list">
 
-      <a ng-href="{{href('accountList.accountDisplay', {accountId:item.id})}}" >{{item.userName}}</a>
+      <a ng-href="{{href('accountList.accountDisplay', {accountId:item.id})}}" >{{item.userName}} <span class="label label-danger pull-right" ng-show="item.activeCouponsCount">{{item.activeCouponsCount}}</span> </a>
     </li>
   </ul>
 </div>
