@@ -30,6 +30,7 @@ import model.Card
 class Starbucks extends service.common.Starbucks {
   val mainUrl = "https://plas-tek.ru/cabinet.aspx?style=starbucks"
 
+  private def auth(authInfo: AuthInfo) = auth(authInfo.userName, authInfo.password)
   private def auth(userName: String, password: String) = {
     val loginUrl = s"$mainUrl&mainlogin=true"
     val loginPageResponse = WS.client.prepareGet(loginUrl).execute().get()
@@ -126,8 +127,7 @@ class Starbucks extends service.common.Starbucks {
   }
 
   def getAccountData(authInfo: AuthInfo) = {
-    val (userName, password) = (authInfo.userName, authInfo.password)
-    implicit val (cardsPage, cookies) = auth(userName, password)
+    val (cardsPage, cookies) = auth(authInfo)
     StarbucksAccount(authInfo.userName, starsCount, cardList(cardsPage, cookies), couponList(cardsPage, cookies))
   }
 }

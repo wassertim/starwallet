@@ -15,6 +15,9 @@
       this.accountService.getByIdentityId(identityId).then(function(accountInfo) {
         that.accountInfo = accountInfo;
       });
+    },
+    countActiveCoupons: function(coupons) {
+      return _.filter(coupons, 'isActive').length;
     }
   };
   app.controller('AccountDisplayController', AccountDisplayController);
