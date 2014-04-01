@@ -6369,15 +6369,6 @@ body {
   float: left;
   margin: 0 10px 0 0; }
 
-.sidebar {
-  position: fixed;
-  width: 33%;
-  overflow-y: scroll;
-  top: 48px;
-  bottom: -22px;
-  margin-left: -20px;
-  -webkit-overflow-scrolling: touch; }
-
 /* Everything but the jumbotron gets side spacing for mobile first views */
 .header,
 .marketing,
@@ -6425,6 +6416,15 @@ body {
 @media screen and (min-width: 768px) {
   .container {
     max-width: 730px; }
+
+  .sidebar {
+    position: fixed;
+    width: 33%;
+    overflow-y: scroll;
+    top: 48px;
+    bottom: -22px;
+    margin-left: -20px;
+    -webkit-overflow-scrolling: touch; }
 
   /* Remove the padding we set earlier */
   .header,

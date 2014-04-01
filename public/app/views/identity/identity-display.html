@@ -1,11 +1,24 @@
 <div>
-  <div class="form-group">
-    <label>Name:</label>
-    <span>{{vm.accountInfo.userName}}</span>
+  <div class="page-header">
+
+    <h4>{{vm.accountInfo.userName}}</h4>
+
+    <div class="small">
+
+      <span class="fa fa-credit-card"></span>
+      <span>{{vm.accountInfo.cards.length}}</span>
+
+      <span class="fa fa-star"></span>
+      <span>{{vm.accountInfo.starsCount}}</span>
+
+      <span class="fa fa-ticket"></span>
+      <span>
+      {{ vm.countActiveCoupons(vm.accountInfo.coupons) }}
+      </span>
+    </div>
   </div>
   <div class="form-group">
-    <label>Stars:</label>
-    <span>{{vm.accountInfo.starsCount}}</span>
+
   </div>
 
   <div class="form-group">
@@ -24,8 +37,7 @@
     </ul>
   </div>
   <div class="form-group">
-    <label>{{ vm.countActiveCoupons(vm.accountInfo.coupons) }} active coupons from
-      {{vm.accountInfo.coupons.length}}</label>
+
     <ul class="list-group">
       <li class="list-group-item" ng-repeat="coupon in vm.accountInfo.coupons">
         <div ng-show="coupon.isActive">

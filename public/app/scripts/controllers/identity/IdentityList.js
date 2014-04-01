@@ -11,9 +11,11 @@
     this.accountService = accountService;
     this.list($stateParams['userId']);
     var that = this;
-
+    that.responsiveClasses = "";
+    this.getResponsiveClasses();
     $scope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
       that.setActive(+toParams.accountId);
+      that.getResponsiveClasses(+toParams.accountId);
     });
   }
 
@@ -26,12 +28,19 @@
         return items;
       }).then(function(items){
         _.forEach(items, function(item){
-          //TODO: Cache this info on the server
-          that.accountService.getByIdentityId(item.id).then(function(accountInfo){
+          //TODO: Cache this info on the server. Temporary disabled
+          /*that.accountService.getByIdentityId(item.id).then(function(accountInfo){
             item.activeCouponsCount = _.filter(accountInfo.coupons, 'isActive').length;
-          });
+          });*/
         });
       });
+    },
+    getResponsiveClasses: function(accountId){
+      if (accountId) {
+        this.responsiveClasses = " visible-lg visible-md visible-sm";
+      } else {
+        this.responsiveClasses = "";
+      }
     },
     setActive: function(id){
       if (this.items) {
