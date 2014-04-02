@@ -1,4 +1,9 @@
-<div>
+<div ng-show="vm.isLoading">
+  <h3>
+  <span class="fa fa-cog fa-spin"></span> Loading ...
+  </h3>
+</div>
+<div ng-hide="vm.isLoading">
   <div class="page-header">
 
     <h3>{{vm.accountInfo.userName}}</h3>
