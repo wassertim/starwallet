@@ -1,0 +1,7 @@
+a {
+  &.list-group-item {
+    &:hover, &:focus {
+      background-color: white;
+    }
+  }
+}
