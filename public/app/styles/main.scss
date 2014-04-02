@@ -18,6 +18,13 @@ $fa-font-path:        "../bower_components/font-awesome/fonts" !default;
     background-size: $width-1x $height-1x;
   }
 }
+a {
+  &.list-group-item {
+    &:hover, &:focus {
+      background-color:white;
+    }
+  }
+}
 .navbar-default .navbar-brand {
   padding:10px 0 0 10px;
 }

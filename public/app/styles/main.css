@@ -6340,6 +6340,9 @@ td.visible-print {
 .fa-plus-square-o:before {
   content: "\f196"; }
 
+a.list-group-item:hover, a.list-group-item:focus {
+  background-color: white; }
+
 .navbar-default .navbar-brand {
   padding: 10px 0 0 10px; }
 
