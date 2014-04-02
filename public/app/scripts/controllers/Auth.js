@@ -1,3 +1,4 @@
+'user strict';
 (function (app) {
   AuthController.$inject = ['$scope', 'AuthService', '$state'];
   function AuthController($scope, authService, $state) {
@@ -8,8 +9,9 @@
 
   AuthController.prototype = {
     signIn: function () {
-      if (!this.user || !this.user.userName || !this.user.password)
+      if (!this.user || !this.user.userName || !this.user.password) {
         return;
+      }
       var that = this;
       that.alert = undefined;
       that.isLoading = true;
@@ -26,8 +28,9 @@
       });
     },
     signUp: function () {
-      if (!this.user || !this.user.userName || !this.user.password)
+      if (!this.user || !this.user.userName || !this.user.password) {
         return;
+      }
       var that = this;
       that.alert = undefined;
       that.isLoading = true;

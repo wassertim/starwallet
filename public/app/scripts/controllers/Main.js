@@ -1,3 +1,4 @@
+'user strict';
 (function (app) {
   MainController.$inject = ['$state', 'AuthService'];
   function MainController($state, authService) {

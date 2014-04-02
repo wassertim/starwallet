@@ -21,7 +21,7 @@ angular.module('starbucks', [
     controller: 'IdentityListController',
     templateUrl: vw('views/identity/identity-list.html')
   }).state('accountList.accountDisplay', {
-    url: '/:accountId',
+    url: '/display/:accountId',
     controller: 'AccountDisplayController',
     templateUrl: vw('views/account/account-display.html')
   }).state('login', {
@@ -39,13 +39,18 @@ angular.module('starbucks', [
         $state.go('login');
       });
     }]
-  }).state('addAccount', {
-    url: '/u:userId/account-edit',
-    controller: 'IdentityEditController',
-    templateUrl: vw('views/identity/identity-edit.html')
-  }).state('editAccount', {
-    url: '/u:userId/account-edit/:accountId',
+  }).state('accountList.addAccount', {
+    url: '/edit/:accountId',
     controller: 'IdentityEditController',
     templateUrl: vw('views/identity/identity-edit.html')
   });
-});
+}).factory('HrefService', [function () {
+  return function ($state) {
+    return function (state, params, noExtend) {
+      if (noExtend) {
+        return $state.href(state, params);
+      }
+      return $state.href(state, angular.extend($state.params, params));
+    };
+  }
+}]);

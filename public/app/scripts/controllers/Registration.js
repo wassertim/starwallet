@@ -1,3 +1,4 @@
+'user strict';
 (function (app) {
   RegistrationController.$inject = ['$scope'];
   function RegistrationController($scope) {

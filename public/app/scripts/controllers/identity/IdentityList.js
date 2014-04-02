@@ -1,11 +1,9 @@
 (function (app) {
-  IdentityListController.$inject = ['$scope', 'IdentityService', '$stateParams', '$state', 'AccountService'];
-  function IdentityListController($scope, identityService, $stateParams, $state, accountService) {
+  IdentityListController.$inject = ['$scope', 'IdentityService', '$stateParams', '$state', 'AccountService', 'HrefService'];
+  function IdentityListController($scope, identityService, $stateParams, $state, accountService, href) {
     $scope.vm = this;
     this.$state = $state;
-    $scope.href = function(state, params){
-      return $state.href(state, angular.extend($stateParams, params));
-    };
+    $scope.href = href($state);
     this.accountId = +$state.params.accountId;
     this.identityService = identityService;
     this.accountService = accountService;

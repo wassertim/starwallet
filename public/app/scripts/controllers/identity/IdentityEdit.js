@@ -1,6 +1,6 @@
 (function (app) {
-  IdentityEditController.$inject = ['$scope', '$stateParams', 'IdentityService', '$state', '$window'];
-  function IdentityEditController($scope, $stateParams, identityService, $state, $window) {
+  IdentityEditController.$inject = ['$scope', '$stateParams', 'IdentityService', '$state', '$window', 'HrefService'];
+  function IdentityEditController($scope, $stateParams, identityService, $state, $window, href) {
     $scope.vm = this;
     this.$window = $window;
     this.identityService = identityService;
@@ -8,9 +8,7 @@
     this.params = $stateParams;
 
     this.revealPassword = false;
-    $scope.href = function(state, params){
-      return $state.href(state, angular.extend($stateParams, params));
-    };
+    $scope.href = href($state);
     this.getForm();
   }
 

@@ -1,15 +1,14 @@
 (function (app) {
-  AccountDisplayController.$inject = ['$scope', '$stateParams', 'AccountService', '$state'];
-  function AccountDisplayController($scope, $stateParams, accountService, $state) {
+  AccountDisplayController.$inject = ['$scope', '$stateParams', 'AccountService', '$state', 'HrefService'];
+  function AccountDisplayController($scope, $stateParams, accountService, $state, href) {
     $scope.vm = this;
     this.accountService = accountService;
     this.accountId = $state.params.accountId;
     this.isLoading = false;
     this.get($stateParams['accountId']);
 
-    $scope.href = function(state, params){
-      return $state.href(state, angular.extend($stateParams, params));
-    };
+    $scope.href = href($state);
+    this.editUrl = href($state)('accountList.addAccount');
   }
 
   AccountDisplayController.prototype = {
