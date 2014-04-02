@@ -23,7 +23,7 @@ angular.module('starbucks', [
   }).state('accountList.accountDisplay', {
     url: '/:accountId',
     controller: 'AccountDisplayController',
-    templateUrl: vw('views/identity/identity-display.html')
+    templateUrl: vw('views/account/account-display.html')
   }).state('login', {
     url: '/login',
     controller: 'AuthController',
