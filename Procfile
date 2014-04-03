@@ -1,1 +1,1 @@
--DapplyEvolutions.default=true -Ddb.default.driver=com.mysql.jdbc.Driver -Dconfig.file=prod.conf
+web: target/start -Dhttp.port=${PORT} ${JAVA_OPTS} -DapplyEvolutions.default=true -Ddb.default.driver=org.postgresql.Driver -Ddb.default.url=${DATABASE_URL} -Dconfig.file=prod.conf
