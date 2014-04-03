@@ -28,7 +28,7 @@
       var that = this;
       this.isLoading = true;
       this.accountService.getByIdentityId(identityId).then(function (accountInfo) {
-
+        that.activeCouponsCount = that.countActiveCoupons(accountInfo.coupons);
         that.accountInfo = accountInfo;
         that.isLoading = false;
       });
