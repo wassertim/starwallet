@@ -1,1 +1,1 @@
-web: target/universal/stage/bin/starbucks -Dhttp.port=${PORT} -Ddb.postgres.driver=org.postgresql.Driver -Ddb.postgres.url=${DATABASE_URL} -Dconfig.file=prod.conf
+web: target/universal/stage/bin/starbucks -Dhttp.port=${PORT} -Ddb.postgres.driver=org.postgresql.Driver -Ddb.postgres.url=${DATABASE_URL} -Dconfig.file=conf/prod.conf
