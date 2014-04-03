@@ -48,13 +48,4 @@ angular.module('starbucks', [
     controller: 'IdentityEditController',
     templateUrl: vw('views/identity/identity-edit.html')
   });
-}).factory('HrefService', [function () {
-  return function ($state) {
-    return function (state, params, noExtend) {
-      if (noExtend) {
-        return $state.href(state, params);
-      }
-      return $state.href(state, angular.extend($state.params, params));
-    };
-  }
-}]);
+});

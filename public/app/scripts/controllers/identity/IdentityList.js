@@ -1,6 +1,6 @@
 (function (app) {
-  IdentityListController.$inject = ['$scope', 'IdentityService', '$stateParams', '$state', 'AccountService', 'HrefService'];
-  function IdentityListController($scope, identityService, $stateParams, $state, accountService, href) {
+  IdentityListController.$inject = ['$scope', 'IdentityService', '$stateParams', '$state', 'AccountService'];
+  function IdentityListController($scope, identityService, $stateParams, $state, accountService) {
     $scope.vm = this;
     this.$state = $state;
     $scope.href = $state.href;

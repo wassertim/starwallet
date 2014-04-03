@@ -1,6 +1,6 @@
 (function (app) {
-  IdentityEditController.$inject = ['$scope', '$stateParams', 'IdentityService', '$state', '$window', 'HrefService'];
-  function IdentityEditController($scope, $stateParams, identityService, $state, $window, href) {
+  IdentityEditController.$inject = ['$scope', '$stateParams', 'IdentityService', '$state', '$window'];
+  function IdentityEditController($scope, $stateParams, identityService, $state, $window) {
     $scope.vm = this;
     this.$window = $window;
     this.identityService = identityService;

@@ -1,6 +1,6 @@
 (function (app) {
-  AccountDisplayController.$inject = ['$scope', '$stateParams', 'AccountService', '$state', 'HrefService'];
-  function AccountDisplayController($scope, $stateParams, accountService, $state, href) {
+  AccountDisplayController.$inject = ['$scope', '$stateParams', 'AccountService', '$state'];
+  function AccountDisplayController($scope, $stateParams, accountService, $state) {
     $scope.vm = this;
     this.accountService = accountService;
     this.accountId = $state.params.accountId;
