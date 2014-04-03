@@ -7,8 +7,8 @@
     this.isLoading = false;
     this.get($stateParams['accountId']);
 
-    $scope.href = href($state);
-    this.editUrl = href($state)('accountList.addAccount');
+    $scope.href = $state.href;
+
   }
 
   AccountDisplayController.prototype = {

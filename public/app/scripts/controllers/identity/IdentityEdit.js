@@ -8,7 +8,7 @@
     this.params = $stateParams;
 
     this.revealPassword = false;
-    $scope.href = href($state);
+    $scope.href = $state.href;
     this.getForm();
   }
 

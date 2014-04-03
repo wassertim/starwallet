@@ -57,5 +57,5 @@
       </li>
     </ul>
   </div>
-  <a class="btn btn-default" ng-href="{{vm.editUrl}}">Edit</a>
+  <a class="btn btn-default" ng-href="{{href('accountList.editAccount', {accountId:vm.accountId}, {inherit:true})}}">Edit</a>
 </div>
