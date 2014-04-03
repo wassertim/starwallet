@@ -1,0 +1,1 @@
+-DapplyEvolutions.default=true -Ddb.default.driver=com.mysql.jdbc.Driver
