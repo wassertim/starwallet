@@ -15,6 +15,7 @@
     $scope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
       that.setActive(+toParams.accountId);
       that.getResponsiveClasses(+toParams.accountId);
+      that.list($stateParams['userId']);
     });
   }
 
