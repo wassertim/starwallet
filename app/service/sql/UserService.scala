@@ -16,7 +16,7 @@ class UserService extends BaseService with service.common.UserService {
       sqlu"""
       insert into users(email, password) values(${user.userName.trim.toLowerCase}, ${saltedPassword(user.password)});
     """.execute
-      onSuccess(sql"select last_insert_id();".as[Int].first)
+      onSuccess(Q.queryNA[Int](s"select $lastInsertId;").first())
     } else {
       onError("")
     }

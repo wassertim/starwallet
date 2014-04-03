@@ -31,7 +31,7 @@ class IdentityService extends BaseService with service.common.IdentityService {
       values
         (${info.userName}, ${info.password}, ${userId});
     """.execute
-    sql"select last_insert_id();".as[Int].first
+    Q.queryNA[Int](s"select $lastInsertId;").first()
   }
 
   def get(id: Int, userId: Int): Option[AuthInfo] = database withDynSession {
