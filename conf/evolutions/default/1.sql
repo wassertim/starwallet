@@ -48,7 +48,7 @@ CREATE TABLE transactions (
     amount decimal not null,
     balance decimal not null,
     primary key (id)
-)
+);
 
 # --- !Downs
 
