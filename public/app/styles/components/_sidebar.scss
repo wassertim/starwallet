@@ -1,0 +1,12 @@
+@media screen and (min-width: 768px) {
+  .sidebar {
+    position: fixed;
+    width: 33%;
+    overflow-y: scroll;
+    top: 48px;
+    bottom: -22px;
+    margin-left: -20px;
+    -webkit-overflow-scrolling: touch;
+    border: 1px solid #dddddd;
+  }
+}

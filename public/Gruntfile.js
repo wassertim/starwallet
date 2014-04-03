@@ -41,6 +41,7 @@ module.exports = function (grunt) {
       css: {
         files: [
           '<%= yeoman.app %>/bower_components/bootstrap-sass/lib/{,*/}*.scss',
+          '<%= yeoman.app %>/styles/components/*.scss',
           '<%= yeoman.app %>/styles/components/{,*/}*.scss',
           '<%= yeoman.app %>/styles/{,*/}*.scss'
         ],

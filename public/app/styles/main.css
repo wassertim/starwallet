@@ -6355,9 +6355,24 @@ i.icon-brand {
 .navbar-default .navbar-brand {
   padding: 10px 0 0 10px; }
 
-a.list-group-item:hover, a.list-group-item:focus {
-  background-color: white; }
+a.list-group-item {
+  border-right: 0;
+  border-left: 0; }
+  a.list-group-item:first-child, a.list-group-item:last-child {
+    border-radius: 0; }
+  a.list-group-item:hover, a.list-group-item:focus {
+    background-color: white; }
 
+@media screen and (min-width: 768px) {
+  .sidebar {
+    position: fixed;
+    width: 33%;
+    overflow-y: scroll;
+    top: 48px;
+    bottom: -22px;
+    margin-left: -20px;
+    -webkit-overflow-scrolling: touch;
+    border: 1px solid #dddddd; } }
 /* Space out content a bit */
 body {
   padding-top: 60px;
@@ -6404,15 +6419,6 @@ body {
 @media screen and (min-width: 768px) {
   .container {
     max-width: 730px; }
-
-  .sidebar {
-    position: fixed;
-    width: 33%;
-    overflow-y: scroll;
-    top: 48px;
-    bottom: -22px;
-    margin-left: -20px;
-    -webkit-overflow-scrolling: touch; }
 
   /* Remove the padding we set earlier */
   .header,
