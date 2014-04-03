@@ -1,1 +1,1 @@
--DapplyEvolutions.default=true -Ddb.default.driver=com.mysql.jdbc.Driver
+-DapplyEvolutions.default=true -Ddb.default.driver=com.mysql.jdbc.Driver -Dconfig.file=prod.conf
