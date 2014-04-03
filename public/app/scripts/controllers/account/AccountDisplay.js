@@ -6,21 +6,34 @@
     this.accountId = $state.params.accountId;
     this.isLoading = false;
     this.get($stateParams['accountId']);
-
+    this.showAll = false;
+    var that = this;
+    $scope.$watch('vm.showAll', function(){
+      that.couponsFilter = that.getCouponsFilter(that.showAll);
+    });
     $scope.href = $state.href;
 
+    this.couponsFilter = this.getCouponsFilter(this.showAll);
   }
 
   AccountDisplayController.prototype = {
-    get: function(identityId) {
+    getCouponsFilter: function (showAll) {
+      if (showAll) {
+        return {};
+      } else {
+        return {isActive: true};
+      }
+    },
+    get: function (identityId) {
       var that = this;
       this.isLoading = true;
-      this.accountService.getByIdentityId(identityId).then(function(accountInfo) {
+      this.accountService.getByIdentityId(identityId).then(function (accountInfo) {
+
         that.accountInfo = accountInfo;
         that.isLoading = false;
       });
     },
-    countActiveCoupons: function(coupons) {
+    countActiveCoupons: function (coupons) {
       return _.filter(coupons, 'isActive').length;
     }
   };
