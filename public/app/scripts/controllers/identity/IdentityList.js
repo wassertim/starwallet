@@ -3,10 +3,11 @@
   function IdentityListController($scope, identityService, $stateParams, $state, accountService, href) {
     $scope.vm = this;
     this.$state = $state;
-    $scope.href = href($state);
+    $scope.href = $state.href;
     this.accountId = +$state.params.accountId;
     this.identityService = identityService;
     this.accountService = accountService;
+    this.params = $state.params;
     this.list($stateParams['userId']);
     var that = this;
     that.responsiveClasses = "";

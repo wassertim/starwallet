@@ -21,6 +21,8 @@ class Application @Inject()(val starbucks: service.common.Starbucks) extends Con
           routes.javascript.Identity.add,
           routes.javascript.Identity.get,
           routes.javascript.Identity.list,
+          routes.javascript.Identity.update,
+          routes.javascript.Identity.remove,
           routes.javascript.Account.getByIdentityId
         )
       ).as("text/javascript")

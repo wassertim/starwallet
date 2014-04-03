@@ -23,10 +23,10 @@
     },
     save: function(account){
       var that = this;
-      if (!this.params['accountId']) {
+      if (!account.id) {
         account.id = 0;
         this.identityService.add(account, this.params['userId']).then(function(accountId){
-          that.$state.go('editAccount', angular.extend(that.params, {accountId: accountId}))
+          that.$state.go('accountList.editAccount', angular.extend(that.params, {accountId: accountId}))
         });
       } else {
         this.identityService.update(account, this.params['userId']).then(function(){
@@ -37,7 +37,7 @@
     remove: function(accountId){
       var that = this;
       if (this.$window.confirm("Do you really want to delete this account?")) {
-        this.identityService.remove(accountId).then(function () {
+        this.identityService.remove(accountId, this.params['userId']).then(function () {
           that.$state.go('accountList', that.params);
         });
       }

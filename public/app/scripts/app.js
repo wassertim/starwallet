@@ -40,6 +40,10 @@ angular.module('starbucks', [
       });
     }]
   }).state('accountList.addAccount', {
+    url: '/edit',
+    controller: 'IdentityEditController',
+    templateUrl: vw('views/identity/identity-edit.html')
+  }).state('accountList.editAccount', {
     url: '/edit/:accountId',
     controller: 'IdentityEditController',
     templateUrl: vw('views/identity/identity-edit.html')

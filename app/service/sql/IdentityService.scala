@@ -34,7 +34,7 @@ class IdentityService extends BaseService with service.common.IdentityService {
     sql"select last_insert_id();".as[Int].first
   }
 
-  def get(id: Int): Option[AuthInfo] = database withDynSession {
+  def get(id: Int, userId: Int): Option[AuthInfo] = database withDynSession {
     sql"""
       select
         id,
@@ -43,7 +43,25 @@ class IdentityService extends BaseService with service.common.IdentityService {
       from
         accounts
       where
-        id = ${id};
+        id = ${id} and user_id = ${userId};
     """.as[AuthInfo].firstOption
+  }
+
+  override def update(auth: AuthInfo, userId: Int): Unit = database withDynSession {
+    sqlu"""
+      update
+        accounts
+      set
+        user_name = ${auth.userName},
+        password = ${auth.password}
+      where
+        id = ${auth.id} and user_id = ${userId};
+    """.execute
+  }
+
+  override def remove(id: Int, userId: Int): Unit = database withDynSession {
+    sqlu"""
+      delete from accounts where id = ${id} and user_id = ${userId};
+    """.execute
   }
 }

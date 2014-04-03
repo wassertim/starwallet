@@ -22,14 +22,14 @@
         return response.data;
       });
     },
-    update: function (accountInfo) {
-      return this.pw.wrap(function () {
-
+    update: function (accountInfo, userId) {
+      return this.$http(angular.extend(routes.Identity.update(userId), {data:accountInfo})).then(function (response) {
+        return response.data;
       });
     },
-    remove: function (accountId) {
-      return this.pw.wrap(function () {
-
+    remove: function (accountId, userId) {
+      return this.$http(routes.Identity.remove(accountId, userId)).then(function (response) {
+        return response.data;
       });
     }
   };

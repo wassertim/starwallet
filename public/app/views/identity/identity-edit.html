@@ -11,7 +11,7 @@
     </div>
     <div class="form-group">
       <button class="btn btn-primary" ng-click="vm.save(vm.account)">Save</button>
-      <button class="btn btn-danger" ng-click="vm.remove(vm.account.name)" ng-show="vm.params.accountId">Delete</button>
+      <button class="btn btn-danger" ng-click="vm.remove(vm.account.id)" ng-show="vm.account.id">Delete</button>
       <a class="btn btn-default" ng-href="{{href('accountList')}}">Return</a>
     </div>
   </form>

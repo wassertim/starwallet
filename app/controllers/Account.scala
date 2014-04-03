@@ -8,7 +8,7 @@ class Account @Inject()(identityService: service.common.IdentityService, starbuc
   def getByIdentityId(id: Int) = authenticated {
     identity =>
       request =>
-        identityService.get(id) match {
+        identityService.get(id, identity.userId) match {
           case Some(auth) =>
             val sa = starbucksService.getAccountData(auth)
             Ok(Json.generate(sa))
