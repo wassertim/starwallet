@@ -13,4 +13,6 @@ class IdentityService extends service.common.IdentityService {
   override def update(auth: AuthInfo, userId: Int): Unit = ???
 
   override def remove(id: Int, userId: Int): Unit = ???
+
+  override def encryptAllPasswords: Unit = ???
 }

@@ -12,4 +12,6 @@ trait IdentityService {
   def add(info: AuthInfo, userId: Int): Int
 
   def list(userId: Int): Seq[AuthInfo]
+
+  def encryptAllPasswords
 }

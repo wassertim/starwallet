@@ -1,25 +1,27 @@
 # Routes
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
-GET         /api/jsRoutes        @controllers.Application.javascriptRoutes
+GET           /api/jsRoutes        @controllers.Application.javascriptRoutes
 # Security
-POST        /api/signup        @controllers.User.signUp
-POST        /api/checkAuth        @controllers.User.checkAuth
-POST        /api/signIn        @controllers.User.signIn
-GET         /api/signOut        @controllers.User.signOut
+POST          /api/signup        @controllers.User.signUp
+POST          /api/checkAuth        @controllers.User.checkAuth
+POST          /api/signIn        @controllers.User.signIn
+GET           /api/signOut        @controllers.User.signOut
 
 
 # Identity
-POST        /api/u:userId/identity        @controllers.Identity.add(userId: Int)
-GET         /api/u:userId/identity/:id        @controllers.Identity.get(id: Int, userId: Int)
-GET         /api/u:userId/identity        @controllers.Identity.list(userId: Int)
-PUT         /api/u:userId/identity        @controllers.Identity.update(userId: Int)
-DELETE      /api/u:userId/identity/:id      @controllers.Identity.remove(id: Int, userId: Int)
+POST          /api/u:userId/identity        @controllers.Identity.add(userId: Int)
+GET           /api/u:userId/identity/:id        @controllers.Identity.get(id: Int, userId: Int)
+GET           /api/u:userId/identity        @controllers.Identity.list(userId: Int)
+PUT           /api/u:userId/identity        @controllers.Identity.update(userId: Int)
+DELETE        /api/u:userId/identity/:id        @controllers.Identity.remove(id: Int, userId: Int)
+GET           /api/passwords/encrypt  @controllers.Identity.encryptAllPasswords
 # Account
-GET         /api/account/:id        @controllers.Account.getByIdentityId(id: Int)
+GET           /api/account/:id        @controllers.Account.getByIdentityId(id: Int)
+
 # Home page
 #GET        /                @controllers.Application.index
 
 # Map static resources from the /public folder to the /assets URL path
-GET         /*file        controllers.dev.DAssets.at(path="/public/app", file)
-GET         /        controllers.dev.DAssets.at(path="/public/app", file="index.html")
+GET           /*file        controllers.dev.DAssets.at(path="/public/app", file)
+GET           /        controllers.dev.DAssets.at(path="/public/app", file="index.html")
