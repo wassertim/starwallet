@@ -10,9 +10,10 @@ import Q.interpolation
 import play.api.libs.Crypto
 
 class IdentityService extends BaseService with service.common.IdentityService {
-  implicit val getAuthInfo = GetResult(r => AuthInfo(r.<<, r.<<, Crypto.decryptAES(r.<<)))
+
 
   def list(userId: Int): Seq[AuthInfo] = database withDynSession {
+    implicit val getAuthInfo = GetResult(r => AuthInfo(r.<<, r.<<, Crypto.decryptAES(r.<<)))
     sql"""
       select
         id,
@@ -37,6 +38,7 @@ class IdentityService extends BaseService with service.common.IdentityService {
   }
 
   def get(id: Int, userId: Int): Option[AuthInfo] = database withDynSession {
+    implicit val getAuthInfo = GetResult(r => AuthInfo(r.<<, r.<<, Crypto.decryptAES(r.<<)))
     sql"""
       select
         id,
