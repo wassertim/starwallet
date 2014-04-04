@@ -71,7 +71,7 @@ class IdentityService extends BaseService with service.common.IdentityService {
   }
 
   override def encryptAllPasswords: Unit = database withDynSession {
-    implicit val getRes = GetResult(r => Tuple2(AuthInfo(r.<<, r.<<, r.<<), r.<<))
+    implicit val getRes = GetResult(r => Tuple2[AuthInfo, Int](AuthInfo(r.<<, r.<<, r.<<), r.<<))
     val unencryptedList = sql"""
       select
         id,
