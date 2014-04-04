@@ -46,10 +46,5 @@ class Identity @Inject()(accountService: service.common.IdentityService) extends
         else
           BadRequest("You are not authorized to view the accounts of the user.")
   }
-  def encryptAllPasswords = authenticated {
-    identity =>
-      request =>
-        accountService.encryptAllPasswords
-        Ok("encrypted")
-  }
+
 }

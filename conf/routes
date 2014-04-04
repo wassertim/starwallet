@@ -15,7 +15,6 @@ GET           /api/u:userId/identity/:id        @controllers.Identity.get(id: In
 GET           /api/u:userId/identity        @controllers.Identity.list(userId: Int)
 PUT           /api/u:userId/identity        @controllers.Identity.update(userId: Int)
 DELETE        /api/u:userId/identity/:id        @controllers.Identity.remove(id: Int, userId: Int)
-GET           /api/passwords/encrypt  @controllers.Identity.encryptAllPasswords
 # Account
 GET           /api/account/:id        @controllers.Account.getByIdentityId(id: Int)
 
