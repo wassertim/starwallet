@@ -15,6 +15,7 @@
   }
 
   IdentityEditController.prototype = {
+
     getForm: function(){
       var that = this;
       that.isLoading = true;
@@ -25,6 +26,7 @@
         })
       }
     },
+
     save: function(account){
       var that = this;
       that.alert = undefined;
@@ -51,6 +53,7 @@
         });
       }
     },
+
     remove: function(accountId){
       var that = this;
       that.isUpdating = true;
@@ -61,6 +64,7 @@
         });
       }
     }
+
   };
   app.controller('IdentityEditController', IdentityEditController);
   return IdentityEditController;
