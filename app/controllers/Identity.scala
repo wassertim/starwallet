@@ -24,8 +24,15 @@ class Identity @Inject()(accountService: service.common.IdentityService, starbuc
     identity =>
       request =>
         val authInfo = Json.parse[AuthInfo](request.body.toString())
-        accountService.update(authInfo, identity.userId)
-        Ok("ok")
+        starbucks.authenticate(authInfo).fold(
+          success => {
+            accountService.update(authInfo, identity.userId)
+            Ok("ok")
+          },
+          error =>
+            BadRequest(error.errorMessage)
+        )
+
   }
 
   def get(id: Int, userId: Int) = authenticated {
