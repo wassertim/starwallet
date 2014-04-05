@@ -9,28 +9,14 @@ import org.jsoup.nodes.{Element, Document}
 import scala.collection.JavaConversions._
 import com.ning.http.client.Cookie
 
+import scala.Some
 
-import model.Transaction
-import model.Coupon
-import model.StarbucksAccount
-import scala.Some
-import model.AuthInfo
-import model.Card
-import javax.net.ssl._
-import java.security.cert.X509Certificate
-import java.security.{SecureRandom, Security}
-import model.Transaction
-import model.Coupon
-import model.StarbucksAccount
-import scala.Some
-import model.AuthInfo
-import model.Card
 
 
 class Starbucks extends service.common.Starbucks {
   val mainUrl = "https://plas-tek.ru/cabinet.aspx?style=starbucks"
 
-  private def auth(authInfo: AuthInfo) = {
+  def authenticate(authInfo: AuthInfo) = {
     val loginUrl = s"$mainUrl&mainlogin=true"
     val loginPageResponse = WS.client.prepareGet(loginUrl).execute().get()
     val (loginDoc, cookies) = (Jsoup.parse(loginPageResponse.getResponseBody), loginPageResponse.getCookies)
@@ -48,7 +34,12 @@ class Starbucks extends service.common.Starbucks {
       .addParameter("PasswordTextBox2", authInfo.password)
       .addParameter("LoginLinkButtonDynamic", "Войти")
     cookies.map(cookie => authenticatedResponse.addCookie(cookie))
-    (Jsoup.parse(authenticatedResponse.execute().get.getResponseBody), cookies)
+    val result = Jsoup.parse(authenticatedResponse.execute().get.getResponseBody)
+    result.select("#pnlMessage").text.trim match {
+      case "Ошибка : пользователь не зарегистрирован в системе!" => Right(AuthError("invalid auth data"))
+      case "Ошибка : введено неправильное имя пользователя или пароль." => Right(AuthError("invalid auth data"))
+      case "" => Left(Page(result, cookies))
+    }
   }
 
   private def changeScreen(screenName: String, cardsPage: Document, cookies: Seq[Cookie]) = {
@@ -132,9 +123,14 @@ class Starbucks extends service.common.Starbucks {
     }
   }
 
-  def getAccountData(authInfo: AuthInfo) = {
-    val (cardsPage, cookies) = auth(authInfo)
-    StarbucksAccount(authInfo.userName, starsCount(cardsPage), cardList(cardsPage, cookies), couponList(cardsPage, cookies))
+  override def getAccount(authInfo: AuthInfo): Option[StarbucksAccount] = {
+    authenticate(authInfo).fold(
+      page => {
+        Some(StarbucksAccount(authInfo.userName, starsCount(page.document), cardList(page.document, page.cookies), couponList(page.document, page.cookies)))
+      },
+      error => None
+    )
+
   }
 }
 

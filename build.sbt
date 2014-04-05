@@ -2,7 +2,7 @@ import sbt._
 import Keys._
 import play.Project._
 
-name := "starbucks"
+name := "starwallet"
 
 version := "1.0-SNAPSHOT"
 

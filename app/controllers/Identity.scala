@@ -5,13 +5,19 @@ import controllers.common.BaseController
 import com.codahale.jerkson.Json
 import model.AuthInfo
 
-class Identity @Inject()(accountService: service.common.IdentityService) extends BaseController {
+class Identity @Inject()(accountService: service.common.IdentityService, starbucks: service.common.Starbucks) extends BaseController {
   def add(userId: Int) = authenticated(parse.json) {
     identity =>
       request =>
         val authInfo = Json.parse[AuthInfo](request.body.toString())
-        val id = accountService.add(authInfo, identity.userId)
-        Ok(Json.generate(id))
+        starbucks.authenticate(authInfo).fold(
+          page => {
+            val id = accountService.add(authInfo, identity.userId)
+            Ok(Json.generate(id))
+          },
+          error =>
+            BadRequest(error.errorMessage)
+        )
   }
 
   def update(userId: Int) = authenticated(parse.json) {

@@ -9,6 +9,7 @@
 
     this.revealPassword = false;
     $scope.href = $state.href;
+    this.isLoading = false;
     this.getForm();
   }
 
@@ -23,14 +24,22 @@
     },
     save: function(account){
       var that = this;
+      that.alert = undefined;
+      this.isLoading = true;
       if (!account.id) {
         account.id = 0;
         this.identityService.add(account, this.params['userId']).then(function(accountId){
+          that.isLoading = false;
           that.$state.go('accountList.editAccount', angular.extend(that.params, {accountId: accountId}))
+        }, function(){
+          that.isLoading = false;
+          that.alert = {
+            message: 'Authentication error'
+          };
         });
       } else {
         this.identityService.update(account, this.params['userId']).then(function(){
-
+          that.isLoading = false;
         });
       }
     },

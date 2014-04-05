@@ -15,9 +15,12 @@ class AccountServiceSpec extends Specification {
       val starbucksService = injector.getInstance(classOf[Starbucks])
       val accountLogin = "testLogin"
       val userId = 1
-      val authInfo = accountService.getAuthInfo(accountLogin, userId)
-      val starbucksAccount = starbucksService.getAccountData(authInfo)
-      starbucksAccount.cards.size must be greaterThan 0
+      accountService.get(userId, userId) match {
+        case Some(authInfo) =>
+          val starbucksAccount = starbucksService.getAccount(authInfo).get
+          starbucksAccount.cards.size must be greaterThan 0
+        case _ => 0 must be equalTo 1
+      }
     }
     "return list of authInfo" in {
       val accountService = injector.getInstance(classOf[IdentityService])

@@ -10,8 +10,10 @@ class Account @Inject()(identityService: service.common.IdentityService, starbuc
       request =>
         identityService.get(id, identity.userId) match {
           case Some(auth) =>
-            val sa = starbucksService.getAccountData(auth)
-            Ok(Json.generate(sa))
+            starbucksService.getAccount(auth) match {
+              case Some(starbucksAccount) => Ok(Json.generate(starbucksAccount))
+              case _ => BadRequest("Could not load the data from Starbucks")
+            }
           case _ => BadRequest("Could not find the identity")
         }
   }

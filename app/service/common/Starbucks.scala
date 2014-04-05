@@ -4,5 +4,6 @@ import model._
 
 
 trait Starbucks {
-  def getAccountData(authInfo: AuthInfo): StarbucksAccount
+  def getAccount(authInfo: AuthInfo): Option[StarbucksAccount]
+  def authenticate(authInfo: AuthInfo): Either[Page, AuthError]
 }
