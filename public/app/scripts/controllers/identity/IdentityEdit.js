@@ -18,8 +18,8 @@
 
     getForm: function(){
       var that = this;
-      that.isLoading = true;
       if (this.params['accountId']) {
+        that.isLoading = true;
         this.identityService.get(this.params['accountId'], this.params['userId']).then(function(accountInfo){
           that.account = accountInfo;
           that.isLoading = false;
