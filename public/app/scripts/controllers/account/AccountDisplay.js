@@ -31,6 +31,11 @@
         that.activeCouponsCount = that.countActiveCoupons(accountInfo.coupons);
         that.accountInfo = accountInfo;
         that.isLoading = false;
+      }, function(response) {
+        that.isLoading = false;
+        that.alert = {
+          message: 'Could not load the data from Starbucks'
+        };
       });
     },
     countActiveCoupons: function (coupons) {

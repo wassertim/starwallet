@@ -1,9 +1,10 @@
-<div ng-show="vm.isLoading">
+<div class="page-header" ng-show="vm.isLoading">
   <h3>
   <span class="fa fa-cog fa-spin"></span> Loading ...
   </h3>
 </div>
-<div ng-hide="vm.isLoading">
+<div class="alert alert-danger" ng-show="vm.alert">{{vm.alert && vm.alert.message}}</div>
+<div ng-hide="vm.isLoading || vm.alert">
   <div class="page-header">
 
     <h3>{{vm.accountInfo.userName}}</h3>
@@ -60,5 +61,6 @@
       </li>
     </ul>
   </div>
-  <a class="btn btn-default" ng-href="{{href('accountList.editAccount', {accountId:vm.accountId}, {inherit:true})}}">Edit</a>
+
 </div>
+<a class="btn btn-default" ng-href="{{href('accountList.editAccount', {accountId:vm.accountId}, {inherit:true})}}">Edit</a>
