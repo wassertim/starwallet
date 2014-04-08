@@ -4,6 +4,7 @@ import org.specs2.mutable.Specification
 import com.google.inject.Guice
 import specs.util.InjectionModule
 import service.common._
+import org.krysalis.barcode4j.impl.pdf417.PDF417Bean
 
 class AccountServiceSpec extends Specification {
 
@@ -28,5 +29,6 @@ class AccountServiceSpec extends Specification {
       val list = accountService.list(userId)
       list.size must be equalTo 2
     }
+
   }
 }

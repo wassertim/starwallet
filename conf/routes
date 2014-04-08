@@ -17,7 +17,8 @@ PUT           /api/u:userId/identity        @controllers.Identity.update(userId:
 DELETE        /api/u:userId/identity/:id        @controllers.Identity.remove(id: Int, userId: Int)
 # Account
 GET           /api/account/:id        @controllers.Account.getByIdentityId(id: Int)
-
+# BarCode
+GET           /api/barcode/get/:content     @controllers.BarCode.getPdf47(content: String)
 # Home page
 #GET        /                @controllers.Application.index
 

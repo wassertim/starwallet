@@ -17,7 +17,8 @@ libraryDependencies ++= Seq(
   "com.tzavellas" % "sse-guice" % "0.7.1",
   "com.typesafe.slick" % "slick_2.10" % "2.0.1",
   "com.yuvimasory" % "jerkson_2.10" % "0.6.1",
-  "org.mindrot" % "jbcrypt" % "0.3m"
+  "org.mindrot" % "jbcrypt" % "0.3m",
+  "net.sf.barcode4j" % "barcode4j" % "2.1"
 )     
 
 play.Project.playScalaSettings
