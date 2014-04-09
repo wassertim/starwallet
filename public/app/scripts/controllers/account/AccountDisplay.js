@@ -5,7 +5,7 @@
     this.accountService = accountService;
     this.accountId = $state.params.accountId;
     this.isLoading = false;
-    this.get($stateParams['accountId']);
+    this.get(this.accountId);
     this.showAll = false;
     var that = this;
     $scope.$watch('vm.showAll', function(){
@@ -17,6 +17,21 @@
   }
 
   AccountDisplayController.prototype = {
+    update: function(e) {
+      var that = this;
+      e.preventDefault();
+      that.isRefreshing = true;
+      this.accountService.getByIdentityId(this.accountId, true).then(function(accountInfo){
+        that.activeCouponsCount = that.countActiveCoupons(accountInfo.coupons);
+        that.accountInfo = accountInfo;
+        that.isRefreshing = false;
+      }, function(response) {
+        that.isRefreshing = false;
+        that.alert = {
+          message: 'Could not load the data from Starbucks'
+        };
+      });
+    },
     getCouponsFilter: function (showAll) {
       if (showAll) {
         return {};
@@ -27,7 +42,7 @@
     get: function (identityId) {
       var that = this;
       this.isLoading = true;
-      this.accountService.getByIdentityId(identityId).then(function (accountInfo) {
+      this.accountService.getByIdentityId(identityId, false).then(function (accountInfo) {
         that.activeCouponsCount = that.countActiveCoupons(accountInfo.coupons);
         that.accountInfo = accountInfo;
         that.isLoading = false;

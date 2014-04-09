@@ -22,11 +22,12 @@
       {{ vm.activeCouponsCount }}
       </span>
     </div>
-    <div class="small">
-
+    <span class="small" ng-show="vm.isRefreshing">
+      Refreshing ...
+    </span>
+    <a href="#" ng-show="!vm.isRefreshing" class="small" ng-click="vm.update($event)">
       Last update: <span am-time-ago="vm.accountInfo.syncDate"></span>
-
-    </div>
+    </a>
   </div>
   <div class="form-group">
 

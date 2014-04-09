@@ -10,27 +10,31 @@ class Account @Inject()(
       starbucksService: Starbucks,
       accountService: AccountService) extends BaseController {
 
-  def get(id: Int) = authenticated {
+  def get(id: Int, resync: Boolean) = authenticated {
     identity =>
       request =>
-        getAccount(id, identity.userId)
+        getAccount(id, identity.userId, resync)
   }
 
-  private def getAccount(id: Int, userId: Int) = {
-    accountService.get(id) match {
-      case Some(starbucksAccount) => {
-        Ok(Json.generate(starbucksAccount))
-      }
-      case _ => identityService.get(id, userId) match {
-        case Some(auth) => starbucksService.getAccount(auth) match {
-          case Some(starbucksAccount) => {
-            accountService.sync(starbucksAccount, id)
-            Ok(Json.generate(starbucksAccount))
-          }
-          case _ => BadRequest("Could not load the data from Starbucks")
-        }
-        case _ => BadRequest("Could not find the identity")
+  private def getAccount(id: Int, userId: Int, resync: Boolean) = {
+    if (resync)
+      refresh(id, userId)
+    else {
+      accountService.get(id) match {
+        case Some(starbucksAccount) => Ok(Json.generate(starbucksAccount))
+        case _ => refresh(id, userId)
       }
     }
+  }
+
+  private def refresh(id: Int, userId: Int) = identityService.get(id, userId) match {
+    case Some(auth) => starbucksService.getAccount(auth) match {
+      case Some(starbucksAccount) => {
+        accountService.sync(starbucksAccount, id)
+        Ok(Json.generate(starbucksAccount))
+      }
+      case _ => BadRequest("Could not load the data from Starbucks")
+    }
+    case _ => BadRequest("Could not find the identity")
   }
 }

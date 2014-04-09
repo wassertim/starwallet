@@ -65,6 +65,8 @@ class AccountService extends common.BaseService with service.common.AccountServi
       set
         stars_count = ${account.starsCount},
         sync_date = ${account.syncDate}
+      where
+        identity_id = ${id};
     """.execute
     } else {
       sqlu"""

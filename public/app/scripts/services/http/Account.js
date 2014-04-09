@@ -5,8 +5,8 @@
   }
 
   AccountService.prototype = {
-    getByIdentityId: function(identityId) {
-      return this.$http(routes.Account.get(identityId)).then(function(response){
+    getByIdentityId: function(identityId, resync) {
+      return this.$http(routes.Account.get(identityId, resync)).then(function(response){
         return response.data;
       });
     }

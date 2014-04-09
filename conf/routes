@@ -16,7 +16,7 @@ GET           /api/u:userId/identity        @controllers.Identity.list(userId: I
 PUT           /api/u:userId/identity        @controllers.Identity.update(userId: Int)
 DELETE        /api/u:userId/identity/:id        @controllers.Identity.remove(id: Int, userId: Int)
 # Account
-GET           /api/account/:id        @controllers.Account.get(id: Int)
+GET           /api/account/:id        @controllers.Account.get(id: Int, resync: Boolean)
 # BarCode
 GET           /api/barcode/get/:content     @controllers.BarCode.getPdf47(content: String)
 # Home page
