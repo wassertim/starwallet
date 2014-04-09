@@ -9,29 +9,11 @@ class Account @Inject()(
       identityService: IdentityService,
       starbucksService: Starbucks,
       accountService: AccountService) extends BaseController {
-  def getByIdentityId(id: Int) = authenticated {
-    identity =>
-      request =>
-        getFromIdenty(id, identity.userId)
-  }
-
-
 
   def get(id: Int) = authenticated {
     identity =>
       request =>
         getAccount(id, identity.userId)
-  }
-
-  private def getFromIdenty(id: Int, userId: Int) = {
-    identityService.get(id, userId) match {
-      case Some(auth) =>
-        starbucksService.getAccount(auth) match {
-          case Some(starbucksAccount) => Ok(Json.generate(starbucksAccount))
-          case _ => BadRequest("Could not load the data from Starbucks")
-        }
-      case _ => BadRequest("Could not find the identity")
-    }
   }
 
   private def getAccount(id: Int, userId: Int) = {
