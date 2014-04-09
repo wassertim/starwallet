@@ -32,9 +32,17 @@ body {
   padding-left: 48px;
   padding-right: 10px;
   div {
+    margin-top:4px;
     color: #808080;
+
     font-size: 0.75em;
+    line-height: 0.75em;
     text-align: left;
+  }
+  span {
+    font-size: 1.2em;
+
+    line-height: 1.2em;
   }
 }
 

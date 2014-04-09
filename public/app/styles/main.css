@@ -6400,9 +6400,14 @@ body {
       background-size: 32px 32px;
       background-repeat: no-repeat; } }
   .btn-passbook div {
+    margin-top: 4px;
     color: #808080;
     font-size: 0.75em;
+    line-height: 0.75em;
     text-align: left; }
+  .btn-passbook span {
+    font-size: 1.2em;
+    line-height: 1.2em; }
 
 /* Everything but the jumbotron gets side spacing for mobile first views */
 .header,
