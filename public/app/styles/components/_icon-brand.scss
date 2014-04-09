@@ -9,8 +9,7 @@
   only screen and (min-resolution: 2dppx) {
     background-image: url("#{$file-2x}");
     background-size: $width-1x $height-1x;
-    width: $width-1x;
-    height: $height-1x;
+    background-repeat: no-repeat;
   }
 }
 i.icon-brand {

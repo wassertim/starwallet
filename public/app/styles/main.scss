@@ -24,7 +24,19 @@ body {
   float: left;
   margin: 0 10px 0 0;
 }
-
+.btn-passbook {
+  @include img-retina("../images/passbook-hero-small.png", "../images/passbook-hero-big.png", 32px, 32px);
+  padding: 5px;
+  padding-bottom: 4px;
+  background-position: 7px 5px;
+  padding-left: 48px;
+  padding-right: 10px;
+  div {
+    color: #808080;
+    font-size: 0.75em;
+    text-align: left;
+  }
+}
 
 /* Everything but the jumbotron gets side spacing for mobile first views */
 .header,

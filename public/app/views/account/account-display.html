@@ -22,6 +22,11 @@
       {{ vm.activeCouponsCount }}
       </span>
     </div>
+    <div class="small">
+
+      Last update: <span am-time-ago="vm.accountInfo.syncDate"></span>
+
+    </div>
   </div>
   <div class="form-group">
 
@@ -50,11 +55,16 @@
 
     <ul class="list-group">
       <li class="list-group-item" ng-repeat="coupon in vm.accountInfo.coupons | filter:vm.couponsFilter">
+
         <div ng-show="coupon.isActive">
-          <a ng-href="http://plas-tek.ru/Passbook.ashx?Number={{coupon.key}}">
-            <img src="images/Add_to_Passbook_Badge_2x.png" style="width: 122px;height: 40px"/>
+          <h5><a ng-href="http://plas-tek.ru/Coupon.aspx?Number={{coupon.key}}">{{coupon.couponType}}</a></h5>
+          <hr/>
+          <a ng-href="http://plas-tek.ru/Passbook.ashx?Number={{coupon.key}}" class="btn btn-default btn-passbook">
+            <div>Add to</div>
+            Passbook
           </a>
-          <a ng-href="http://plas-tek.ru/Coupon.aspx?Number={{coupon.key}}">{{coupon.couponType}}</a>
+
+
         </div>
         <span ng-show="!coupon.isActive">{{coupon.number}} - {{coupon.couponType}}</span>
 

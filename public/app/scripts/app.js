@@ -4,6 +4,7 @@ angular.module('starbucks', [
   'ngResource',
   'ngSanitize',
   'ngRoute',
+  'angularMoment',
   'ui.router'
 ]).config(function ($routeProvider, $stateProvider) {
   function vw(url) {

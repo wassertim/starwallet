@@ -6349,8 +6349,7 @@ i.icon-brand {
     i.icon-brand {
       background-image: url("../images/logo-big.png");
       background-size: 30px 30px;
-      width: 30px;
-      height: 30px; } }
+      background-repeat: no-repeat; } }
 
 .navbar-default .navbar-brand {
   padding: 10px 0 0 10px; }
@@ -6387,6 +6386,23 @@ body {
   padding: 1px;
   float: left;
   margin: 0 10px 0 0; }
+
+.btn-passbook {
+  background-image: url("../images/passbook-hero-small.png");
+  padding: 5px;
+  padding-bottom: 4px;
+  background-position: 7px 5px;
+  padding-left: 48px;
+  padding-right: 10px; }
+  @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 2 / 1), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+    .btn-passbook {
+      background-image: url("../images/passbook-hero-big.png");
+      background-size: 32px 32px;
+      background-repeat: no-repeat; } }
+  .btn-passbook div {
+    color: #808080;
+    font-size: 0.75em;
+    text-align: left; }
 
 /* Everything but the jumbotron gets side spacing for mobile first views */
 .header,
