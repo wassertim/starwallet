@@ -20,7 +20,7 @@ create TABLE accounts (
 create TABLE coupons (
     number varchar(12) not null primary key,
     account_id bigint not null,
-    is_active bit not null,
+    is_active boolean not null,
     issue_date timestamp not null,
     expiration_date timestamp not null,
     type varchar(255) not null,
@@ -30,7 +30,7 @@ create TABLE coupons (
 CREATE TABLE cards (
     number varchar(12) not null primary key,
     account_id bigint not null,
-    is_active bit not null,
+    is_active boolean not null,
     activation_date timestamp not null,
     last_transaction_date timestamp not null,
     balance decimal not null,
@@ -46,6 +46,7 @@ CREATE TABLE transactions (
     amount decimal not null,
     balance decimal not null
 );
+
 
 
 # --- !Downs

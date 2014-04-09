@@ -32,6 +32,9 @@
         };
       });
     },
+    getLastTransactionDate: function(transactions){
+      return _.max(_.map(transactions, function(item){return item.date;}));
+    },
     getCouponsFilter: function (showAll) {
       if (showAll) {
         return {};
