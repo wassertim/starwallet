@@ -20,7 +20,7 @@ class IdentityService extends BaseService with service.common.IdentityService {
         user_name,
         '' as password
       from
-        accounts
+        identities
       where
         user_id = ${userId};
     """.as[AuthInfo].list
@@ -30,7 +30,7 @@ class IdentityService extends BaseService with service.common.IdentityService {
     val encryptedPassword = Crypto.encryptAES(auth.password)
     sqlu"""
       insert into
-        accounts(user_name, password, user_id)
+        identities(user_name, password, user_id)
       values
         (${auth.userName}, ${encryptedPassword}, ${userId});
     """.execute
@@ -45,7 +45,7 @@ class IdentityService extends BaseService with service.common.IdentityService {
         user_name,
         password
       from
-        accounts
+        identities
       where
         id = ${id} and user_id = ${userId};
     """.as[AuthInfo].firstOption
@@ -55,7 +55,7 @@ class IdentityService extends BaseService with service.common.IdentityService {
     val encryptedPassword = Crypto.encryptAES(auth.password)
     sqlu"""
       update
-        accounts
+        identities
       set
         user_name = ${auth.userName},
         password = ${encryptedPassword}
@@ -66,7 +66,7 @@ class IdentityService extends BaseService with service.common.IdentityService {
 
   override def remove(id: Int, userId: Int): Unit = database withDynSession {
     sqlu"""
-      delete from accounts where id = ${id} and user_id = ${userId};
+      delete from identities where id = ${id} and user_id = ${userId};
     """.execute
   }
 
@@ -79,7 +79,7 @@ class IdentityService extends BaseService with service.common.IdentityService {
         password,
         user_id
       from
-        accounts
+        identities
     """.as[Tuple2[AuthInfo, Int]].list
     unencryptedList.foreach {
       listItem =>

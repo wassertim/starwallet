@@ -1,5 +1,5 @@
 package model
 
-import org.joda.time.DateTime
+import java.sql.Timestamp
 
-case class Transaction(date: DateTime, store: String, transactionType: String, subAmount: Double, balance: Double)
+case class Transaction(date: Timestamp, place: String, transactionType: String, amount: Double, balance: Double)

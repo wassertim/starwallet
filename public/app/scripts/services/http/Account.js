@@ -6,7 +6,7 @@
 
   AccountService.prototype = {
     getByIdentityId: function(identityId) {
-      return this.$http(routes.Account.getByIdentityId(identityId)).then(function(response){
+      return this.$http(routes.Account.get(identityId)).then(function(response){
         return response.data;
       });
     }

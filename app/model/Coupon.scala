@@ -1,5 +1,6 @@
 package model
 
 import org.joda.time.DateTime
+import java.sql.Timestamp
 
-case class Coupon(number:String, issueDate: DateTime, expirationDate: DateTime, isActive: Boolean, couponType: String, key: String)
+case class Coupon(number:String, issueDate: Timestamp, expirationDate: Timestamp, isActive: Boolean, couponType: String, key: String)

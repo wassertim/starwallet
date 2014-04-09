@@ -10,10 +10,13 @@ import scala.collection.JavaConversions._
 import com.ning.http.client.Cookie
 
 import scala.Some
-
+import org.joda.time.DateTime
+import java.sql.Timestamp
 
 
 class Starbucks extends service.common.Starbucks {
+  import utility.DateTimeUtility.ts
+
   val mainUrl = "https://plas-tek.ru/cabinet.aspx?style=starbucks"
 
   def authenticate(authInfo: AuthInfo) = {
@@ -80,7 +83,7 @@ class Starbucks extends service.common.Starbucks {
           val tds = tr.select("td")
           val formatter = DateTimeFormat.forPattern("dd.MM.yyyy HH:mm:ss")
           Transaction(
-            formatter.parseDateTime(tds.get(0).text.trim),
+            ts(formatter.parseDateTime(tds.get(0).text.trim)),
             tds.get(1).text.trim,
             tds.get(2).text.trim,
             getDouble(tds.get(3).text),
@@ -100,14 +103,16 @@ class Starbucks extends service.common.Starbucks {
         val formatter = DateTimeFormat.forPattern("dd.MM.yyyy")
         Coupon(
           tds.get(0).text.trim,
-          formatter.parseDateTime(tds.get(1).text.trim),
-          formatter.parseDateTime(tds.get(2).text.trim),
+          ts(formatter.parseDateTime(tds.get(1).text.trim)),
+          ts(formatter.parseDateTime(tds.get(2).text.trim)),
           tds.get(3).text.trim.toLowerCase == "активен",
           tds.get(4).text.trim,
           getKey(tds.get(5))
         )
     }
   }
+
+
   private def getKey(el: Element) = {
     "Q[0-9]*[A-Za-z0-9]*".r findFirstIn el.select("a").attr("href") match {
       case Some(x) => x
@@ -124,9 +129,10 @@ class Starbucks extends service.common.Starbucks {
   }
 
   override def getAccount(authInfo: AuthInfo): Option[StarbucksAccount] = {
+    val now = new Timestamp(new java.util.Date().getTime)
     authenticate(authInfo).fold(
       page => {
-        Some(StarbucksAccount(authInfo.userName, starsCount(page.document), cardList(page.document, page.cookies), couponList(page.document, page.cookies)))
+        Some(StarbucksAccount(authInfo.userName, starsCount(page.document), cardList(page.document, page.cookies), couponList(page.document, page.cookies), now))
       },
       error => None
     )
