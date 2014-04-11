@@ -8,7 +8,7 @@
     this.get(this.accountId);
     this.showAll = false;
     var that = this;
-    $scope.$watch('vm.showAll', function(){
+    $scope.$watch('vm.showAll', function () {
       that.couponsFilter = that.getCouponsFilter(that.showAll);
     });
     $scope.href = $state.href;
@@ -17,23 +17,28 @@
   }
 
   AccountDisplayController.prototype = {
-    update: function(e) {
+    update: function (e) {
       var that = this;
-      e.preventDefault();
+      e && e.preventDefault();
       that.isRefreshing = true;
-      this.accountService.getByIdentityId(this.accountId, true).then(function(accountInfo){
+      this.accountService.getByIdentityId(this.accountId, true).then(function (accountInfo) {
         that.activeCouponsCount = that.countActiveCoupons(accountInfo.coupons);
         that.accountInfo = accountInfo;
         that.isRefreshing = false;
-      }, function(response) {
+      }, function (response) {
         that.isRefreshing = false;
         that.alert = {
           message: 'Could not load the data from Starbucks'
         };
       });
     },
-    getLastTransactionDate: function(transactions){
-      return _.max(_.map(transactions, function(item){return item.date;}));
+    getLastTransactionDate: function (transactions) {
+      return _.max(_.map(transactions, function (item) {
+        return item.date;
+      }));
+    },
+    getTicks: function(date) {
+      return ((date.getTime() * 10000) + 621355968000000000);
     },
     getCouponsFilter: function (showAll) {
       if (showAll) {
@@ -49,7 +54,10 @@
         that.activeCouponsCount = that.countActiveCoupons(accountInfo.coupons);
         that.accountInfo = accountInfo;
         that.isLoading = false;
-      }, function(response) {
+        if ((new Date() - new Date(accountInfo.syncDate)) > 120000) {
+          that.update();
+        }
+      }, function (response) {
         that.isLoading = false;
         that.alert = {
           message: 'Could not load the data from Starbucks'
