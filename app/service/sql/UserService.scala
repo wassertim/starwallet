@@ -28,9 +28,9 @@ class UserService extends BaseService with service.common.UserService {
         if (BCrypt.checkpw(password, hashedPassword))
           get(login)
         else
-          Identity(0, login, isAuthenticated = false)
+          User(0, login, isAuthenticated = false)
       }
-      case None => Identity(0, login, isAuthenticated = false)
+      case None => User(0, login, isAuthenticated = false)
     }
   }
 
@@ -45,7 +45,7 @@ class UserService extends BaseService with service.common.UserService {
   }
 
   def get(login: String) = database withDynSession {
-    implicit val getUserEntity = GetResult(r => Identity(r.<<, r.<<, true))
+    implicit val getUserEntity = GetResult(r => User(r.<<, r.<<, true))
     sql"""
       SELECT
         u.id,
@@ -54,7 +54,7 @@ class UserService extends BaseService with service.common.UserService {
         users u
       WHERE
         u.email = ${login.trim.toLowerCase}
-    """.as[Identity].first
+    """.as[User].first
   }
 
   def saltedPassword(password: String): String = BCrypt.hashpw(password, BCrypt.gensalt())

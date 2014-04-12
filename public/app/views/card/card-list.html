@@ -1,6 +1,16 @@
 <ul class="list-group">
   <li class="list-group-item" ng-repeat="item in vm.cards">
-    <div>number: {{item.number}}</div>
-    <div>balance: {{item.balance}}</div>
+    <div class="item-container">
+      <div class="thumbnail">
+        <img style="width: 54px;height: 33px" ng-src="https://plas-tek.ru/cardimage.ashx?c={{item.number}}"/>
+      </div>
+      <div>number: {{item.number}}</div>
+      <div>balance: {{item.balance}}</div>
+      <div>activation date: <span am-time-ago="item.activationDate"></span></div>
+      <div>last operation: <span am-time-ago="item.lastTransactionDate"></span></div>
+      <div>user name: <a ng-href="{{href('withNav.accountList.accountDisplay', {accountId: item.identity.id})}}">{{item.identity.userName}}</a></div>
+    </div>
+    </div>
+
   </li>
 </ul>

@@ -6,6 +6,7 @@ import slick.jdbc.{StaticQuery => Q, GetResult}
 import Q.interpolation
 import model._
 import org.joda.time.DateTime
+import java.sql.Timestamp
 
 class AccountService extends common.BaseService with service.common.AccountService {
   import utility.DateTimeUtility.ts
@@ -26,12 +27,13 @@ class AccountService extends common.BaseService with service.common.AccountServi
   }
 
   private def syncCards(cards: Seq[Card], id: Int) = database withDynSession {
+    import utility.DateTimeUtility._
     sqlu"delete from cards where identity_id = ${id}".execute
     cards.foreach {
       card =>
        sqlu"""
         insert into cards(number, balance, is_active, last_transaction_date, identity_id, activation_date, last_update_date)
-        values(${card.number}, ${card.balance}, ${card.isActive}, ${card.lastTransactionDate}, ${id}, ${card.activationDate}, ${ts(DateTime.now)})
+        values(${card.number}, ${card.balance}, ${card.isActive}, ${lastTransactionDate(card.transactions)}, ${id}, ${activationDate(card.transactions)}, ${ts(DateTime.now)})
        """.execute
        sqlu"delete from transactions where card_number = ${card.number}".execute
        card.transactions.foreach {

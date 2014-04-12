@@ -11,7 +11,7 @@ class User @Inject()(val userService: UserService) extends Controller {
     request =>
       request.session.get("identity") match {
         case Some(cookie) => Ok(cookie)
-        case _ => Ok(Json.generate(Identity(0, "", false)))
+        case _ => Ok(Json.generate(User(0, "", false)))
       }
 
   }
@@ -36,7 +36,7 @@ class User @Inject()(val userService: UserService) extends Controller {
     request =>
       val user = Json.parse[Login](request.body.toString())
       userService.register(user, userId => {
-        val identity = Identity(userId, user.userName, true)
+        val identity = User(userId, user.userName, true)
         Ok(Json.generate(identity)).withSession("identity" -> Json.generate(identity))
       }, errorMessage => {
         BadRequest(errorMessage)

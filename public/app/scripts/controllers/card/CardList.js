@@ -3,6 +3,7 @@
   function CardListController($scope, $state, cardService) {
     $scope.vm = this;
     var that = this;
+    $scope.href = $state.href;
     cardService.list($state.params.userId).then(function(cardList){
       that.cards = cardList;
     });

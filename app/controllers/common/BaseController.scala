@@ -4,26 +4,26 @@ package controllers.common
 import play.api.mvc._
 
 import play.api.mvc.SimpleResult
-import model.Identity
+import model.User
 import com.codahale.jerkson.Json
 
 
 class BaseController extends Controller {
-  def authenticated(f: Identity => Request[AnyContent] => SimpleResult): EssentialAction =
+  def authenticated(f: User => Request[AnyContent] => SimpleResult): EssentialAction =
     authenticated(parse.anyContent)(f)
 
-  def authenticated[A](bp: BodyParser[A])(f: Identity => Request[A] => SimpleResult) = Action(bp) {
+  def authenticated[A](bp: BodyParser[A])(f: User => Request[A] => SimpleResult) = Action(bp) {
     implicit request =>
-      getIdentity(request) match {
+      getUser(request) match {
         case Some(id) => f(id)(request)
         case _ => Unauthorized
       }
 
   }
 
-  def getIdentity[A](request: Request[A]): Option[Identity] = {
+  def getUser[A](request: Request[A]): Option[User] = {
     request.session.get("identity") match {
-      case Some(cookie) => Some(Json.parse[Identity](cookie))
+      case Some(cookie) => Some(Json.parse[User](cookie))
       case _ => None
     }
   }
