@@ -1,6 +1,7 @@
 package service.sql
 
 import service.sql.common.BaseService
+
 import scala.slick.driver.JdbcDriver.simple._
 import Database.dynamicSession
 import slick.jdbc.{StaticQuery => Q, GetResult}

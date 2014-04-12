@@ -14,6 +14,7 @@ object Global extends GlobalSettings {
       bind[service.common.IdentityService].toInstance(new IdentityService)
       bind[service.common.AccountService].toInstance(new AccountService)
       bind[service.common.CardService].toInstance(new CardService)
+      bind[service.common.CouponService].toInstance(new CouponService)
     }
   }
 

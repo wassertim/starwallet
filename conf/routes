@@ -19,6 +19,8 @@ DELETE        /api/u:userId/identity/:id        @controllers.Identity.remove(id:
 GET           /api/account/:id                  @controllers.Account.get(id: Int, resync: Boolean)
 # Card
 GET           /api/u:userId/card/list           @controllers.Card.list(userId: Int)
+# Coupon
+GET           /api/u:userId/coupon/list         @controllers.Coupon.list(userId: Int)
 # BarCode
 GET           /api/barcode/get/:content         @controllers.BarCode.getPdf47(content: String)
 # Home page
