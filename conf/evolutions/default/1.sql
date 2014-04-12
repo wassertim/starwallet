@@ -60,6 +60,7 @@ create TABLE accounts (
 # --- !Downs
 
 DROP TABLE users;
+DROP TABLE identities;
 DROP TABLE accounts;
 DROP TABLE coupons;
 DROP TABLE cards;

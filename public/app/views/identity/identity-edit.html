@@ -22,7 +22,7 @@
         Save
       </button>
       <button class="btn btn-danger" ng-click="vm.remove(vm.account.id)" ng-show="vm.account.id" ng-disabled="vm.isUpdating">Delete</button>
-      <a class="btn btn-default" ng-href="{{href('accountList', {}, {inherit:true})}}">Return</a>
+      <a class="btn btn-default" ng-href="{{href('withNav.accountList', {}, {inherit:true})}}">Return</a>
     </div>
   </form>
 </div>

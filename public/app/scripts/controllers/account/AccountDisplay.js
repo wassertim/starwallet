@@ -37,9 +37,6 @@
         return item.date;
       }));
     },
-    getTicks: function(date) {
-      return ((date.getTime() * 10000) + 621355968000000000);
-    },
     getCouponsFilter: function (showAll) {
       if (showAll) {
         return {};
@@ -70,4 +67,4 @@
   };
   app.controller('AccountDisplayController', AccountDisplayController);
   return AccountDisplayController;
-}(angular.module('starbucks')));
+}(angular.module('starwallet')));

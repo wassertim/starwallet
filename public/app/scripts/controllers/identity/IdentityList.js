@@ -52,4 +52,4 @@
   };
   app.controller('IdentityListController', IdentityListController);
   return IdentityListController;
-}(angular.module('starbucks')));
+}(angular.module('starwallet')));

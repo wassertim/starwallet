@@ -17,7 +17,7 @@
       that.isLoading = true;
       this.authService.signIn(this.user).then(function (identity) {
         if (identity.isAuthenticated) {
-          that.$state.go('accountList', { userId: identity.userId });
+          that.$state.go('withNav.accountList', { userId: identity.userId });
         } else {
           that.isLoading = false;
           that.alert = {
@@ -36,7 +36,7 @@
       that.isLoading = true;
       this.authService.signUp(this.user).then(function (identity) {
         if (identity.isAuthenticated) {
-          that.$state.go('accountList', { userId: identity.userId });
+          that.$state.go('withNav.accountList', { userId: identity.userId });
         } else {
           that.isLoading = false;
           that.alert = {
@@ -49,4 +49,4 @@
   };
   app.controller('AuthController', AuthController);
   return AuthController;
-}(angular.module('starbucks')));
+}(angular.module('starwallet')));

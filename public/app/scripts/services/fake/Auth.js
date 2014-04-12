@@ -49,4 +49,4 @@
   };
   app.service('AuthService', AuthService);
   return AuthService;
-}(angular.module('starbucks')));
+}(angular.module('starwallet')));

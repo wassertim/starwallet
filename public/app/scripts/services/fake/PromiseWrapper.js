@@ -14,4 +14,4 @@
 
   app.service('PromiseWrapper', PromiseWrapper);
   return PromiseWrapper;
-}(angular.module('starbucks')));
+}(angular.module('starwallet')));

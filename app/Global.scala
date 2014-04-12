@@ -13,6 +13,7 @@ object Global extends GlobalSettings {
       bind[service.common.UserService].toInstance(new UserService)
       bind[service.common.IdentityService].toInstance(new IdentityService)
       bind[service.common.AccountService].toInstance(new AccountService)
+      bind[service.common.CardService].toInstance(new CardService)
     }
   }
 

@@ -35,7 +35,7 @@
         account.id = 0;
         this.identityService.add(account, this.params['userId']).then(function(accountId){
           that.isUpdating = false;
-          that.$state.go('accountList.editAccount', angular.extend(that.params, {accountId: accountId}))
+          that.$state.go('withNav.accountList.editAccount', angular.extend(that.params, {accountId: accountId}))
         }, function(){
           that.isUpdating = false;
           that.alert = {
@@ -68,4 +68,4 @@
   };
   app.controller('IdentityEditController', IdentityEditController);
   return IdentityEditController;
-}(angular.module('starbucks')));
+}(angular.module('starwallet')));

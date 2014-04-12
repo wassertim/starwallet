@@ -35,4 +35,4 @@
   };
   app.service('IdentityService', IdentityService);
   return IdentityService;
-}(angular.module('starbucks'), jsRoutes.controllers));
+}(angular.module('starwallet'), jsRoutes.controllers));

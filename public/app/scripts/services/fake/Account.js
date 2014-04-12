@@ -55,4 +55,4 @@
   };
   app.service('AccountService', AccountService);
   return AccountService;
-}(angular.module('starbucks')));
+}(angular.module('starwallet')));

@@ -1,12 +1,13 @@
 'use strict';
-angular.module('starbucks', [
+angular.module('starwallet', [
   'ngCookies',
   'ngResource',
   'ngSanitize',
   'ngRoute',
   'angularMoment',
-  'ui.router'
-]).config(function ($routeProvider, $stateProvider) {
+  'ui.router',
+  'ui.router.stateHelper'
+]).config(['$routeProvider', '$stateProvider', 'stateHelperProvider', function ($routeProvider, $stateProvider, stateHelperProvider) {
   function vw(url) {
     return '../' + url;
   }
@@ -17,14 +18,6 @@ angular.module('starbucks', [
   }).state('home2', {
     url: '/',
     controller: 'MainController'
-  }).state('accountList', {
-    url: '/u:userId/account',
-    controller: 'IdentityListController',
-    templateUrl: vw('views/identity/identity-list.html')
-  }).state('accountList.accountDisplay', {
-    url: '/display/:accountId',
-    controller: 'AccountDisplayController',
-    templateUrl: vw('views/account/account-display.html')
   }).state('login', {
     url: '/login',
     controller: 'AuthController',
@@ -40,13 +33,45 @@ angular.module('starbucks', [
         $state.go('login');
       });
     }]
-  }).state('accountList.addAccount', {
-    url: '/edit',
-    controller: 'IdentityEditController',
-    templateUrl: vw('views/identity/identity-edit.html')
-  }).state('accountList.editAccount', {
-    url: '/edit/:accountId',
-    controller: 'IdentityEditController',
-    templateUrl: vw('views/identity/identity-edit.html')
+  });;
+  stateHelperProvider.setNestedState({
+    name: 'withNav',
+    url: '/u:userId',
+    controller: 'NavController',
+    templateUrl: vw('views/withNav.html'),
+    children: [
+      {
+        name: 'cards',
+        url: '/cards',
+        controller: 'CardListController',
+        templateUrl: vw('views/card/card-list.html')
+      },
+      {
+        name: 'accountList',
+        url: '/account',
+        controller: 'IdentityListController',
+        templateUrl: vw('views/identity/identity-list.html'),
+        children: [
+          {
+            name: 'addAccount',
+            url: '/edit',
+            controller: 'IdentityEditController',
+            templateUrl: vw('views/identity/identity-edit.html')
+          },
+          {
+            name: 'editAccount',
+            url: '/edit/:accountId',
+            controller: 'IdentityEditController',
+            templateUrl: vw('views/identity/identity-edit.html')
+          },
+          {
+            name: 'accountDisplay',
+            url: '/display/:accountId',
+            controller: 'AccountDisplayController',
+            templateUrl: vw('views/account/account-display.html')
+          }
+        ]
+      }
+    ]
   });
-});
+}]);

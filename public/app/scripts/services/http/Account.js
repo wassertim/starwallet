@@ -13,4 +13,4 @@
   };
   app.service('AccountService', AccountService);
   return AccountService;
-}(angular.module('starbucks'), jsRoutes.controllers));
+}(angular.module('starwallet'), jsRoutes.controllers));

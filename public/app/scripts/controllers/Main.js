@@ -4,7 +4,7 @@
   function MainController($state, authService) {
     authService.checkAuth().then(function (auth) {
       if (auth.isAuthenticated) {
-        $state.go('accountList', {userId: auth.userId});
+        $state.go('withNav.accountList', {userId: auth.userId});
       } else {
         $state.go('login');
       }
@@ -13,4 +13,4 @@
 
   app.controller('MainController', MainController);
   return MainController;
-}(angular.module('starbucks')));
+}(angular.module('starwallet')));

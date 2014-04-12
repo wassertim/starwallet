@@ -29,4 +29,4 @@
   };
   app.service('AuthService', AuthService);
   return AuthService;
-}(angular.module('starbucks'), jsRoutes.controllers));
+}(angular.module('starwallet'), jsRoutes.controllers));
