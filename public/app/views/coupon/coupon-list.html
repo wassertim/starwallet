@@ -1,5 +1,15 @@
 <ul class="list-group">
-  <li class="list-group-item" ng-repeat="item in vm.coupons">
-    number: {{item.number}}
+  <li class="list-group-item" ng-repeat="coupon in vm.coupons">
+    <div ng-show="coupon.isActive">
+      <h5><a ng-href="http://plas-tek.ru/Coupon.aspx?Number={{coupon.key}}">{{coupon.couponType}}</a></h5>
+      <hr/>
+      <a ng-href="http://plas-tek.ru/Passbook.ashx?Number={{coupon.key}}" class="btn btn-default btn-passbook">
+        <div>Add to</div>
+        <span>Passbook</span>
+      </a>
+
+
+    </div>
+    <span ng-show="!coupon.isActive">{{coupon.number}} - {{coupon.couponType}}</span>
   </li>
 </ul>
