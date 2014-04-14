@@ -21,7 +21,7 @@ class Account @Inject()(
       refresh(id, userId)
     else {
       accountService.get(id) match {
-        case Some(starbucksAccount) => Ok(Json.generate(starbucksAccount))
+        case Some(cachedAccount) => Ok(Json.generate(cachedAccount))
         case _ => refresh(id, userId)
       }
     }

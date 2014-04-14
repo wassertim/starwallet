@@ -9,6 +9,11 @@
       return this.$http(routes.Coupon.list(userId)).then(function(response){
         return response.data;
       });
+    },
+    get: function(number, userId) {
+      return this.$http(routes.Coupon.get(number, userId)).then(function(response){
+        return response.data;
+      });
     }
   };
   app.service('CouponService', CouponService);

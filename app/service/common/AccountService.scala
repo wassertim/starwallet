@@ -1,9 +1,9 @@
 package service.common
 
-import model.StarbucksAccount
+import model._
 
 trait AccountService {
   def sync(account: StarbucksAccount, id: Int)
 
-  def get(id: Int): Option[StarbucksAccount]
+  def get(id: Int): Option[CachedAccount]
 }

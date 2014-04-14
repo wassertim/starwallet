@@ -53,6 +53,17 @@ angular.module('starwallet', [
         templateUrl: vw('views/coupon/coupon-list.html')
       },
       {
+        name: 'couponDisplay',
+        url: '/coupons/:number',
+        controller: 'CouponDisplayController',
+        templateUrl: vw('views/coupon/coupon-display.html')
+      },
+      {
+        name: 'cardDisplay',
+        controller: 'CardDisplayController',
+        templateUrl: vw('views/card/card-display.html')
+      },
+      {
         name: 'accountList',
         url: '/account',
         controller: 'IdentityListController',

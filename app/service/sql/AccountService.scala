@@ -8,11 +8,10 @@ import model._
 import org.joda.time.DateTime
 import java.sql.Timestamp
 
-class AccountService extends common.BaseService with service.common.AccountService {
-  import utility.DateTimeUtility.ts
+class AccountService(cardService: service.common.CardService) extends common.BaseService with service.common.AccountService {
   def get(id: Int) = database withDynSession {
-    implicit val getAccount = GetResult(r => StarbucksAccount(r.<<, r.<<, getCards(id), getCoupons(id), r.<<))
-    val account = sql"""
+    implicit val getAccount = GetResult(r => CachedAccount(r.<<, r.<<, cardService.listByIdentity(id), getCoupons(id), r.<<))
+    sql"""
       select
         i.user_name,
         a.stars_count,
@@ -22,8 +21,7 @@ class AccountService extends common.BaseService with service.common.AccountServi
       inner join accounts a on a.identity_id = i.id
       where
         i.id = ${id};
-    """.as[StarbucksAccount].firstOption
-    account
+    """.as[CachedAccount].firstOption
   }
 
   private def syncCards(cards: Seq[Card], id: Int) = database withDynSession {
@@ -78,37 +76,7 @@ class AccountService extends common.BaseService with service.common.AccountServi
     }
     syncCards(account.cards, id)
     syncCoupons(account.coupons, id)
-  }
 
-  private def getCards(id: Int): Seq[Card] = database withDynSession {
-    implicit val getCardsResult = GetResult(r => Card(r.<<, r.<<, r.<<, getTransactions(r.<<)))
-    sql"""
-      select
-        c.number,
-        c.balance,
-        c.is_active,
-        c.number
-      from
-        cards c
-      where
-        c.identity_id = ${id}
-    """.as[Card].list
-  }
-
-  private def getTransactions(cardNumber: String) = database withDynSession {
-    implicit val getTransactionResult = GetResult(r => Transaction(r.<<, r.<<, r.<<, r.<<, r.<<))
-    sql"""
-      select
-        date,
-        place,
-        type,
-        amount,
-        balance
-      from
-        transactions
-      where
-        card_number = ${cardNumber};
-    """.as[Transaction].list
   }
 
   private def getCoupons(id: Int) = database withDynSession {

@@ -12,7 +12,7 @@ object Global extends GlobalSettings {
       bind[service.common.Starbucks].toInstance(new Starbucks)
       bind[service.common.UserService].toInstance(new UserService)
       bind[service.common.IdentityService].toInstance(new IdentityService)
-      bind[service.common.AccountService].toInstance(new AccountService)
+      bind[service.common.AccountService].toInstance(new AccountService(new CardService))
       bind[service.common.CardService].toInstance(new CardService)
       bind[service.common.CouponService].toInstance(new CouponService)
     }

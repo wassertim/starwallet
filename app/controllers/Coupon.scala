@@ -11,4 +11,17 @@ class Coupon @Inject()(couponService: service.common.CouponService) extends Base
         val list = couponService.list(userId)
         Ok(Json.generate(list))
   }
+
+  def get(number: String, userId: Int) = authenticated {
+    user =>
+      request =>
+        if (user.userId != userId) {
+          BadRequest("You are not authorized to view the coupon")
+        } else {
+          couponService.get(number, userId) match {
+            case Some(coupon) => Ok(Json.generate(coupon))
+            case _ => BadRequest("Could not find the coupon")
+          }
+        }
+  }
 }

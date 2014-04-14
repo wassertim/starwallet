@@ -2,6 +2,13 @@ package model
 
 import java.sql.Timestamp
 
+case class CachedAccount(
+  userName: String,
+  starsCount: Int,
+  cards: Seq[CardListItem],
+  coupons: Seq[Coupon],
+  syncDate: Timestamp
+)
 case class StarbucksAccount(
   userName: String,
   starsCount: Int,

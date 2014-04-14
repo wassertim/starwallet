@@ -9,6 +9,11 @@
       return this.$http(routes.Card.list(userId)).then(function(response){
         return response.data;
       });
+    },
+    card: function(number, userId) {
+      return this.$http(routes.Card.get(number, userId)).then(function(response){
+        return response.data;
+      });
     }
   };
   app.service('CardService', CardService);
