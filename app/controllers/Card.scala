@@ -12,7 +12,7 @@ class Card @Inject()(cardService: service.common.CardService) extends BaseContro
           val list = cardService.listByUser(userId)
           Ok(Json.generate(list))
         } else {
-          Unauthorized("You are not authorized to get this card list")
+          Unauthorized("You are not authorized for viewing the card list")
         }
   }
 

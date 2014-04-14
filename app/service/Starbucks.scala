@@ -17,7 +17,7 @@ import java.sql.Timestamp
 class Starbucks extends service.common.Starbucks {
   import utility.DateTimeUtility.ts
 
-  val mainUrl = "https://plas-tek.ru/cabinet.aspx?style=starbucks"
+  val mainUrl = "https://cabinet.plas-tek.ru/default.aspx?style=starbucks"
 
   def authenticate(authInfo: AuthInfo) = {
     val loginUrl = s"$mainUrl&mainlogin=true"
