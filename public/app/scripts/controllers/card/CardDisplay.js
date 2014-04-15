@@ -12,7 +12,7 @@
       });
     }
     CardDisplayController.prototype = {
-      savePin: function(){
+      savePin: function() {
         var that = this;
         that.isSaving = true;
         this.cardService.savePin(this.card.pinCode, this.card.number, this.$state.params.userId).then(function(){
@@ -22,7 +22,7 @@
       },
       getBarcodeUrl: function(card) {
         if (card.pinCode) {
-          var v = Math.random();
+          var v = Math.round(Math.random() * 1000000000);
           return jsRoutes.controllers.BarCode.cardBarCode(this.$state.params.number, this.$state.params.userId).url + "?v=" + v;
         } else {
           return "";
