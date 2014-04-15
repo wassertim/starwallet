@@ -29,4 +29,16 @@ class Card @Inject()(cardService: service.common.CardService) extends BaseContro
         }
 
   }
+
+  def savePin(number: String, userId: Int) = authenticated(parse.json) {
+    user =>
+      request =>
+        cardService.get(number, userId) match {
+          case Some(card) =>
+            val pinCode = (request.body \ "pinCode").as[String]
+            cardService.savePin(pinCode, number)
+            Ok("ok")
+          case _ => BadRequest("You are not authorized to save pin codes for the card")
+        }
+  }
 }

@@ -57,6 +57,11 @@ create TABLE accounts (
   PRIMARY KEY (identity_id)
 );
 
+CREATE TABLE pin_codes (
+  card_number varchar(12) not null,
+  pin_code varchar(6) not null,
+  primary key (card_number)
+)
 # --- !Downs
 
 DROP TABLE users;

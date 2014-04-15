@@ -10,7 +10,7 @@ class Starbucks extends service.common.Starbucks {
     StarbucksAccount(
       authInfo.userName,
       3,
-      List(Card("899878873423", 5, isActive = true, List(Transaction(now, "Rockefeller Center", "pay", 45, 45)))),
+      List(Card("899878873423", 5, isActive = true, "", List(Transaction(now, "Rockefeller Center", "pay", 45, 45)))),
       List(Coupon("3443233223", now, now, isActive = true, "registration", "")),
       now
     )

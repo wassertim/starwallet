@@ -31,7 +31,10 @@ class Account @Inject()(
     case Some(auth) => starbucksService.getAccount(auth) match {
       case Some(starbucksAccount) => {
         accountService.sync(starbucksAccount, id)
-        Ok(Json.generate(starbucksAccount))
+        accountService.get(id) match {
+          case Some(cachedAccount) => Ok(Json.generate(cachedAccount))
+          case _ => BadRequest("Could not load the data from Starbucks")
+        }
       }
       case _ => BadRequest("Could not load the data from Starbucks")
     }

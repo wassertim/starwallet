@@ -29,18 +29,21 @@ class CardService extends BaseService with service.common.CardService {
   }
 
   def get(number: String, userId: Int) = database withDynSession {
-    implicit val getCardResult = GetResult(r => Card(r.<<, r.<<, r.<<, getTransactions(number)))
-    sql"""
+    implicit val getCardResult = GetResult(r => Card(r.<<, r.<<, r.<<, r.<<, getTransactions(number)))
+    val card = sql"""
       select
         c.number,
         c.balance,
-        c.is_active
+        c.is_active,
+        pc.pin_code
       from
         cards c
       inner join identities i on i.id = c.identity_id
+      left join pin_codes pc on pc.card_number = c.number
       where
         number = ${number} and i.user_id = ${userId};
     """.as[Card].firstOption
+    card
   }
 
   def listByIdentity(id: Int) = database withDynSession {
@@ -73,5 +76,10 @@ class CardService extends BaseService with service.common.CardService {
       where
         card_number = ${cardNumber};
     """.as[Transaction].list
+  }
+
+  def savePin(pinCode: String, number: String) = database withDynSession {
+    sqlu"delete from pin_codes where card_number = ${number};".execute
+    sqlu"insert into pin_codes(card_number, pin_code) values(${number}, ${pinCode});".execute
   }
 }

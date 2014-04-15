@@ -8,8 +8,9 @@ import java.awt.Color
 import org.krysalis.barcode4j.output.java2d.Java2DCanvasProvider
 import java.awt.image.BufferedImage
 import javax.imageio.ImageIO
+import controllers.common.BaseController
 
-class BarCode @Inject()() extends Controller {
+class BarCode @Inject()(cardService: service.common.CardService) extends BaseController {
   def generateBarCode(content: String): Array[Byte] = {
     val bc = new PDF417Bean
     bc.setModuleWidth(4)
@@ -20,7 +21,7 @@ class BarCode @Inject()() extends Controller {
     bc.setMaxRows(90)
     bc.setErrorCorrectionLevel(2)
     val out = new ByteArrayOutputStream()
-    val image = new BufferedImage(400 , 200, BufferedImage.TYPE_INT_RGB)
+    val image = new BufferedImage(400, 200, BufferedImage.TYPE_INT_RGB)
     val g2 = image.createGraphics()
     g2.setBackground(Color.WHITE)
     g2.clearRect(0, 0, image.getWidth, image.getHeight)
@@ -38,5 +39,19 @@ class BarCode @Inject()() extends Controller {
       CONTENT_DISPOSITION -> "inline",
       CACHE_CONTROL -> "public, max-age=86400"
     )
+  }
+
+  def cardBarCode(number: String, userId: Int) = authenticated {
+    user =>
+      request =>
+        cardService.get(number, userId) match {
+          case Some(card) =>
+            Ok(generateBarCode(s";$number=${card.pinCode}=1?")).withHeaders(
+              CONTENT_TYPE -> "image/png",
+              CONTENT_DISPOSITION -> "inline",
+              CACHE_CONTROL -> "public, max-age=86400"
+            )
+          case _ => BadRequest("Could not find the card")
+        }
   }
 }

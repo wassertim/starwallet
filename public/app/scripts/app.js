@@ -60,6 +60,7 @@ angular.module('starwallet', [
       },
       {
         name: 'cardDisplay',
+        url: '/cards/:number',
         controller: 'CardDisplayController',
         templateUrl: vw('views/card/card-display.html')
       },

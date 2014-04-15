@@ -91,7 +91,7 @@ class Starbucks extends service.common.Starbucks {
           )
       }
     }
-    Card(cardNumber, cardBalance, isActive, transactionList)
+    Card(cardNumber, cardBalance, isActive, "", transactionList)
   }
 
   private def couponList(cardsPage: Document, cookies: Seq[Cookie]): Seq[Coupon] = {

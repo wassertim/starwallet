@@ -10,4 +10,4 @@ case class CardListItem (
   activationDate: Timestamp,
   identity: AuthInfo
 )
-case class Card(number: String, balance: Double, isActive: Boolean, transactions: Seq[Transaction])
+case class Card(number: String, balance: Double, isActive: Boolean, pinCode: String, transactions: Seq[Transaction])

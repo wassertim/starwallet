@@ -1,9 +1,9 @@
 <ul class="list-group">
   <li class="list-group-item" ng-repeat="item in vm.cards">
     <div class="item-container">
-      <div class="thumbnail">
+      <a ng-href="{{href('withNav.cardDisplay', {number:item.number}, {inherit:true})}}" class="thumbnail">
         <img style="width: 54px;height: 33px" ng-src="https://plas-tek.ru/cardimage.ashx?c={{item.number}}"/>
-      </div>
+      </a>
       <div>number: {{item.number}}</div>
       <div>balance: {{item.balance}}</div>
       <div>activation date: <span am-time-ago="item.activationDate"></span></div>

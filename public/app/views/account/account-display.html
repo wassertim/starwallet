@@ -43,7 +43,7 @@
           <div>
             number: {{card.number}}; balance: {{card.balance}}.00 rub.
           </div>
-          <div>Last operation: {{vm.getLastTransactionDate(card.transactions) | amDateFormat:'DD/MM/YYYY'}}</div>
+          <div>Last operation: {{card.lastTransactionDate | amDateFormat:'DD/MM/YYYY'}}</div>
         </div>
       </li>
     </ul>
