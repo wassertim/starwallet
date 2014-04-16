@@ -4,7 +4,7 @@ import model._
 
 class IdentityService extends service.common.IdentityService {
 
-  def list(userId: Int) = List(IdentityListItem(1, "test1", 1,1), IdentityListItem(2, "test2", 1,1))
+  def list(userId: Int) = List(IdentityListItem(1, "test1", 1,1, null), IdentityListItem(2, "test2", 1,1, null))
 
   def add(info: AuthInfo, userId: Int): Int = 1
 

@@ -1,3 +1,5 @@
 package model
 
-case class IdentityListItem(id: Int, userName: String, starsCount: Int, activeCouponsCount: Int)
+import java.sql.Timestamp
+
+case class IdentityListItem(id: Int, userName: String, starsCount: Int, activeCouponsCount: Int, lastUpdate: Timestamp)

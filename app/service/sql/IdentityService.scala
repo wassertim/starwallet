@@ -13,13 +13,14 @@ class IdentityService extends BaseService with service.common.IdentityService {
 
 
   def list(userId: Int) = database withDynSession {
-    implicit val getAuthInfo = GetResult(r => IdentityListItem(r.<<, r.<<, r.<<, r.<<))
+    implicit val getAuthInfo = GetResult(r => IdentityListItem(r.<<, r.<<, r.<<, r.<<, r.<<))
     sql"""
       select
         i.id,
         i.user_name,
         a.stars_count,
-        (select count(*) from coupons where identity_id = i.id and is_active = true) as coupons_count
+        (select count(*) from coupons where identity_id = i.id and is_active = true) as coupons_count,
+        a.sync_date
       from
         identities i
       left join accounts a on a.identity_id = i.id

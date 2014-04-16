@@ -1,9 +1,10 @@
 (function (app) {
-  IdentityListController.$inject = ['$scope', 'IdentityService', '$stateParams', '$state', 'AccountService'];
-  function IdentityListController($scope, identityService, $stateParams, $state, accountService) {
+  IdentityListController.$inject = ['$scope', 'IdentityService', 'AccountService', '$stateParams', '$state', 'AccountService', '$timeout'];
+  function IdentityListController($scope, identityService, accountService, $stateParams, $state, accountService, $timeout) {
     $scope.vm = this;
     this.$state = $state;
     $scope.href = $state.href;
+    this.accountService = accountService;
     this.accountId = +$state.params.accountId;
     this.identityService = identityService;
     this.accountService = accountService;
@@ -12,6 +13,8 @@
     var that = this;
     that.responsiveClasses = "";
     this.getResponsiveClasses();
+    this.$timeout = $timeout;
+    that.refresh();
     $scope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
       that.setActive(+toParams.accountId);
       that.getResponsiveClasses(+toParams.accountId);
@@ -20,6 +23,21 @@
   }
 
   IdentityListController.prototype = {
+    refresh: function(){
+      var that = this;
+      if (this.items && this.items.length) {
+        _.forEach(this.items, function (item) {
+          if ((new Date() - new Date(item.lastUpdate)) > 120000) {
+            that.accountService.getByIdentityId(item.id, true).then(function () {
+              item.lastUpdate = new Date();
+            });
+          }
+        });
+      }
+      this.$timeout(function(){
+        that.refresh();
+      }, 12000);
+    },
     list: function(userId){
       var that = this;
       this.identityService.list(userId).then(function(items){
@@ -27,12 +45,7 @@
         that.setActive(+that.$state.params.accountId);
         return items;
       }).then(function(items){
-        _.forEach(items, function(item){
-          //TODO: Cache this info on the server. Temporary disabled
-          /*that.accountService.getByIdentityId(item.id).then(function(accountInfo){
-            item.activeCouponsCount = _.filter(accountInfo.coupons, 'isActive').length;
-          });*/
-        });
+
       });
     },
     getResponsiveClasses: function(accountId){
