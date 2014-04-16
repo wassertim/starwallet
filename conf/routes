@@ -25,7 +25,6 @@ POST          /api/u:userId/card-pin/:number            @controllers.Card.savePi
 GET           /api/u:userId/coupon                      @controllers.Coupon.list(userId: Int)
 GET           /api/u:userId/coupon/:number              @controllers.Coupon.get(number: String, userId: Int)
 # BarCode
-GET           /api/barcode/get/:content                 @controllers.BarCode.getPdf47(content: String)
 GET           /api/u:userId/card-barcode/:number        @controllers.BarCode.cardBarCode(number: String, userId: Int)
 # Home page
 #GET        /                @controllers.Application.index

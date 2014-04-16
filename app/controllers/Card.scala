@@ -35,10 +35,9 @@ class Card @Inject()(cardService: service.common.CardService) extends BaseContro
       request =>
         cardService.get(number, userId) match {
           case Some(card) =>
-            val pinCode = (request.body \ "pinCode").as[String]
-            cardService.savePin(pinCode, number)
+            cardService.savePin((request.body \ "pinCode").as[String], number)
             Ok("ok")
-          case _ => BadRequest("You are not authorized to save pin codes for the card")
+          case _ => BadRequest("You are not authorized to save pin code for the card")
         }
   }
 }
