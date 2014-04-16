@@ -26,6 +26,7 @@
     refresh: function(){
       var that = this;
       if (this.items && this.items.length) {
+        //TODO: Rewrite to one server call
         _.forEach(this.items, function (item) {
           if ((new Date() - new Date(item.lastUpdate)) > 120000) {
             that.accountService.getByIdentityId(item.id, true).then(function () {
