@@ -37,7 +37,7 @@
       }
       this.$timeout(function(){
         that.refresh();
-      }, 12000);
+      }, 120000);
     },
     list: function(userId){
       var that = this;
