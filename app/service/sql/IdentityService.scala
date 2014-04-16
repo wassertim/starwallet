@@ -1,7 +1,7 @@
 package service.sql
 
 import service.sql.common.BaseService
-import model.AuthInfo
+import model._
 
 import scala.slick.driver.JdbcDriver.simple._
 import Database.dynamicSession
@@ -12,18 +12,20 @@ import play.api.libs.Crypto
 class IdentityService extends BaseService with service.common.IdentityService {
 
 
-  def list(userId: Int): Seq[AuthInfo] = database withDynSession {
-    implicit val getAuthInfo = GetResult(r => AuthInfo(r.<<, r.<<, Crypto.decryptAES(r.<<)))
+  def list(userId: Int) = database withDynSession {
+    implicit val getAuthInfo = GetResult(r => IdentityListItem(r.<<, r.<<, r.<<, r.<<))
     sql"""
       select
-        id,
-        user_name,
-        '' as password
+        i.id,
+        i.user_name,
+        a.stars_count,
+        (select count(*) from coupons where identity_id = i.id and is_active = true) as coupons_count
       from
-        identities
+        identities i
+      left join accounts a on a.identity_id = i.id
       where
         user_id = ${userId};
-    """.as[AuthInfo].list
+    """.as[IdentityListItem].list
   }
 
   def add(auth: AuthInfo, userId: Int): Int = database withDynSession {

@@ -26,29 +26,31 @@ class AccountService(cardService: service.common.CardService) extends common.Bas
 
   private def syncCards(cards: Seq[Card], id: Int) = database withDynSession {
     import utility.DateTimeUtility._
-    sqlu"delete from cards where identity_id = ${id}".execute
+    //sqlu"delete from cards where identity_id = ${id};".execute
     cards.foreach {
       card =>
-       sqlu"""
+        sqlu"delete from cards where number = ${card.number};".execute
+        sqlu"""
         insert into cards(number, balance, is_active, last_transaction_date, identity_id, activation_date, last_update_date)
         values(${card.number}, ${card.balance}, ${card.isActive}, ${lastTransactionDate(card.transactions)}, ${id}, ${activationDate(card.transactions)}, ${ts(DateTime.now)})
        """.execute
-       sqlu"delete from transactions where card_number = ${card.number}".execute
-       card.transactions.foreach {
-         transaction =>
-           sqlu"""
+        sqlu"delete from transactions where card_number = ${card.number};".execute
+        card.transactions.foreach {
+          transaction =>
+            sqlu"""
            insert into transactions(card_number, date, place, type, amount, balance)
            values(${card.number}, ${transaction.date}, ${transaction.place}, ${transaction.transactionType}, ${transaction.amount}, ${transaction.balance})
            """.execute
-       }
+        }
     }
 
   }
 
   def syncCoupons(coupons: Seq[Coupon], id: Int) = database withDynSession {
-    sqlu"delete from coupons where identity_id = ${id};".execute
+    //sqlu"delete from coupons where identity_id = ${id};".execute
     coupons.foreach {
       coupon =>
+        sqlu"delete from coupons where number = ${coupon.number};".execute
         sqlu"""
          insert into coupons(number, identity_id, is_active, issue_date, expiration_date, type, url_key)
          values(${coupon.number}, ${id}, ${coupon.isActive}, ${coupon.issueDate}, ${coupon.expirationDate}, ${coupon.couponType}, ${coupon.key})

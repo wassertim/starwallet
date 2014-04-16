@@ -1,12 +1,17 @@
 <div>
   <div class="col-sm-4">
     <div class="list-group sidebar{{vm.responsiveClasses}}">
-      <a class="list-group-item" ng-href="{{href('withNav.accountList.addAccount')}}"><span class="fa fa-plus"></span> Add account</a>
+      <a class="list-group-item" ng-href="{{href('withNav.accountList.addAccount')}}"><span class="fa fa-plus"></span>
+        Add account</a>
 
 
       <a class="list-group-item" ng-class="{active:item.isActive}" ng-repeat="item in vm.items"
-         ng-href="{{href('withNav.accountList.accountDisplay', {accountId:item.id})}}">{{item.userName}} <span
-              class="label label-danger pull-right" ng-show="item.activeCouponsCount">{{item.activeCouponsCount}}</span>
+         ng-href="{{href('withNav.accountList.accountDisplay', {accountId:item.id})}}">{{item.userName}}
+        <span class="label label-danger pull-right" ng-show="item.activeCouponsCount"></span>
+        <span class="label label-warning pull-right">
+          <span><span class="fa fa-star"></span> {{item.starsCount}}</span>
+          <span ng-show="item.activeCouponsCount"><span class="fa fa-ticket"></span> {{item.activeCouponsCount}}</span>
+        </span>
       </a>
 
     </div>

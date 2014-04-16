@@ -1,6 +1,6 @@
 package service.common
 
-import model.AuthInfo
+import model._
 
 trait IdentityService {
   def remove(id: Int, userId: Int)
@@ -11,7 +11,7 @@ trait IdentityService {
 
   def add(info: AuthInfo, userId: Int): Int
 
-  def list(userId: Int): Seq[AuthInfo]
+  def list(userId: Int): Seq[IdentityListItem]
 
   def encryptAllPasswords
 }

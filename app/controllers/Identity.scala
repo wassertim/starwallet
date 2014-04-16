@@ -9,6 +9,7 @@ class Identity @Inject()(
   identityService: service.common.IdentityService,
   starbucks: service.common.Starbucks
 ) extends BaseController {
+
   def add(userId: Int) = authenticated(parse.json) {
     identity => request =>
       val authInfo = Json.parse[AuthInfo](request.body.toString())

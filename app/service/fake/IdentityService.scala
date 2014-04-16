@@ -1,10 +1,10 @@
 package service.fake
 
-import model.AuthInfo
+import model._
 
 class IdentityService extends service.common.IdentityService {
 
-  def list(userId: Int): Seq[AuthInfo] = List(AuthInfo(1, "test1", "test1"), AuthInfo(2, "test2", "test2"))
+  def list(userId: Int) = List(IdentityListItem(1, "test1", 1,1), IdentityListItem(2, "test2", 1,1))
 
   def add(info: AuthInfo, userId: Int): Int = 1
 
