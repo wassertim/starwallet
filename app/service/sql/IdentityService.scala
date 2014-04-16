@@ -65,9 +65,12 @@ class IdentityService extends BaseService with service.common.IdentityService {
   }
 
   override def remove(id: Int, userId: Int): Unit = database withDynSession {
-    sqlu"""
-      delete from identities where id = ${id} and user_id = ${userId};
-    """.execute
+    sqlu"delete from transactions where card_number in (select number from cards where identity_id = ${id});".execute
+    sqlu"delete from pin_codes where card_number in (select number from cards where identity_id = ${id});".execute
+    sqlu"delete from cards where identity_id = ${id};".execute
+    sqlu"delete from coupons where identity_id = ${id};".execute
+    sqlu"delete from accounts where identity_id = ${id}".execute
+    sqlu"delete from identities where id = ${id} and user_id = ${userId};".execute
   }
 
   override def encryptAllPasswords: Unit = database withDynSession {
@@ -80,7 +83,7 @@ class IdentityService extends BaseService with service.common.IdentityService {
         user_id
       from
         identities
-    """.as[Tuple2[AuthInfo, Int]].list
+    """.as[(AuthInfo, Int)].list
     unencryptedList.foreach {
       listItem =>
         val (auth, userId) = listItem

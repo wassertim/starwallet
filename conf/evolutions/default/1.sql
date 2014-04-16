@@ -64,6 +64,7 @@ CREATE TABLE pin_codes (
 );
 # --- !Downs
 
+DROP TABLE pin_codes;
 DROP TABLE users;
 DROP TABLE identities;
 DROP TABLE accounts;

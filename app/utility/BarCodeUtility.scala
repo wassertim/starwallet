@@ -19,7 +19,7 @@ object BarCodeUtility {
   private def getBarCodeImage(content: String) = {
     val pdf417 = createGenerator
     val size = pdf417.calcDimensions(content)
-    val image = new BufferedImage(size.getWidth.toInt + 1, size.getHeight.toInt + 1, BufferedImage.TYPE_INT_RGB)
+    val image = new BufferedImage(size.getWidth.toInt, size.getHeight.toInt, BufferedImage.TYPE_INT_RGB)
     val graphics2D = image.createGraphics()
     graphics2D.setBackground(Color.WHITE)
     graphics2D.clearRect(0, 0, image.getWidth, image.getHeight)
@@ -29,14 +29,16 @@ object BarCodeUtility {
   }
 
   private def createGenerator = {
-    val bc = new PDF417Bean
-    bc.setModuleWidth(4)
-    bc.setRowHeight(3)
-    bc.setMinCols(1)
-    bc.setMaxCols(1)
-    bc.setMinRows(3)
-    bc.setMaxRows(90)
-    bc.setErrorCorrectionLevel(2)
-    bc
+    val pDF417Bean = new PDF417Bean
+    pDF417Bean.setModuleWidth(4)
+    pDF417Bean.setRowHeight(3)
+    pDF417Bean.setMinCols(1)
+    pDF417Bean.setMaxCols(1)
+    pDF417Bean.setMinRows(3)
+    pDF417Bean.setMaxRows(90)
+    pDF417Bean.doQuietZone(true)
+    pDF417Bean.setQuietZone(1)
+    pDF417Bean.setErrorCorrectionLevel(2)
+    pDF417Bean
   }
 }

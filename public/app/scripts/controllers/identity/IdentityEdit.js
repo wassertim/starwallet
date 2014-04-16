@@ -60,7 +60,7 @@
       if (this.$window.confirm("Do you really want to delete this account?")) {
         this.identityService.remove(accountId, this.params['userId']).then(function () {
           that.isUpdating = false;
-          that.$state.go('accountList', that.params);
+          that.$state.go('withNav.accountList', that.params);
         });
       }
     }
