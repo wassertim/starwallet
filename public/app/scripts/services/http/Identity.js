@@ -22,6 +22,11 @@
         return response.data;
       });
     },
+    register: function(account, userId) {
+      return this.$http(angular.extend(routes.Identity.register(userId), {data:account})).then(function(response){
+        return response.data;
+      });
+    },
     update: function (accountInfo, userId) {
       return this.$http(angular.extend(routes.Identity.update(userId), {data:accountInfo})).then(function (response) {
         return response.data;

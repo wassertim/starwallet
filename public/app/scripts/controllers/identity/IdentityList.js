@@ -29,8 +29,10 @@
         //TODO: Rewrite to one server call
         _.forEach(this.items, function (item) {
           if ((new Date() - new Date(item.lastUpdate)) > 120000) {
-            that.accountService.getByIdentityId(item.id, true).then(function () {
+            that.accountService.getByIdentityId(item.id, true).then(function (account) {
               item.lastUpdate = new Date();
+              item.starsCount = account.starsCount;
+              item.activeCouponsCount = account.activeCouponsCount;
             });
           }
         });

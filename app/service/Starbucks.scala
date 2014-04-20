@@ -7,12 +7,14 @@ import org.joda.time.format.DateTimeFormat
 
 import org.jsoup.nodes.{Element, Document}
 import scala.collection.JavaConversions._
-import com.ning.http.client.Cookie
+import com.ning.http.client.{AsyncHandler, Cookie}
 
 import scala.Some
 import org.joda.time.DateTime
 import java.sql.Timestamp
-
+import java.util
+import org.jsoup.select.Elements
+import play.api.libs.concurrent.Execution.Implicits._
 
 class Starbucks extends service.common.Starbucks {
   import utility.DateTimeUtility.ts
@@ -138,5 +140,141 @@ class Starbucks extends service.common.Starbucks {
     )
 
   }
+  class MapWrapper {
+    val map = new util.HashMap[String, String]()
+    def addParameter(key: String, value: String) = {
+      map.put(key, value)
+      this
+    }
+  }
+
+  def getParams(authInfo: RegAuthInfo, registrationDoc: Document) = {
+
+    def field(value: String) = {
+      Seq1(registrationDoc.getElementsByAttributeValue("name", value).`val`)
+    }
+    def Seq1(value: String) = Seq(value) //Seq(java.net.URLEncoder.encode(value, "UTF-8"))
+    val fmt = DateTimeFormat.forPattern("dd.MM.yyyy")
+    val date = fmt.print(DateTime.now.plusDays(1).minusYears(30))
+    Map(
+      "ToolkitScriptManager1_HiddenField" -> field("ToolkitScriptManager1_HiddenField"),
+      "offset" -> Seq1(""),
+      "__EVENTTARGET" -> Seq1(""),
+      "__EVENTARGUMENT" -> field("__EVENTARGUMENT"),
+      "__EVENTVALIDATION" -> field("__EVENTVALIDATION"),
+      "__VIEWSTATE" -> field("__VIEWSTATE"),
+      "ImageButton12" -> field("ImageButton12"),
+      "ImageButton5" -> field("ImageButton5"),
+
+      "RegistrationCardNumberTextBox" -> Seq1(authInfo.cardNumber),
+      "RegistrationPinTextBox" -> Seq1(authInfo.pinCode),
+      "RegistrationLoginTextBox" -> Seq1(authInfo.userName),
+      "RegistrationPasswordTextBox" -> Seq1(authInfo.password),
+      "tbRegistrationPasswordConfirmation" -> Seq1(authInfo.password),
+      "RegistrationNameTextBox" -> Seq1(authInfo.firstName),
+      "RegistrationSurnameTextBox" -> Seq1(authInfo.lastName),
+      "RegistrationBirthDateTextBox" -> Seq1(date),
+      "RegistrationSexDropDownList" -> Seq1("1"),
+      "RegistrationAddressTextBox" -> Seq1("Улица Ленина"),
+      "ddlRegistrationPhoneNumberCode" -> Seq1("7"),
+      "RegistrationPhoneNumberTextBox" -> Seq1(authInfo.phoneNumber),
+      "ddlRegistrationSecretQuestion" -> Seq1("3"),
+      "tbRegistrationSecretQuestion" -> Seq1("123456"),
+      "RegistrationProfessionTextBox" -> Seq1("Рабочий"),
+      "tbRegistrationEmail" -> Seq1(authInfo.email),
+      "tbRegistrationEmailConfirmation" -> Seq1(authInfo.email),
+      "ddlSurvey" -> Seq1("3"),
+      "NotifyCheckBox" -> Seq1("on"),
+      "chbSendCouponByEmail" -> Seq1("on"),
+      "chkAccept" -> Seq1("on"),
+
+      "btnRegister.x" -> Seq1("46"),
+      "btnRegister.y" -> Seq1("11"),
+      "TextBoxWatermarkExtender1_ClientState" -> field("TextBoxWatermarkExtender1_ClientState"),
+      "TextBoxWatermarkExtender13_ClientState" -> field("TextBoxWatermarkExtender13_ClientState"),
+      "TextBoxWatermarkExtender4_ClientState" -> field("TextBoxWatermarkExtender4_ClientState"),
+      "TextBoxWatermarkExtender5_ClientState" -> field("TextBoxWatermarkExtender5_ClientState"),
+      "meeBirthDate_ClientState" -> field("meeBirthDate_ClientState"),
+      "TextBoxWatermarkExtender7_ClientState" -> field("TextBoxWatermarkExtender7_ClientState"),
+      "meePhone_ClientState" -> field("meePhone_ClientState"),
+      "TextBoxWatermarkExtender8_ClientState" -> field("TextBoxWatermarkExtender8_ClientState"),
+      "TextBoxWatermarkExtender9_ClientState" -> field("TextBoxWatermarkExtender9_ClientState"),
+      "TextBoxWatermarkExtender10_ClientState" -> field("TextBoxWatermarkExtender10_ClientState"),
+      "TextBoxWatermarkExtender102_ClientState" -> field("TextBoxWatermarkExtender102_ClientState"),
+      "TextBoxWatermarkExtender6_ClientState" -> field("TextBoxWatermarkExtender6_ClientState")
+    )
+  }
+  def register(authInfo: RegAuthInfo) = {
+    import WS.client
+    val registrationUrl = s"$mainUrl&registration=true"
+    val pageResponse = client.prepareGet(registrationUrl).execute.get
+    val (registrationDoc, cookies) = (Jsoup.parse(pageResponse.getResponseBody), pageResponse.getCookies)
+    val requestBuilder = cookies.foldLeft(
+      getParams(authInfo, registrationDoc).foldLeft(client.preparePost(registrationUrl)) {
+        (requestBuilder, params) =>
+
+          requestBuilder.addParameter(params._1, params._2.head)
+      }
+    ) {
+      (r, c) =>
+        r.addCookie(c)
+    }
+      .addHeader("Content-Type", "application/x-www-form-urlencoded ; charset=UTF-8")
+      .addHeader("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/34.0.1847.116 Safari/537.36")
+      .addHeader("Accept-Charset", "utf-8")
+      .addHeader("Host", "cabinet.plas-tek.ru")
+      .addHeader("Cache-Control", "no-cache")
+      .addHeader("Pragma", "no-cache")
+      .addHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8")
+      .addHeader("Accept-Language", "en-US,en;q=0.8,ru;q=0.6,de;q=0.4,uk;q=0.2")
+      .addHeader("Origin", "https://cabinet.plas-tek.ru")
+
+    val response = requestBuilder.execute.get
+    val result = Jsoup.parse(response.getResponseBody)
+    if (result.select("#pnlMessage").size() > 0){
+      val text = result.select("#pnlMessage").text
+      val t = text
+    } else {
+      val text = "no error message"
+    }
+  }
+
+  def register2(authInfo: RegAuthInfo) = {
+    val registrationUrl = s"$mainUrl&registration=true"
+    WS.url(registrationUrl).get map {
+      pageResponse =>
+        val (registrationDoc, cookies) = (Jsoup.parse(pageResponse.body), pageResponse.cookies)
+        val params = getParams(authInfo, registrationDoc).map(e => s"${e._1}=${e._2.head}").mkString("&")
+        val c = cookies.map(cookie => s"${cookie.name.get}=${cookie.value.get}").mkString("; ")
+
+        WS.url(registrationUrl)
+          .withHeaders(
+            "User-Agent" -> "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/34.0.1847.116 Safari/537.36",
+            //"Content-Type" -> "application/x-www-form-urlencoded",
+            /*"Content-Type" -> "multipart/form-data",*/
+            "Host" -> "cabinet.plas-tek.ru",
+            "Cache-Control" -> "no-cache",
+            "Pragma" -> "no-cache",
+            "Accept" -> "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+            "Accept-Language" -> "en-US,en;q=0.8,ru;q=0.6,de;q=0.4,uk;q=0.2",
+            "Origin" -> "https://cabinet.plas-tek.ru",
+            "Accept-Charset" -> "utf-8",
+            //"Content-Length" -> params.length.toString,
+            "Cookie" -> c
+          ).post(params) map {
+          response =>
+            if (response.getAHCResponse.getUri.getPath().contains("error")) {
+              val result = Jsoup.parse(response.getAHCResponse.getResponseBody("utf-8"))
+              val e = result
+            } else {
+              val result = Jsoup.parse(response.body)
+              val e = result
+            }
+        }
+    }
+  }
 }
+
+
+
 

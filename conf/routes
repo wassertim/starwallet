@@ -15,6 +15,7 @@ GET           /api/u:userId/identity/:id                @controllers.Identity.ge
 GET           /api/u:userId/identity                    @controllers.Identity.list(userId: Int)
 PUT           /api/u:userId/identity                    @controllers.Identity.update(userId: Int)
 DELETE        /api/u:userId/identity/:id                @controllers.Identity.remove(id: Int, userId: Int)
+POST          /api/u:userId/register-new                @controllers.Identity.register(userId: Int)
 # Account
 GET           /api/account/:id                          @controllers.Account.get(id: Int, resync: Boolean)
 # Card

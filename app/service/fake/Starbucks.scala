@@ -19,4 +19,6 @@ class Starbucks extends service.common.Starbucks {
   override def getAccount(authInfo: AuthInfo): Option[StarbucksAccount] = ???
 
   override def authenticate(authInfo: AuthInfo): Either[Page, AuthError] = ???
+
+  override def register(info: RegAuthInfo): Unit = ???
 }

@@ -7,22 +7,77 @@
 <div class="well">
 
   <form class="form-horizontal" name="accountForm">
+    <fieldset>
+      <legend>Existing account</legend>
+      <div class="">
+        <label>User name</label>
+        <input class="form-control" ng-model="vm.account.userName" type="text"/>
+      </div>
+      <div class="">
+        <label>Password</label>
+        <input class="form-control" ng-model="vm.account.password" type="password" ng-hide="vm.revealPassword"/>
+        <input class="form-control" ng-model="vm.account.password" type="text" ng-hide="!vm.revealPassword"/>
+      </div>
+      <br/>
 
-    <div class="form-group">
-      <label>User name</label>
-      <input class="form-control" ng-model="vm.account.userName" type="text"/>
-    </div>
-    <div class="form-group">
-      <label>Password</label>
-      <input class="form-control" ng-model="vm.account.password" type="password" ng-hide="vm.revealPassword"/>
-      <input class="form-control" ng-model="vm.account.password" type="text" ng-hide="!vm.revealPassword"/>
-    </div>
-    <div class="form-group">
-      <button class="btn btn-primary" ng-click="vm.save(vm.account)" ng-disabled="vm.isUpdating">
-        Save
-      </button>
-      <button class="btn btn-danger" ng-click="vm.remove(vm.account.id)" ng-show="vm.account.id" ng-disabled="vm.isUpdating">Delete</button>
-      <a class="btn btn-default" ng-href="{{href('withNav.accountList', {}, {inherit:true})}}">Return</a>
-    </div>
+      <div class="">
+        <button class="btn btn-primary" ng-click="vm.save(vm.account)" ng-disabled="vm.isUpdating">
+          Save
+        </button>
+        <button class="btn btn-danger" ng-click="vm.remove(vm.account.id)" ng-show="vm.account.id"
+                ng-disabled="vm.isUpdating">Delete
+        </button>
+        <a class="btn btn-default" ng-href="{{href('withNav.accountList', {}, {inherit:true})}}">Return</a>
+      </div>
+    </fieldset>
+  </form>
+
+</div>
+<div class="well">
+  <form class="form-horizontal" name="newAccountForm">
+    <fieldset>
+      <legend>New Account</legend>
+      <div class="">
+        <label>User name</label>
+        <input class="form-control" ng-model="vm.acc.userName" placeholder="User name" type="text"/>
+      </div>
+      <div class="">
+        <label>Password</label>
+        <input class="form-control" ng-model="vm.acc.password" type="password" placeholder="Password" ng-hide="vm.revealPassword"/>
+      </div>
+      <div>
+        <label>Card number</label>
+        <input class="form-control" type="text" ng-model="vm.acc.cardNumber" placeholder="Card number" />
+      </div>
+      <div>
+        <label>Pin code</label>
+        <input class="form-control" type="text" ng-model="vm.acc.pinCode" placeholder="Pin code" />
+      </div>
+      <div>
+        <label>Email</label>
+        <input class="form-control" type="email" ng-model="vm.acc.email" placeholder="Email" />
+      </div>
+      <div>
+        <label>First name</label>
+        <input class="form-control" type="text" ng-model="vm.acc.firstName" placeholder="First name"/>
+      </div>
+      <div>
+        <label>Last name</label>
+        <input class="form-control" type="text" ng-model="vm.acc.lastName" placeholder="Last name" />
+      </div>
+      <div>
+        <label>Phone number</label>
+        <input class="form-control" type="text" ng-model="vm.acc.phoneNumber" placeholder="Phone number"/>
+      </div>
+      <br/>
+
+      <div class="">
+        <button class="btn btn-primary" ng-click="vm.saveNew(vm.acc)" ng-disabled="vm.isUpdating">
+          Save
+        </button>
+
+        <a class="btn btn-default" ng-href="{{href('withNav.accountList', {}, {inherit:true})}}">Return</a>
+      </div>
+    </fieldset>
   </form>
 </div>
