@@ -2,17 +2,10 @@ package model
 
 import java.sql.Timestamp
 
-case class CachedAccount(
+case class StarbucksAccount[T](
   userName: String,
   starsCount: Int,
-  cards: Seq[CardListItem],
-  coupons: Seq[Coupon],
-  syncDate: Timestamp
-)
-case class StarbucksAccount(
-  userName: String,
-  starsCount: Int,
-  cards: Seq[Card],
+  cards: Seq[T],
   coupons: Seq[Coupon],
   syncDate: Timestamp
 )

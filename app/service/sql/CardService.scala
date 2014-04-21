@@ -29,13 +29,13 @@ class CardService extends BaseService with service.common.CardService {
   }
 
   def get(number: String, userId: Int) = database withDynSession {
-    implicit val getCardResult = GetResult(r => Card(r.<<, r.<<, r.<<, r.<<, getTransactions(number)))
+    implicit val getCardResult = GetResult(r => Card(CardData(r.<<, r.<<), r.<<, r.<<, getTransactions(number)))
     val card = sql"""
       select
         c.number,
+        pc.pin_code,
         c.balance,
-        c.is_active,
-        pc.pin_code
+        c.is_active
       from
         cards c
       inner join identities i on i.id = c.identity_id

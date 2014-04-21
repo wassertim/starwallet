@@ -3,6 +3,8 @@ package utility
 import org.joda.time.DateTime
 import java.sql.Timestamp
 import model.Transaction
+import org.joda.time.format.DateTimeFormat
+
 object Joda {
   implicit def dateTimeOrdering: Ordering[Timestamp] = Ordering.fromLessThan(_ before _)
 }
@@ -15,5 +17,10 @@ object DateTimeUtility {
 
   def activationDate(transactions: Seq[Transaction]) = {
     transactions.sortBy(_.date)(Ordering[Timestamp]).head.date
+  }
+
+  def formatted(date: DateTime) = {
+    val fmt = DateTimeFormat.forPattern("dd.MM.yyyy")
+    fmt.print(date)
   }
 }

@@ -3,7 +3,7 @@ package service.common
 import model._
 
 trait AccountService {
-  def sync(account: StarbucksAccount, id: Int)
+  def sync(account: StarbucksAccount[Card], id: Int)
 
-  def get(id: Int): Option[CachedAccount]
+  def get(id: Int): Option[StarbucksAccount[CardListItem]]
 }

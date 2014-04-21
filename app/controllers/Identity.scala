@@ -3,11 +3,12 @@ package controllers
 import com.google.inject.Inject
 import controllers.common.BaseController
 import com.codahale.jerkson.Json
-import model.{RegAuthInfo, AuthInfo}
+import model.{RegistrationInfo, AuthInfo}
 
 class Identity @Inject()(
   identityService: service.common.IdentityService,
-  starbucks: service.common.Starbucks
+  starbucks: service.common.Starbucks,
+  registrationService: service.common.RegistrationService
 ) extends BaseController {
 
   def add(userId: Int) = authenticated(parse.json) {
@@ -52,8 +53,8 @@ class Identity @Inject()(
 
   def register(userId: Int) = authenticated(parse.json){
     user => request =>
-      val acc = Json.parse[RegAuthInfo](request.body.toString())
-      starbucks.register(acc)
+      val acc = Json.parse[RegistrationInfo](request.body.toString())
+      registrationService.register(acc)
       Ok("")
   }
   def list(userId: Int) = authenticated {
