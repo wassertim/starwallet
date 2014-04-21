@@ -11,7 +11,6 @@ angular.module('starwallet', [
   function vw(url) {
     return '../' + url;
   }
-
   $stateProvider.state('home', {
     url: '',
     controller: 'MainController'
@@ -33,7 +32,7 @@ angular.module('starwallet', [
         $state.go('login');
       });
     }]
-  });;
+  });
   stateHelperProvider.setNestedState({
     name: 'withNav',
     url: '/u:userId',
@@ -45,6 +44,12 @@ angular.module('starwallet', [
         url: '/cards',
         controller: 'CardListController',
         templateUrl: vw('views/card/card-list.html')
+      },
+      {
+        name: 'registration',
+        url: '/register',
+        controller: 'RegistrationController',
+        templateUrl: vw('views/registration.html')
       },
       {
         name: 'coupons',

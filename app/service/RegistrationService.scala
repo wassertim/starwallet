@@ -100,6 +100,7 @@ class RegistrationService extends common.RegistrationService {
             val e = result
             if (result.select("#pnlMessage").size() > 0) {
               val text = result.select("#pnlMessage").text
+              val message = "Ваши данные приняты. На Ваш e-mail выслано письмо для подтверждения регистрации. Обращаем внимание, что получать купоны по программе «Моя Карта Старбакс» Вы сможете только при подтвержденной регистрации. Если Вы не обнаружили письмо с подтверждением регистрации, пожалуйста, обязательно проверьте папку \"Спам\""
               val t = text
             } else {
               val text = "no error message"
