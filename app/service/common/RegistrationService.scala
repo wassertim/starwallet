@@ -1,7 +1,8 @@
 package service.common
 
-import model.RegistrationInfo
+import model._
+import scala.concurrent.Future
 
 trait RegistrationService {
-  def register(info: RegistrationInfo)
+  def register(info: RegistrationInfo): Future[Either[Unit, String]]
 }

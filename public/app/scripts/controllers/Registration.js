@@ -3,8 +3,25 @@
   RegistrationController.$inject = ['$scope', 'IdentityService', '$state'];
   function RegistrationController($scope, identityService, $state) {
     $scope.vm = this;
+    this.$state = $state;
     this.identityService = identityService;
     this.params = $state.params;
+    var chance = new Chance();
+    this.acc = {
+      auth: {
+        id: 0,
+        userName: chance.word({syllables: 3}),
+        password: chance.string({pool:'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', length:12})
+      },
+      card: {
+        number: 728015150132,
+        pin: 434343
+      },
+      email: chance.email(),
+      phoneNumber: '(926) 777-4344',
+      firstName: chance.first(),
+      lastName: chance.last()
+    };
   }
 
   RegistrationController.prototype = {
@@ -14,11 +31,15 @@
       that.isUpdating = true;
       this.identityService.register(account, this.params['userId']).then(function(accountId){
         that.isUpdating = false;
-        that.$state.go('withNav.accountList.editAccount', angular.extend(that.params, {accountId: accountId}));
-      }, function () {
+        that.alert = {
+          type: 'success',
+          message: 'The card is successfully registered!'
+        }
+      }, function (response) {
         that.isUpdating = false;
         that.alert = {
-          message: 'An error occured'
+          type: 'danger',
+          message: response.data
         };
       });
     }

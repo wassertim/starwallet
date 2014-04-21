@@ -1,15 +1,10 @@
+<div class="alert alert-{{vm.alert.type}}" ng-show="vm.alert">
+  {{vm.alert.message}}
+</div>
 <div class="well">
   <form class="form-horizontal" name="newAccountForm">
     <fieldset>
       <legend>New Account</legend>
-      <div class="">
-        <label>User name</label>
-        <input class="form-control" ng-model="vm.acc.userName" placeholder="User name" type="text"/>
-      </div>
-      <div class="">
-        <label>Password</label>
-        <input class="form-control" ng-model="vm.acc.password" type="password" placeholder="Password" ng-hide="vm.revealPassword"/>
-      </div>
       <div>
         <label>Card number</label>
         <input class="form-control" type="text" ng-model="vm.acc.card.number" placeholder="Card number" />
@@ -23,6 +18,20 @@
         <input class="form-control" type="email" ng-model="vm.acc.email" placeholder="Email" />
       </div>
       <div>
+        <label>Phone number</label>
+        <input class="form-control" type="text" ng-model="vm.acc.phoneNumber" placeholder="Phone number"/>
+      </div>
+      <div class="">
+        <label>User name</label>
+        <input class="form-control" ng-model="vm.acc.auth.userName" placeholder="User name" type="text"/>
+      </div>
+      <div class="">
+        <label>Password</label>
+        <input class="form-control" ng-model="vm.acc.auth.password" type="text" placeholder="Password" ng-hide="vm.revealPassword"/>
+      </div>
+
+
+      <div>
         <label>First name</label>
         <input class="form-control" type="text" ng-model="vm.acc.firstName" placeholder="First name"/>
       </div>
@@ -30,10 +39,7 @@
         <label>Last name</label>
         <input class="form-control" type="text" ng-model="vm.acc.lastName" placeholder="Last name" />
       </div>
-      <div>
-        <label>Phone number</label>
-        <input class="form-control" type="text" ng-model="vm.acc.phoneNumber" placeholder="Phone number"/>
-      </div>
+
       <br/>
 
       <div class="">

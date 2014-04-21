@@ -1,9 +1,10 @@
 package controllers
 
 import com.google.inject.Inject
-import controllers.common.BaseController
+import controllers.common.{Authenticated, BaseController}
 import com.codahale.jerkson.Json
 import model.{RegistrationInfo, AuthInfo}
+import play.api.libs.concurrent.Execution.Implicits._
 
 class Identity @Inject()(
   identityService: service.common.IdentityService,
@@ -51,11 +52,21 @@ class Identity @Inject()(
       Ok("ok")
   }
 
-  def register(userId: Int) = authenticated(parse.json){
+  def register(userId: Int) = Authenticated.async(parse.json) {
     user => request =>
       val acc = Json.parse[RegistrationInfo](request.body.toString())
-      registrationService.register(acc)
-      Ok("")
+      registrationService.register(acc).map {
+        result =>
+          result.fold(
+            authInfo => {
+              Ok(Json.generate(identityService.add(acc.auth, userId)))
+            },
+            error => {
+              BadRequest(error)
+            }
+          )
+      }
+
   }
   def list(userId: Int) = authenticated {
     identity => request =>

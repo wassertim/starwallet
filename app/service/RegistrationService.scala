@@ -1,13 +1,17 @@
 package service
 
 import org.jsoup.Jsoup
-import play.api.libs.ws.WS
-import model.RegistrationInfo
+import play.api.libs.ws.{Response, WS}
+import model._
 import org.joda.time.DateTime
 import utility.DateTimeUtility
 import org.jsoup.nodes.Document
 import scala.collection.JavaConversions._
 import play.api.libs.concurrent.Execution.Implicits._
+
+import scala.concurrent.duration.Duration
+import java.util.concurrent.TimeUnit
+import scala.concurrent.Await
 
 class RegistrationService extends common.RegistrationService {
 
@@ -40,9 +44,9 @@ class RegistrationService extends common.RegistrationService {
 
       "RegistrationCardNumberTextBox" -> Seq(authInfo.card.number),
       "RegistrationPinTextBox" -> Seq(authInfo.card.pin),
-      "RegistrationLoginTextBox" -> Seq(authInfo.userName),
-      "RegistrationPasswordTextBox" -> Seq(authInfo.password),
-      "tbRegistrationPasswordConfirmation" -> Seq(authInfo.password),
+      "RegistrationLoginTextBox" -> Seq(authInfo.auth.userName),
+      "RegistrationPasswordTextBox" -> Seq(authInfo.auth.password),
+      "tbRegistrationPasswordConfirmation" -> Seq(authInfo.auth.password),
       "RegistrationNameTextBox" -> Seq(authInfo.firstName),
       "RegistrationSurnameTextBox" -> Seq(authInfo.lastName),
       "RegistrationBirthDateTextBox" -> Seq(DateTimeUtility.formatted(DateTime.now.plusDays(1).minusYears(30))),
@@ -79,35 +83,48 @@ class RegistrationService extends common.RegistrationService {
     )
   }
 
-  def register(authInfo: RegistrationInfo) = WS.url(registrationUrl).get map {
-    pageResponse =>
-      val (registrationDoc, cookies) = (Jsoup.parse(pageResponse.body), pageResponse.cookies)
-      val params = getParams(authInfo, registrationDoc).map {
-        e =>
-          val (key, value) = (e._1, e._2.head)
-          s"${key}=${java.net.URLEncoder.encode(value, "UTF-8")}"
-      }.mkString("&")
-      val c = cookies.map(cookie => s"${cookie.name.get}=${cookie.value.get}").mkString("; ")
-      getHeaders(c).foldLeft(WS.url(registrationUrl)) {
-        (requestHolder, header) =>
-          requestHolder.withHeaders(header)
-      }.post(params) map {
-        response =>
-          if (response.getAHCResponse.getUri.getPath.contains("error")) {
-            val result = Jsoup.parse(response.getAHCResponse.getResponseBody("utf-8"))
-          } else {
-            val result = Jsoup.parse(response.body)
-            val e = result
-            if (result.select("#pnlMessage").size() > 0) {
-              val text = result.select("#pnlMessage").text
-              val message = "Ваши данные приняты. На Ваш e-mail выслано письмо для подтверждения регистрации. Обращаем внимание, что получать купоны по программе «Моя Карта Старбакс» Вы сможете только при подтвержденной регистрации. Если Вы не обнаружили письмо с подтверждением регистрации, пожалуйста, обязательно проверьте папку \"Спам\""
-              val t = text
-            } else {
-              val text = "no error message"
-            }
-          }
-      }
+
+
+
+  def register(authInfo: RegistrationInfo) = {
+    val promise = WS.url(registrationUrl).get()
+
+    val pageResponse = Await.result(promise, Duration(20000, TimeUnit.MILLISECONDS))
+    val (registrationDoc, cookies) = (Jsoup.parse(pageResponse.body), pageResponse.cookies)
+    val params = getParams(authInfo, registrationDoc).map {
+      e =>
+        val (key, value) = (e._1, e._2.head)
+        s"${key}=${java.net.URLEncoder.encode(value, "UTF-8")}"
+    }.mkString("&")
+    val c = cookies.map(cookie => s"${cookie.name.get}=${cookie.value.get}").mkString("; ")
+    getHeaders(c).foldLeft(WS.url(registrationUrl)) {
+      (requestHolder, header) =>
+        requestHolder.withHeaders(header)
+    }.post(params).map {
+      r =>
+        handleResponse(r)
+    }
   }
+
+  def handleResponse(response: Response): Either[Unit, String] = {
+    if (response.getAHCResponse.getUri.getPath.contains("error")) {
+      Right("unknownError")
+    } else {
+      val result = Jsoup.parse(response.body)
+      val pnlMessage = result.select("#pnlMessage")
+      if (pnlMessage.size() > 0) {
+        pnlMessage.text match {
+          case m if m.contains("Ваши данные приняты") => {
+            Left()
+          }
+          case m => Right(m)
+        }
+      } else {
+        Right("unknownError")
+      }
+    }
+  }
+
   //Experimental
   def register2(authInfo: RegistrationInfo) = {
     import WS.client
