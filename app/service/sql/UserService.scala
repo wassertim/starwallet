@@ -11,6 +11,8 @@ import org.mindrot.jbcrypt.BCrypt
 
 class UserService extends BaseService with service.common.UserService {
 
+  def saltedPassword(password: String): String = BCrypt.hashpw(password, BCrypt.gensalt())
+
   override def register[T](user: Login, onSuccess: (Int) => T, onError: (String) => T): T = database withDynSession {
     if (isValid(user)) {
       sqlu"""
@@ -57,5 +59,26 @@ class UserService extends BaseService with service.common.UserService {
     """.as[User].first
   }
 
-  def saltedPassword(password: String): String = BCrypt.hashpw(password, BCrypt.gensalt())
+  def getSettings(userId: Int) = database withDynSession {
+    implicit val getResults = GetResult(r => UserSettings(r.<<, r.<<, r.<<, r.<<))
+    sql"""
+      SELECT
+        first_name,
+        last_name,
+        phone,
+        email_domain
+      from
+        user_settings
+      where
+        user_id = ${userId};
+    """.as[UserSettings].firstOption
+  }
+
+  def saveSettings(settings: UserSettings, userId: Int) = database withDynSession {
+    sqlu"delete from user_settings where user_id = ${userId};".execute
+    sqlu"""
+      insert into user_settings(user_id, first_name, last_name, phone, email_domain)
+      values(${userId}, ${settings.firstName}, ${settings.lastName}, ${settings.phone}, ${settings.emailDomain});
+    """.execute
+  }
 }

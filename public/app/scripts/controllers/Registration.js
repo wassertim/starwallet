@@ -1,16 +1,18 @@
 'use strict';
 (function (app) {
-  RegistrationController.$inject = ['$scope', 'IdentityService', '$state'];
-  function RegistrationController($scope, identityService, $state) {
+  RegistrationController.$inject = ['$scope', 'IdentityService', '$state', 'UserService'];
+  function RegistrationController($scope, identityService, $state, userService) {
     $scope.vm = this;
     this.$state = $state;
     this.identityService = identityService;
     this.params = $state.params;
     var chance = new Chance();
-    this.acc = {
+    var that = this;
+    var userName = chance.word({syllables: 3});
+    that.acc = {
       auth: {
         id: 0,
-        userName: chance.word({syllables: 3}),
+        userName: userName,
         password: chance.string({pool:'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', length:12})
       },
       card: {
@@ -19,6 +21,12 @@
       firstName: chance.first(),
       lastName: chance.last()
     };
+    userService.getSettings(this.params['userId']).then(function(settings){
+      that.acc.phoneNumber = settings.phone;
+      that.acc.firstName = settings.firstName;
+      that.acc.email = userName + '@' + settings.emailDomain;
+    });
+
   }
 
   RegistrationController.prototype = {

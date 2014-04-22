@@ -40,6 +40,12 @@ angular.module('starwallet', [
     templateUrl: vw('views/withNav.html'),
     children: [
       {
+        name: 'userSettings',
+        url: '/settings',
+        controller: 'UserSettingsController',
+        templateUrl: vw('views/user-settings.html')
+      },
+      {
         name: 'cards',
         url: '/cards',
         controller: 'CardListController',

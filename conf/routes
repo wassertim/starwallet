@@ -27,6 +27,10 @@ GET           /api/u:userId/coupon                      @controllers.Coupon.list
 GET           /api/u:userId/coupon/:number              @controllers.Coupon.get(number: String, userId: Int)
 # BarCode
 GET           /api/u:userId/card-barcode/:number        @controllers.BarCode.cardBarCode(number: String, userId: Int)
+
+# User
+GET           /api/u:userId/settings                    @controllers.User.getSettings(userId: Int)
+PUT           /api/u:userId/settings                    @controllers.User.saveSettings(userId: Int)
 # Home page
 #GET        /                @controllers.Application.index
 

@@ -12,12 +12,17 @@ import play.api.libs.concurrent.Execution.Implicits._
 import scala.concurrent.duration.Duration
 import java.util.concurrent.TimeUnit
 import scala.concurrent.Await
+import scala.util.Random
 
 class RegistrationService extends common.RegistrationService {
 
   val mainUrl = "https://cabinet.plas-tek.ru/default.aspx?style=starbucks"
   val registrationUrl = s"$mainUrl&registration=true"
 
+  def randomAnswer = {
+    val random = new Random()
+    random.nextString(12)
+  }
   def getParams(authInfo: RegistrationInfo, registrationDoc: Document) = {
     def fromField(value: String) = Seq(registrationDoc.getElementsByAttributeValue("name", value).`val`)
     Map(
@@ -55,7 +60,7 @@ class RegistrationService extends common.RegistrationService {
       "ddlRegistrationPhoneNumberCode" -> Seq("7"),
       "RegistrationPhoneNumberTextBox" -> Seq(authInfo.phoneNumber),
       "ddlRegistrationSecretQuestion" -> Seq("3"),
-      "tbRegistrationSecretQuestion" -> Seq("123456"),
+      "tbRegistrationSecretQuestion" -> Seq(randomAnswer),
       "RegistrationProfessionTextBox" -> Seq("Рабочий"),
       "tbRegistrationEmail" -> Seq(authInfo.email),
       "tbRegistrationEmailConfirmation" -> Seq(authInfo.email),
