@@ -1,7 +1,7 @@
 <ul class="list-group">
   <li class="list-group-item" ng-repeat="item in vm.cards">
     <div class="item-container">
-      <a ng-href="{{href('withNav.cardDisplay', {number:item.number}, {inherit:true})}}" class="thumbnail">
+      <a ng-href="{{href('withNav.cardDisplay', {number:item.number}, {inherit:true})}}" class="thumbnail" style="margin-right: 5px">
         <img style="width: 54px;height: 33px" ng-src="https://plas-tek.ru/cardimage.ashx?c={{item.number}}"/>
       </a>
       <div>number: {{item.number}}</div>

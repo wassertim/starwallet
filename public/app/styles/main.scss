@@ -12,7 +12,11 @@ body {
   padding-top: 60px;
   padding-bottom: 20px;
 }
-
+input {
+  &.form-control {
+    height: 33px;
+  }
+}
 .page-header {
   margin: 5px 0 20px;
   h3 {
@@ -22,7 +26,7 @@ body {
 .thumbnail {
   padding: 1px;
   float: left;
-  margin: 0 10px 0 0;
+  margin: 0;
   &.barcode {
     border: 0;
     text-align: center;

@@ -19,6 +19,7 @@
       this.cardService.savePin(this.card.data.pin, this.card.data.number, this.$state.params.userId).then(function () {
         that.isSaving = false;
         that.barcodeUrl = that.getBarcodeUrl(that.card);
+        that.isPinCodeVisible = false;
       });
     },
     getBarcodeUrl: function (card) {
@@ -28,6 +29,10 @@
       } else {
         return "";
       }
+    },
+    showPinCode: function(e) {
+      e.preventDefault();
+      this.isPinCodeVisible = !this.isPinCodeVisible;
     }
   };
   app.controller('CardDisplayController', CardDisplayController);
