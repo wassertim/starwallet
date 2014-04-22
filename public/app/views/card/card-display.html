@@ -1,15 +1,27 @@
-<div class="row">
-  <div class="col col-lg-12">
-    <div class="page-header">
-      <h4>{{vm.card.number}}</h4>
+<div class="col col-lg-12">
+  <div class="page-header">
+    <h4>
+      Starbucks Card
+      <span class="pull-right">{{vm.card.balance}} rub.</span>
+    </h4>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="thumbnail barcode">
+        <img ng-src="{{vm.barcodeUrl}}"/>
+        {{vm.card.data.number}}
+      </div>
     </div>
-
-    <div class="input-group">
-      <input class="form-control" type="text" ng-model="vm.card.pinCode"/>
+  </div>
+  <div class="row">
+    <div class="input-group col-md-3">
+      <input class="form-control" type="text" ng-model="vm.card.data.pin"/>
       <span class="input-group-btn">
         <button class="btn btn-default" type="button" ng-click="vm.savePin()">Save Pin</button>
       </span>
     </div>
-    <img ng-src="{{vm.barcodeUrl}}" />
+    <div class="col-md-9"></div>
   </div>
+
 </div>
+

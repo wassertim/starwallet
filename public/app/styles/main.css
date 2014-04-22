@@ -6386,6 +6386,9 @@ body {
   padding: 1px;
   float: left;
   margin: 0 10px 0 0; }
+  .thumbnail.barcode {
+    border: 0;
+    text-align: center; }
 
 .btn-passbook {
   background-image: url("../images/passbook-hero-small.png");

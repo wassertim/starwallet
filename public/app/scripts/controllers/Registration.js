@@ -14,11 +14,8 @@
         password: chance.string({pool:'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', length:12})
       },
       card: {
-        number: 728015150132,
-        pin: 434343
+        number: 7280
       },
-      email: chance.email(),
-      phoneNumber: '(926) 777-4344',
       firstName: chance.first(),
       lastName: chance.last()
     };

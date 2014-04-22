@@ -23,6 +23,10 @@ body {
   padding: 1px;
   float: left;
   margin: 0 10px 0 0;
+  &.barcode {
+    border: 0;
+    text-align: center;
+  }
 }
 .btn-passbook {
   @include img-retina("../images/passbook-hero-small.png", "../images/passbook-hero-big.png", 32px, 32px);

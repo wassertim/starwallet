@@ -16,13 +16,13 @@
     savePin: function () {
       var that = this;
       that.isSaving = true;
-      this.cardService.savePin(this.card.pinCode, this.card.number, this.$state.params.userId).then(function () {
+      this.cardService.savePin(this.card.data.pin, this.card.data.number, this.$state.params.userId).then(function () {
         that.isSaving = false;
         that.barcodeUrl = that.getBarcodeUrl(that.card);
       });
     },
     getBarcodeUrl: function (card) {
-      if (card.pinCode) {
+      if (card.data.pin) {
         var v = Math.round(Math.random() * 1000000000);
         return routes.BarCode.cardBarCode(this.$state.params.number, this.$state.params.userId).url + "?v=" + v;
       } else {
