@@ -21,7 +21,7 @@ class RegistrationService extends common.RegistrationService {
 
   def randomAnswer = {
     val random = new Random()
-    random.nextString(12)
+    Math.abs(random.nextLong()).toString
   }
   def getParams(authInfo: RegistrationInfo, registrationDoc: Document) = {
     def fromField(value: String) = Seq(registrationDoc.getElementsByAttributeValue("name", value).`val`)

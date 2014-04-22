@@ -47,7 +47,14 @@ CREATE TABLE transactions (
     balance decimal not null
 );
 
-
+CREATE TABLE user_settings (
+  user_id bigint NOT NULL,
+  phone varchar(20),
+  first_name varchar(50),
+  last_name varchar(50),
+  email_domain varchar(128),
+  PRIMARY KEY (user_id)
+);
 
 # --- !Downs
 
