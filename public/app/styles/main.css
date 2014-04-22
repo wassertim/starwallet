@@ -6388,7 +6388,12 @@ body {
   margin: 0 10px 0 0; }
   .thumbnail.barcode {
     border: 0;
-    text-align: center; }
+    text-align: center;
+    font-size: 1.3em; }
+    .thumbnail.barcode .card-number {
+      margin: 5px;
+      letter-spacing: 10px;
+      display: inline-block; }
 
 .btn-passbook {
   background-image: url("../images/passbook-hero-small.png");

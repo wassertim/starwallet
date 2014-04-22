@@ -2,17 +2,23 @@
   <div class="page-header">
     <h4>
       Starbucks Card
-      <span class="pull-right">{{vm.card.balance}} rub.</span>
+      <span class="pull-right">
+        {{vm.card.balance}} rub.
+
+      </span>
     </h4>
   </div>
   <div class="row">
     <div class="col-md-12">
       <div class="thumbnail barcode">
         <img ng-src="{{vm.barcodeUrl}}"/>
+        <div class="card-number">
         {{vm.card.data.number}}
+        </div><span class="fa fa-info-circle"></span>
       </div>
     </div>
   </div>
+
   <div class="row">
     <div class="input-group col-md-3">
       <input class="form-control" type="text" ng-model="vm.card.data.pin"/>

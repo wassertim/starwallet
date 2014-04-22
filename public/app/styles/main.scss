@@ -26,6 +26,13 @@ body {
   &.barcode {
     border: 0;
     text-align: center;
+    font-size: 1.3em;
+    .card-number {
+      margin: 5px;
+
+      letter-spacing: 10px;
+      display: inline-block;
+    }
   }
 }
 .btn-passbook {
