@@ -9,7 +9,8 @@ import play.api.libs.concurrent.Execution.Implicits._
 class Identity @Inject()(
   identityService: service.common.IdentityService,
   starbucks: service.common.Starbucks,
-  registrationService: service.common.RegistrationService
+  registrationService: service.common.RegistrationService,
+  cardService: service.common.CardService
 ) extends BaseController {
 
   def add(userId: Int) = authenticated(parse.json) {
@@ -59,7 +60,9 @@ class Identity @Inject()(
         result =>
           result.fold(
             authInfo => {
-              Ok(Json.generate(identityService.add(acc.auth, userId)))
+              val id = identityService.add(acc.auth, userId)
+              cardService.savePin(acc.card)
+              Ok(Json.generate(id))
             },
             error => {
               BadRequest(error)

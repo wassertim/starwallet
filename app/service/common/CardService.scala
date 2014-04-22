@@ -3,7 +3,9 @@ package service.common
 import model._
 
 trait CardService {
-  def savePin(pinCode: String, number: String)
+  def savePin(pinCode: String, number: String): Unit
+
+  def savePin(card: CardData): Unit = savePin(card.pin, card.number)
 
   def get(number: String, userId: Int): Option[Card]
 
