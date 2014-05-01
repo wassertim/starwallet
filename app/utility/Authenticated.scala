@@ -3,8 +3,7 @@ package utility
 
 import play.api.mvc._
 import play.api.mvc.BodyParsers.parse
-
-
+import play.api.libs.concurrent.Execution.Implicits._
 import scala.concurrent.Future
 import model.User
 import scala.Some

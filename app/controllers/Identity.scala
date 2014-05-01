@@ -1,10 +1,11 @@
 package controllers
 
 import com.google.inject.Inject
-import controllers.common.{Authenticated, BaseController}
+import controllers.common.BaseController
 import com.codahale.jerkson.Json
 import model.{RegistrationInfo, AuthInfo}
 import play.api.libs.concurrent.Execution.Implicits._
+import utility.Authenticated
 
 class Identity @Inject()(
   identityService: service.common.IdentityService,

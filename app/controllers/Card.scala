@@ -1,8 +1,9 @@
 package controllers
 
 import com.google.inject.Inject
-import controllers.common.{Authenticated, BaseController}
+import controllers.common.BaseController
 import com.codahale.jerkson.Json
+import utility.Authenticated
 
 class Card @Inject()(cardService: service.common.CardService) extends BaseController {
   def list(userId: Int) = Authenticated {

@@ -1,11 +1,12 @@
 package controllers
 
 import com.google.inject.Inject
-import play.api.mvc.{BodyParsers, Action, Controller}
+import play.api.mvc.{BodyParsers, Action}
 import service.common._
 import com.codahale.jerkson.Json
 import model._
-import controllers.common.{Authenticated, BaseController}
+import controllers.common.BaseController
+import utility.Authenticated
 
 class User @Inject()(val userService: UserService) extends BaseController {
   def checkAuth = Action {

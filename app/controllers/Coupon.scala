@@ -1,8 +1,9 @@
 package controllers
 
-import controllers.common.{Authenticated, BaseController}
+import controllers.common.BaseController
 import com.google.inject.Inject
 import com.codahale.jerkson.Json
+import utility.Authenticated
 
 class Coupon @Inject()(couponService: service.common.CouponService) extends BaseController {
   def list(userId: Int) = Authenticated {
