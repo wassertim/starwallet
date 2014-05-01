@@ -1,18 +1,17 @@
 package controllers
 
 import com.google.inject.Inject
-import controllers.common.BaseController
+import controllers.common.{BaseController}
 import com.codahale.jerkson.Json
 import service.common._
-import utility.DateTimeUtility
-import org.joda.time.DateTime
+import utility.Authenticated
 
 class Account @Inject()(
       identityService: IdentityService,
       starbucksService: Starbucks,
       accountService: AccountService) extends BaseController {
 
-  def get(id: Int, resync: Boolean) = authenticated {
+  def get(id: Int, resync: Boolean) = Authenticated {
     identity =>
       request =>
         getAccount(id, identity.userId, resync)

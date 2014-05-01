@@ -1,18 +1,18 @@
 package controllers
 
-import controllers.common.BaseController
+import controllers.common.{Authenticated, BaseController}
 import com.google.inject.Inject
 import com.codahale.jerkson.Json
 
 class Coupon @Inject()(couponService: service.common.CouponService) extends BaseController {
-  def list(userId: Int) = authenticated {
+  def list(userId: Int) = Authenticated {
     user =>
       request =>
         val list = couponService.list(userId)
         Ok(Json.generate(list))
   }
 
-  def get(number: String, userId: Int) = authenticated {
+  def get(number: String, userId: Int) = Authenticated {
     user =>
       request =>
         if (user.userId != userId) {

@@ -5,7 +5,7 @@ import play.api.mvc.{BodyParsers, Action, Controller}
 import service.common._
 import com.codahale.jerkson.Json
 import model._
-import controllers.common.BaseController
+import controllers.common.{Authenticated, BaseController}
 
 class User @Inject()(val userService: UserService) extends BaseController {
   def checkAuth = Action {
@@ -29,7 +29,7 @@ class User @Inject()(val userService: UserService) extends BaseController {
 
   }
 
-  def getSettings(userId: Int) = authenticated {
+  def getSettings(userId: Int) = Authenticated {
     user => request =>
       userService.getSettings(userId) match {
         case Some(settings) =>
@@ -38,7 +38,7 @@ class User @Inject()(val userService: UserService) extends BaseController {
       }
   }
 
-  def saveSettings(userId: Int) = authenticated(parse.json) {
+  def saveSettings(userId: Int) = Authenticated(parse.json) {
     user => request =>
       val settings = Json.parse[UserSettings](request.body.toString())
       userService.saveSettings(settings, userId)

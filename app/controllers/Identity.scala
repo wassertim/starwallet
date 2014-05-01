@@ -13,7 +13,7 @@ class Identity @Inject()(
   cardService: service.common.CardService
 ) extends BaseController {
 
-  def add(userId: Int) = authenticated(parse.json) {
+  def add(userId: Int) = Authenticated(parse.json) {
     identity => request =>
       val authInfo = Json.parse[AuthInfo](request.body.toString())
       starbucks.authenticate(authInfo).fold(
@@ -26,7 +26,7 @@ class Identity @Inject()(
       )
   }
 
-  def update(userId: Int) = authenticated(parse.json) {
+  def update(userId: Int) = Authenticated(parse.json) {
     identity => request =>
       val authInfo = Json.parse[AuthInfo](request.body.toString())
       starbucks.authenticate(authInfo).fold(
@@ -39,7 +39,7 @@ class Identity @Inject()(
       )
   }
 
-  def get(id: Int, userId: Int) = authenticated {
+  def get(id: Int, userId: Int) = Authenticated {
     identity => request =>
       identityService.get(id, identity.userId) match {
         case Some(authInfo) => Ok(Json.generate(authInfo))
@@ -47,7 +47,7 @@ class Identity @Inject()(
       }
   }
 
-  def remove(id: Int, userId: Int) = authenticated {
+  def remove(id: Int, userId: Int) = Authenticated {
     identity => request =>
       identityService.remove(id, identity.userId)
       Ok("ok")
@@ -71,7 +71,7 @@ class Identity @Inject()(
       }
 
   }
-  def list(userId: Int) = authenticated {
+  def list(userId: Int) = Authenticated {
     identity => request =>
       if (identity.userId == userId)
         Ok(Json.generate(identityService.list(userId)))

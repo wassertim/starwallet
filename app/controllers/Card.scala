@@ -1,11 +1,11 @@
 package controllers
 
 import com.google.inject.Inject
-import controllers.common.BaseController
+import controllers.common.{Authenticated, BaseController}
 import com.codahale.jerkson.Json
 
 class Card @Inject()(cardService: service.common.CardService) extends BaseController {
-  def list(userId: Int) = authenticated {
+  def list(userId: Int) = Authenticated {
     identity =>
       request =>
         if (identity.userId == userId) {
@@ -16,7 +16,7 @@ class Card @Inject()(cardService: service.common.CardService) extends BaseContro
         }
   }
 
-  def get(number: String, userId: Int) = authenticated {
+  def get(number: String, userId: Int) = Authenticated {
     user =>
       request =>
         if (userId != user.userId) {
@@ -30,7 +30,7 @@ class Card @Inject()(cardService: service.common.CardService) extends BaseContro
 
   }
 
-  def savePin(number: String, userId: Int) = authenticated(parse.json) {
+  def savePin(number: String, userId: Int) = Authenticated(parse.json) {
     user =>
       request =>
         cardService.get(number, userId) match {

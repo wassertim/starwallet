@@ -1,20 +1,12 @@
 package controllers
 
 import com.google.inject.Inject
-import play.api.mvc.{Action, Controller}
-import org.krysalis.barcode4j.impl.pdf417._
-import java.io.ByteArrayOutputStream
-import java.awt.Color
-import org.krysalis.barcode4j.output.java2d.Java2DCanvasProvider
-import java.awt.image.BufferedImage
-import javax.imageio.ImageIO
 import controllers.common.BaseController
-import org.krysalis.barcode4j.BarcodeDimension
-import utility.BarCodeUtility
+import utility.{Authenticated, BarCodeUtility}
 
 class BarCode @Inject()(cardService: service.common.CardService) extends BaseController {
 
-  def cardBarCode(number: String, userId: Int) = authenticated {
+  def cardBarCode(number: String, userId: Int) = Authenticated {
     user =>
       request =>
         cardService.get(number, userId) match {
