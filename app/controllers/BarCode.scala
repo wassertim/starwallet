@@ -5,7 +5,6 @@ import controllers.common.BaseController
 import utility.{Authorized, BarCodeUtility}
 
 class BarCode @Inject()(cardService: service.common.CardService) extends BaseController {
-
   def cardBarCode(number: String, userId: Int) = Authorized(userIds = Seq(userId), roles = Seq("admin")) {
     request =>
       cardService.get(number, userId) match {
