@@ -93,4 +93,8 @@ class IdentityService extends BaseService with service.common.IdentityService {
         update(auth, userId)
     }
   }
+
+  override def getOwnerId(identityId: Int): Int = database withDynSession {
+    sql"select user_id from identities where id = ${identityId}".as[Int].first
+  }
 }

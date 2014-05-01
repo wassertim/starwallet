@@ -10,6 +10,23 @@ import play.api.mvc.SimpleResult
 import com.codahale.jerkson.Json
 
 class AuthenticatedRequest[A](val user: User, request: Request[A]) extends WrappedRequest[A](request)
+
+object Authorized {
+  def apply(userIds: Seq[Int] = Nil, roles: Seq[String] = Nil)(f: AuthenticatedRequest[AnyContent] => SimpleResult): EssentialAction =
+    apply(parse.anyContent)(userIds, roles)(f)
+
+
+  def apply[A](bp: BodyParser[A])(userIds: Seq[Int] = Nil, roles: Seq[String] = Nil)(f: AuthenticatedRequest[A] => SimpleResult) =
+    Authenticated(bp) {
+      request =>
+        if ((userIds.isEmpty || userIds.contains(request.user.userId)) && (roles.isEmpty || roles.contains(request.user.role))) {
+          f(request)
+        } else {
+          Results.Unauthorized("You are not authorized for this request")
+        }
+    }
+}
+
 object Authenticated {
   def apply(f: AuthenticatedRequest[AnyContent] => SimpleResult): EssentialAction =
     apply(parse.anyContent)(f)

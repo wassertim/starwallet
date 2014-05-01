@@ -15,4 +15,6 @@ class IdentityService extends service.common.IdentityService {
   override def remove(id: Int, userId: Int): Unit = ???
 
   override def encryptAllPasswords: Unit = ???
+
+  override def getOwnerId(identityId: Int): Int = ???
 }

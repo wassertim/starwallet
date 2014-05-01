@@ -3,6 +3,8 @@ package service.common
 import model._
 
 trait IdentityService {
+  def getOwnerId(identityId: Int): Int
+
   def remove(id: Int, userId: Int)
 
   def update(auth: AuthInfo, userId: Int)

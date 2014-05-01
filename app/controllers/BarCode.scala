@@ -2,11 +2,11 @@ package controllers
 
 import com.google.inject.Inject
 import controllers.common.BaseController
-import utility.{Authenticated, BarCodeUtility}
+import utility.{Authorized, BarCodeUtility}
 
 class BarCode @Inject()(cardService: service.common.CardService) extends BaseController {
 
-  def cardBarCode(number: String, userId: Int) = Authenticated {
+  def cardBarCode(number: String, userId: Int) = Authorized(userIds = Seq(userId), roles = Seq("admin")) {
     request =>
       cardService.get(number, userId) match {
         case Some(card) =>

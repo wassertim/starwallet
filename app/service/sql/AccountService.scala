@@ -8,7 +8,7 @@ import model._
 import org.joda.time.DateTime
 
 class AccountService(cardService: service.common.CardService) extends common.BaseService with service.common.AccountService {
-  def get(id: Int) = database withDynSession {
+  def get(id: Int, userId: Int) = database withDynSession {
     implicit val getAccount = GetResult(r => StarbucksAccount(r.<<, r.<<, cardService.listByIdentity(id), getCoupons(id), r.<<))
     sql"""
       select
@@ -19,7 +19,7 @@ class AccountService(cardService: service.common.CardService) extends common.Bas
         identities i
       inner join accounts a on a.identity_id = i.id
       where
-        i.id = ${id};
+        i.id = ${id} and i.user_id = ${userId};
     """.as[StarbucksAccount[CardListItem]].firstOption
   }
 
