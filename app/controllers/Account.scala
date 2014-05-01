@@ -7,14 +7,13 @@ import service.common._
 import utility.Authenticated
 
 class Account @Inject()(
-      identityService: IdentityService,
-      starbucksService: Starbucks,
-      accountService: AccountService) extends BaseController {
+  identityService: IdentityService,
+  starbucksService: Starbucks,
+  accountService: AccountService) extends BaseController {
 
   def get(id: Int, resync: Boolean) = Authenticated {
-    identity =>
-      request =>
-        getAccount(id, identity.userId, resync)
+    request =>
+      getAccount(id, request.user.userId, resync)
   }
 
   private def getAccount(id: Int, userId: Int, resync: Boolean) = {

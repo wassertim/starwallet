@@ -31,7 +31,7 @@ class User @Inject()(val userService: UserService) extends BaseController {
   }
 
   def getSettings(userId: Int) = Authenticated {
-    user => request =>
+    request =>
       userService.getSettings(userId) match {
         case Some(settings) =>
           Ok(Json.generate(settings))
@@ -40,20 +40,22 @@ class User @Inject()(val userService: UserService) extends BaseController {
   }
 
   def saveSettings(userId: Int) = Authenticated(parse.json) {
-    user => request =>
+    request =>
       val settings = Json.parse[UserSettings](request.body.toString())
       userService.saveSettings(settings, userId)
       Ok("ok")
   }
+
   def signOut = Action {
     request =>
       Ok("").withNewSession
   }
+
   def signUp = Action(BodyParsers.parse.json) {
     request =>
       val user = Json.parse[Login](request.body.toString())
       userService.register(user, userId => {
-        val identity = User(userId, user.userName, true)
+        val identity = User(userId, user.userName, isAuthenticated = true)
         Ok(Json.generate(identity)).withSession("identity" -> Json.generate(identity))
       }, errorMessage => {
         BadRequest(errorMessage)

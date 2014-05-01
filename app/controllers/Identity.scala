@@ -8,18 +8,18 @@ import play.api.libs.concurrent.Execution.Implicits._
 import utility.Authenticated
 
 class Identity @Inject()(
-  identityService: service.common.IdentityService,
-  starbucks: service.common.Starbucks,
-  registrationService: service.common.RegistrationService,
-  cardService: service.common.CardService
-) extends BaseController {
+                          identityService: service.common.IdentityService,
+                          starbucks: service.common.Starbucks,
+                          registrationService: service.common.RegistrationService,
+                          cardService: service.common.CardService
+                          ) extends BaseController {
 
   def add(userId: Int) = Authenticated(parse.json) {
-    identity => request =>
+    request =>
       val authInfo = Json.parse[AuthInfo](request.body.toString())
       starbucks.authenticate(authInfo).fold(
         page => {
-          val id = identityService.add(authInfo, identity.userId)
+          val id = identityService.add(authInfo, request.user.userId)
           Ok(Json.generate(id))
         },
         error =>
@@ -28,11 +28,11 @@ class Identity @Inject()(
   }
 
   def update(userId: Int) = Authenticated(parse.json) {
-    identity => request =>
+    request =>
       val authInfo = Json.parse[AuthInfo](request.body.toString())
       starbucks.authenticate(authInfo).fold(
         success => {
-          identityService.update(authInfo, identity.userId)
+          identityService.update(authInfo, request.user.userId)
           Ok("ok")
         },
         error =>
@@ -41,21 +41,21 @@ class Identity @Inject()(
   }
 
   def get(id: Int, userId: Int) = Authenticated {
-    identity => request =>
-      identityService.get(id, identity.userId) match {
+    request =>
+      identityService.get(id, request.user.userId) match {
         case Some(authInfo) => Ok(Json.generate(authInfo))
         case _ => BadRequest("Could not find auth info")
       }
   }
 
   def remove(id: Int, userId: Int) = Authenticated {
-    identity => request =>
-      identityService.remove(id, identity.userId)
+    request =>
+      identityService.remove(id, request.user.userId)
       Ok("ok")
   }
 
   def register(userId: Int) = Authenticated.async(parse.json) {
-    user => request =>
+    request =>
       val acc = Json.parse[RegistrationInfo](request.body.toString())
       registrationService.register(acc).map {
         result =>
@@ -72,9 +72,10 @@ class Identity @Inject()(
       }
 
   }
+
   def list(userId: Int) = Authenticated {
-    identity => request =>
-      if (identity.userId == userId)
+    request =>
+      if (request.user.userId == userId)
         Ok(Json.generate(identityService.list(userId)))
       else
         BadRequest("You are not authorized to view the accounts of the user.")
