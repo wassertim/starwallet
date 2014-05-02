@@ -6,7 +6,8 @@ import service.common._
 import com.codahale.jerkson.Json
 import model._
 import controllers.common.BaseController
-import utility.Authenticated
+import utility.{Authorized, JsonResults, Authenticated}
+import JsonResults._
 
 class User @Inject()(val userService: UserService) extends BaseController {
   def checkAuth = Action {
@@ -22,15 +23,15 @@ class User @Inject()(val userService: UserService) extends BaseController {
     request =>
       val user = Json.parse[Login](request.body.toString())
       val identity = userService.authenticate(user)
-      val ok = Ok(Json.generate(identity))
+      val result = json(identity)
       if (identity.isAuthenticated)
-        ok.withSession("identity" -> Json.generate(identity))
+        result.withSession("identity" -> Json.generate(identity))
       else
-        ok
+        result
 
   }
 
-  def getSettings(userId: Int) = Authenticated {
+  def getSettings(userId: Int) = Authorized(Seq(userId), roles = Seq("admin")) {
     request =>
       userService.getSettings(userId) match {
         case Some(settings) =>
@@ -39,7 +40,7 @@ class User @Inject()(val userService: UserService) extends BaseController {
       }
   }
 
-  def saveSettings(userId: Int) = Authenticated(parse.json) {
+  def saveSettings(userId: Int) = Authorized(parse.json)(Seq(userId), roles = Seq("admin")) {
     request =>
       val settings = Json.parse[UserSettings](request.body.toString())
       userService.saveSettings(settings, userId)
@@ -47,7 +48,6 @@ class User @Inject()(val userService: UserService) extends BaseController {
   }
 
   def signOut = Action {
-    request =>
       Ok("").withNewSession
   }
 
@@ -56,7 +56,7 @@ class User @Inject()(val userService: UserService) extends BaseController {
       val user = Json.parse[Login](request.body.toString())
       userService.register(user, userId => {
         val identity = User(userId, user.userName, isAuthenticated = true)
-        Ok(Json.generate(identity)).withSession("identity" -> Json.generate(identity))
+        json(identity).withSession("identity" -> Json.generate(identity))
       }, errorMessage => {
         BadRequest(errorMessage)
       })

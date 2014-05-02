@@ -9,13 +9,13 @@ class Card @Inject()(cardService: service.common.CardService) extends BaseContro
 
   def list(userId: Int) = Authorized(userIds = Seq(userId), roles = Seq("admin")) {
     request =>
-      ok(cardService.listByUser(userId))
+      json(cardService.listByUser(userId))
   }
 
   def get(number: String, userId: Int) = Authorized(userIds = Seq(userId), roles = Seq("admin")) {
     request =>
       cardService.get(number, userId) match {
-        case Some(card) => ok(card)
+        case Some(card) => json(card)
         case _ => BadRequest("Could not find the card")
       }
   }

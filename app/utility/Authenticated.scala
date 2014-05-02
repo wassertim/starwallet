@@ -19,15 +19,24 @@ object Authorized {
   def apply[A](bp: BodyParser[A])(userIds: Seq[Int] = Nil, roles: Seq[String] = Nil)(f: AuthenticatedRequest[A] => SimpleResult) =
     Authenticated(bp) {
       request =>
-        if ((userIds.isEmpty || userIds.contains(request.user.userId)) && (roles.isEmpty || roles.contains(request.user.role))) {
+        if ((userIds.isEmpty || userIds.contains(request.user.userId)) || (roles.contains(request.user.role))) {
           f(request)
         } else {
           Results.Unauthorized("You are not authorized for this request")
         }
     }
-}
 
-object Authenticated {
+  def async[A](bp: BodyParser[A])(userIds: Seq[Int] = Nil, roles: Seq[String] = Nil)(f: AuthenticatedRequest[A] => Future[SimpleResult]) =
+    Authenticated.async(bp) {
+      request =>
+        if ((userIds.isEmpty || userIds.contains(request.user.userId)) && (roles.isEmpty || roles.contains(request.user.role))) {
+          f(request)
+        } else {
+          Future(Results.Unauthorized("You are not authorized for this request"))
+        }
+    }
+}
+trait Auth {
   def apply(f: AuthenticatedRequest[AnyContent] => SimpleResult): EssentialAction =
     apply(parse.anyContent)(f)
 
@@ -38,8 +47,9 @@ object Authenticated {
         case Some(id) => f(new AuthenticatedRequest[A](id, request))
         case _ => play.api.mvc.Results.Unauthorized
       }
-
   }
+
+  def apply(f: => SimpleResult): EssentialAction = apply(_ => f)
 
   def async(f: AuthenticatedRequest[AnyContent] => Future[SimpleResult]): EssentialAction = {
     async(parse.anyContent)(f)
@@ -60,4 +70,7 @@ object Authenticated {
       case _ => None
     }
   }
+}
+object Authenticated extends Auth {
+
 }

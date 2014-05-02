@@ -5,16 +5,17 @@ import controllers.common.BaseController
 import com.codahale.jerkson.Json
 import model.{RegistrationInfo, AuthInfo}
 import play.api.libs.concurrent.Execution.Implicits._
-import utility.Authenticated
+import utility.JsonResults._
+import utility.Authorized
 
 class Identity @Inject()(
-                          identityService: service.common.IdentityService,
-                          starbucks: service.common.Starbucks,
-                          registrationService: service.common.RegistrationService,
-                          cardService: service.common.CardService
-                          ) extends BaseController {
+  identityService: service.common.IdentityService,
+  starbucks: service.common.Starbucks,
+  registrationService: service.common.RegistrationService,
+  cardService: service.common.CardService
+  ) extends BaseController {
 
-  def add(userId: Int) = Authenticated(parse.json) {
+  def add(userId: Int) = Authorized(parse.json)(Seq(userId), roles = Seq("admin")) {
     request =>
       val authInfo = Json.parse[AuthInfo](request.body.toString())
       starbucks.authenticate(authInfo).fold(
@@ -27,7 +28,7 @@ class Identity @Inject()(
       )
   }
 
-  def update(userId: Int) = Authenticated(parse.json) {
+  def update(userId: Int) = Authorized(parse.json)(Seq(userId), roles = Seq("admin")) {
     request =>
       val authInfo = Json.parse[AuthInfo](request.body.toString())
       starbucks.authenticate(authInfo).fold(
@@ -40,21 +41,22 @@ class Identity @Inject()(
       )
   }
 
-  def get(id: Int, userId: Int) = Authenticated {
+
+  def get(id: Int, userId: Int) = Authorized(Seq(userId), roles = Seq("admin")) {
     request =>
-      identityService.get(id, request.user.userId) match {
+      identityService.get(id, userId) match {
         case Some(authInfo) => Ok(Json.generate(authInfo))
         case _ => BadRequest("Could not find auth info")
       }
   }
 
-  def remove(id: Int, userId: Int) = Authenticated {
+  def remove(id: Int, userId: Int) = Authorized(Seq(userId), roles = Seq("admin")) {
     request =>
-      identityService.remove(id, request.user.userId)
+      identityService.remove(id, userId)
       Ok("ok")
   }
 
-  def register(userId: Int) = Authenticated.async(parse.json) {
+  def register(userId: Int) = Authorized.async(parse.json)(Seq(userId), roles = Seq("admin")) {
     request =>
       val acc = Json.parse[RegistrationInfo](request.body.toString())
       registrationService.register(acc).map {
@@ -63,22 +65,18 @@ class Identity @Inject()(
             authInfo => {
               val id = identityService.add(acc.auth, userId)
               cardService.savePin(acc.card)
-              Ok(Json.generate(id))
+              json(id)
             },
             error => {
               BadRequest(error)
             }
           )
       }
-
   }
 
-  def list(userId: Int) = Authenticated {
+  def list(userId: Int) = Authorized(Seq(userId), roles = Seq("admin")) {
     request =>
-      if (request.user.userId == userId)
-        Ok(Json.generate(identityService.list(userId)))
-      else
-        BadRequest("You are not authorized to view the accounts of the user.")
+      json(identityService.list(userId))
   }
 
 }

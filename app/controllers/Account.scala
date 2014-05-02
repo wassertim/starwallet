@@ -32,7 +32,7 @@ class Account @Inject()(
     }
     else {
       accountService.get(id, userId) match {
-        case Some(cachedAccount) => ok(cachedAccount)
+        case Some(cachedAccount) => json(cachedAccount)
         case _ => 
           if (recursionCounter == 0) BadRequest("Could not find the account")
           else getAccount(resync = true, id, userId, recursionCounter-1)
