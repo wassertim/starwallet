@@ -18,6 +18,7 @@ libraryDependencies ++= Seq(
   "com.yuvimasory" % "jerkson_2.10" % "0.6.1",
   "com.typesafe.slick" % "slick_2.10" % "2.0.1",
   "org.mindrot" % "jbcrypt" % "0.3m",
+  "javax.mail" % "mail" % "1.4.7",
   "net.sf.barcode4j" % "barcode4j" % "2.1"
 )     
 
