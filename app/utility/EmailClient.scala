@@ -36,7 +36,7 @@ class EmailClient(userName: String, password: String) {
   private def findContentsFor(email: String) = {
     (for {
       message <- mailBox.getMessages
-      recepient <- message.getRecipients(RecipientType.TO) if recepient.toString.contains(email)
+      recipient <- message.getRecipients(RecipientType.TO) if recipient.toString.contains(email)
     } yield message.getContent).map {
       case multiPart: Multipart => handleMultipart(multiPart)
       case _ => ""

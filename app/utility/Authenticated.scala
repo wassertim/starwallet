@@ -12,14 +12,15 @@ import com.codahale.jerkson.Json
 class AuthenticatedRequest[A](val user: User, request: Request[A]) extends WrappedRequest[A](request)
 
 object Authorized {
+  def isValid(userIds: Seq[Int], roles: Seq[String], user: User) = (userIds.isEmpty || userIds.contains(user.userId)) || roles.contains(user.role)
+
   def apply(userIds: Seq[Int] = Nil, roles: Seq[String] = Nil)(f: AuthenticatedRequest[AnyContent] => SimpleResult): EssentialAction =
     apply(parse.anyContent)(userIds, roles)(f)
-
 
   def apply[A](bp: BodyParser[A])(userIds: Seq[Int] = Nil, roles: Seq[String] = Nil)(f: AuthenticatedRequest[A] => SimpleResult) =
     Authenticated(bp) {
       request =>
-        if ((userIds.isEmpty || userIds.contains(request.user.userId)) || (roles.contains(request.user.role))) {
+        if (isValid(userIds, roles, request.user)) {
           f(request)
         } else {
           Results.Unauthorized("You are not authorized for this request")
@@ -29,17 +30,20 @@ object Authorized {
   def async[A](bp: BodyParser[A])(userIds: Seq[Int] = Nil, roles: Seq[String] = Nil)(f: AuthenticatedRequest[A] => Future[SimpleResult]) =
     Authenticated.async(bp) {
       request =>
-        if ((userIds.isEmpty || userIds.contains(request.user.userId)) && (roles.isEmpty || roles.contains(request.user.role))) {
+        if (isValid(userIds, roles, request.user)) {
           f(request)
         } else {
           Future(Results.Unauthorized("You are not authorized for this request"))
         }
     }
+
+  def async(userIds: Seq[Int] = Nil, roles: Seq[String] = Nil)(f: AuthenticatedRequest[AnyContent] => Future[SimpleResult]): EssentialAction =
+    async(parse.anyContent)(userIds, roles)(f)
 }
-trait Auth {
+
+object Authenticated {
   def apply(f: AuthenticatedRequest[AnyContent] => SimpleResult): EssentialAction =
     apply(parse.anyContent)(f)
-
 
   def apply[A](bp: BodyParser[A])(f: AuthenticatedRequest[A] => SimpleResult) = Action(bp) {
     implicit request =>
@@ -70,7 +74,4 @@ trait Auth {
       case _ => None
     }
   }
-}
-object Authenticated extends Auth {
-
 }

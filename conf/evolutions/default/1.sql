@@ -54,6 +54,7 @@ create TABLE accounts (
   identity_id bigint(20),
   stars_count bigint(20),
   sync_date timestamp,
+  email varchar(64),
   PRIMARY KEY (identity_id)
 );
 

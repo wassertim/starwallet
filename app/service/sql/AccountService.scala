@@ -9,12 +9,13 @@ import org.joda.time.DateTime
 
 class AccountService(cardService: service.common.CardService) extends common.BaseService with service.common.AccountService {
   def get(id: Int, userId: Int) = database withDynSession {
-    implicit val getAccount = GetResult(r => StarbucksAccount(r.<<, r.<<, cardService.listByIdentity(id), getCoupons(id), r.<<))
+    implicit val getAccount = GetResult(r => StarbucksAccount(r.<<, r.<<, cardService.listByIdentity(id), getCoupons(id), r.<<, r.<<))
     sql"""
       select
         i.user_name,
         a.stars_count,
-        a.sync_date
+        a.sync_date,
+        a.email
       from
         identities i
       inner join accounts a on a.identity_id = i.id
@@ -70,8 +71,8 @@ class AccountService(cardService: service.common.CardService) extends common.Bas
     """.execute
     } else {
       sqlu"""
-        insert into accounts(identity_id, stars_count, sync_date)
-        values(${id}, ${account.starsCount}, ${account.syncDate})
+        insert into accounts(identity_id, stars_count, sync_date, email)
+        values(${id}, ${account.starsCount}, ${account.syncDate}, ${account.email})
       """.execute
     }
     syncCards(account.cards, id)

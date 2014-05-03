@@ -11,18 +11,20 @@ import play.api.libs.concurrent.Execution.Implicits._
 
 import scala.concurrent.duration.Duration
 import java.util.concurrent.TimeUnit
-import scala.concurrent.Await
+import scala.concurrent.{Future, Await}
 import scala.util.Random
+import java.net.URLEncoder.encode
 
 class RegistrationService extends common.RegistrationService {
 
   val mainUrl = "https://cabinet.plas-tek.ru/default.aspx?style=starbucks"
-  val registrationUrl = s"$mainUrl&registration=true"
+  val regUrl = s"$mainUrl&registration=true"
 
   def randomAnswer = {
     val random = new Random()
     Math.abs(random.nextLong()).toString
   }
+
   def getParams(authInfo: RegistrationInfo, registrationDoc: Document) = {
     def fromField(value: String) = Seq(registrationDoc.getElementsByAttributeValue("name", value).`val`)
     Map(
@@ -89,25 +91,33 @@ class RegistrationService extends common.RegistrationService {
   }
 
 
-
+  def activate(url: String) = {
+    WS.url(url).get().map {
+      response =>
+        val result = Jsoup.parse(response.body)
+        val pnlMessage = result.select("#pnlMessage")
+        if (pnlMessage.size() > 0)
+          pnlMessage.text match {
+            case m if m.contains("Регистрация успешно завершена, Ваш личный кабинет активирован") => Left()
+            case m => Right(m)
+          }
+        else
+          Right("unknownError")
+    }
+  }
 
   def register(authInfo: RegistrationInfo) = {
-    val promise = WS.url(registrationUrl).get()
-
+    val promise = WS.url(regUrl).get()
     val pageResponse = Await.result(promise, Duration(20000, TimeUnit.MILLISECONDS))
     val (registrationDoc, cookies) = (Jsoup.parse(pageResponse.body), pageResponse.cookies)
     val params = getParams(authInfo, registrationDoc).map {
       e =>
         val (key, value) = (e._1, e._2.head)
-        s"${key}=${java.net.URLEncoder.encode(value, "UTF-8")}"
+        s"$key=${encode(value, "UTF-8")}"
     }.mkString("&")
     val c = cookies.map(cookie => s"${cookie.name.get}=${cookie.value.get}").mkString("; ")
-    getHeaders(c).foldLeft(WS.url(registrationUrl)) {
-      (requestHolder, header) =>
-        requestHolder.withHeaders(header)
-    }.post(params).map {
-      r =>
-        handleResponse(r)
+    getHeaders(c).foldLeft(WS.url(regUrl))((requestHolder, header) => requestHolder.withHeaders(header)).post(params).map {
+      r => handleResponse(r)
     }
   }
 
@@ -134,10 +144,10 @@ class RegistrationService extends common.RegistrationService {
   def register2(authInfo: RegistrationInfo) = {
     import WS.client
 
-    val pageResponse = client.prepareGet(registrationUrl).execute.get
+    val pageResponse = client.prepareGet(regUrl).execute.get
     val (registrationDoc, cookies) = (Jsoup.parse(pageResponse.getResponseBody), pageResponse.getCookies)
     val cookieString = cookies.map(cookie => s"${cookie.getName}=${cookie.getValue}").mkString("; ")
-    val requestWithParams = getParams(authInfo, registrationDoc).foldLeft(client.preparePost(registrationUrl)) {
+    val requestWithParams = getParams(authInfo, registrationDoc).foldLeft(client.preparePost(regUrl)) {
       (requestBuilder, params) => requestBuilder.addParameter(params._1, params._2.head)
     }
     val requestWithHeaders = getHeaders(cookieString).foldLeft(requestWithParams) {
@@ -152,4 +162,5 @@ class RegistrationService extends common.RegistrationService {
       val text = "no error message"
     }
   }
+
 }
