@@ -26,10 +26,10 @@ class AccountService(cardService: CardService) extends common.BaseService with s
 
   private def syncCards(cards: Seq[Card], id: Int) = database withDynSession {
     import utility.DateTimeUtility._
-    //sqlu"delete from cards where identity_id = ${id};".execute
+    sqlu"delete from cards where identity_id = ${id};".execute
     cards.foreach {
       card =>
-        sqlu"delete from cards where number = ${card.data.number};".execute
+        //sqlu"delete from cards where number = ${card.data.number};".execute
         sqlu"""
         insert into cards(number, balance, is_active, last_transaction_date, identity_id, activation_date, last_update_date)
         values(${card.data.number}, ${card.balance}, ${card.isActive}, ${lastTransactionDate(card.transactions)}, ${id}, ${activationDate(card.transactions)}, ${ts(DateTime.now)})

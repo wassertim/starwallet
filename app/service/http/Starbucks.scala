@@ -19,6 +19,13 @@ class Starbucks extends service.common.http.Starbucks {
   val registrationUrl = s"$mainUrl&registration=true"
 
   def authenticate(authInfo: AuthInfo) = {
+    authenticateInternal(authInfo).fold(
+      page => Left(),
+      message => Right(message)
+    )
+  }
+
+  private def authenticateInternal(authInfo: AuthInfo) = {
     val loginUrl = s"$mainUrl&mainlogin=true"
     val loginPageResponse = WS.client.prepareGet(loginUrl).execute().get()
     val (loginDoc, cookies) = (Jsoup.parse(loginPageResponse.getResponseBody), loginPageResponse.getCookies)
@@ -43,7 +50,6 @@ class Starbucks extends service.common.http.Starbucks {
       case "" => Left(Page(result, cookies))
     }
   }
-
   private def changeScreen(screenName: String, cardsPage: Document, cookies: Seq[Cookie]) = {
     val response = WS.client.preparePost(mainUrl)
       .addParameter("ToolkitScriptManager1_HiddenField", cardsPage.getElementsByAttributeValue("name", "ToolkitScriptManager1_HiddenField").`val`)
@@ -128,7 +134,7 @@ class Starbucks extends service.common.http.Starbucks {
 
   def getAccount(authInfo: AuthInfo): Option[StarbucksAccount[Card]] = {
     val now = new Timestamp(new java.util.Date().getTime)
-    authenticate(authInfo).fold(
+    authenticateInternal(authInfo).fold(
       page => {
         Some(StarbucksAccount(authInfo.userName, starsCount(page.document), cardList(page.document, page.cookies), couponList(page.document, page.cookies), now))
       },

@@ -1,10 +1,7 @@
 package service.fake.pop
 
-/**
- * Created by tim on 12/05/14.
- */
 class EmailClient(login: String, password: String) extends service.common.pop.EmailClient {
-  override def getActivationUrl(toAddress: String): String = ???
+  def getActivationUrl(toAddress: String) = "http://activation.url"
 
-  override def close(): Unit = ???
+  def close() = {}
 }

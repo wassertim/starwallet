@@ -29,7 +29,7 @@ class Identity @Inject()(
     request =>
       val authInfo = Json.parse[AuthInfo](request.body.toString())
       starbucks.authenticate(authInfo).fold(
-        page => {
+        success => {
           val id = identityService.add(authInfo, request.user.userId)
           Ok(Json.generate(id))
         },

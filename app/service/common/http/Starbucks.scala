@@ -5,5 +5,5 @@ import model._
 
 trait Starbucks {
   def getAccount(authInfo: AuthInfo): Option[StarbucksAccount[Card]]
-  def authenticate(authInfo: AuthInfo): Either[Page, AuthError]
+  def authenticate(authInfo: AuthInfo): Either[Unit, AuthError]
 }
