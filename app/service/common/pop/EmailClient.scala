@@ -1,4 +1,4 @@
-package service.common.email
+package service.common.pop
 
 trait EmailClient {
   def getActivationUrl(toAddress: String):String

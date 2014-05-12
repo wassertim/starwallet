@@ -13,14 +13,16 @@ import model.AuthInfo
 import model.RegistrationInfo
 import scala.Some
 import org.joda.time.DateTime
+import service.common.http._
+import service.common.sql._
 
 class Identity @Inject()(
-  identityService: service.common.IdentityService,
-  accountService: service.common.AccountService,
-  starbucks: service.common.Starbucks,
-  registrationService: service.common.RegistrationService,
-  cardService: service.common.CardService,
-  emailClient: service.common.email.EmailClient
+  identityService: IdentityService,
+  accountService: AccountService,
+  starbucks: Starbucks,
+  registrationService: RegistrationService,
+  cardService: CardService,
+  emailClient: service.common.pop.EmailClient
   ) extends BaseController {
 
   def add(userId: Int) = Authorized(parse.json)(Seq(userId), roles = Seq("admin")) {

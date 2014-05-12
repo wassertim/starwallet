@@ -4,8 +4,9 @@ import com.google.inject.Inject
 import controllers.common.BaseController
 import utility.Authorized
 import utility.JsonResults._
+import service.common.sql.CardService
 
-class Card @Inject()(cardService: service.common.CardService) extends BaseController {
+class Card @Inject()(cardService: CardService) extends BaseController {
 
   def list(userId: Int) = Authorized(userIds = Seq(userId), roles = Seq("admin")) {
     request =>

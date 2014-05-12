@@ -1,4 +1,4 @@
-package service.prod
+package service.http
 
 import model._
 import scala.Some
@@ -10,7 +10,7 @@ import scala.collection.JavaConversions._
 import org.jsoup.nodes.{Element, Document}
 import org.joda.time.format.DateTimeFormat
 
-class Starbucks extends service.common.Starbucks {
+class Starbucks extends service.common.http.Starbucks {
 
   import utility.DateTimeUtility.ts
 

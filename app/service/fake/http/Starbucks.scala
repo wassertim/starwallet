@@ -1,10 +1,8 @@
-package service.fake
+package service.fake.http
 
 import model._
-import org.joda.time.DateTime
-import java.sql.Timestamp
 
-class Starbucks extends service.common.Starbucks {
+class Starbucks extends service.common.http.Starbucks {
 
   override def getAccount(authInfo: AuthInfo): Option[StarbucksAccount[Card]] = ???
 

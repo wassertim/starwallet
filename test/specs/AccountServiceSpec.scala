@@ -5,6 +5,8 @@ import com.google.inject.Guice
 import specs.util.InjectionModule
 import service.common._
 import org.krysalis.barcode4j.impl.pdf417.PDF417Bean
+import service.common.http.Starbucks
+import service.common.sql.IdentityService
 
 class AccountServiceSpec extends Specification {
 

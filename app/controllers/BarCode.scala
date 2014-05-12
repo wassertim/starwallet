@@ -3,8 +3,9 @@ package controllers
 import com.google.inject.Inject
 import controllers.common.BaseController
 import utility.{Authorized, BarCodeUtility}
+import service.common.sql.CardService
 
-class BarCode @Inject()(cardService: service.common.CardService) extends BaseController {
+class BarCode @Inject()(cardService: CardService) extends BaseController {
   def cardBarCode(number: String, userId: Int) = Authorized(userIds = Seq(userId), roles = Seq("admin")) {
     request =>
       cardService.get(number, userId) match {

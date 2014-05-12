@@ -1,7 +1,7 @@
-package service.prod
+package service.sql
 
 import model._
-import service.prod.common.BaseService
+import service.sql.common.BaseService
 
 import scala.slick.driver.JdbcDriver.simple._
 import Database.dynamicSession
@@ -9,7 +9,7 @@ import slick.jdbc.{StaticQuery => Q, GetResult}
 import Q.interpolation
 import org.mindrot.jbcrypt.BCrypt
 
-class UserService extends BaseService with service.common.UserService {
+class UserService extends BaseService with service.common.sql.UserService {
 
   def saltedPassword(password: String): String = BCrypt.hashpw(password, BCrypt.gensalt())
 

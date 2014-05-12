@@ -4,8 +4,9 @@ import controllers.common.BaseController
 import com.google.inject.Inject
 import utility.Authorized
 import utility.JsonResults._
+import service.common.sql.CouponService
 
-class Coupon @Inject()(couponService: service.common.CouponService) extends BaseController {
+class Coupon @Inject()(couponService: CouponService) extends BaseController {
   def list(userId: Int) = Authorized(userIds = Seq(userId), roles = Seq("admin")) {
     request =>
       val list = couponService.list(userId)

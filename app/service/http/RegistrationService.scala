@@ -1,4 +1,4 @@
-package service.prod
+package service.http
 
 import org.jsoup.Jsoup
 import play.api.libs.ws.{Response, WS}
@@ -15,7 +15,7 @@ import scala.concurrent.Await
 import scala.util.Random
 import java.net.URLEncoder.encode
 
-class RegistrationService extends service.common.RegistrationService {
+class RegistrationService extends service.common.http.RegistrationService {
 
   val mainUrl = "https://cabinet.plas-tek.ru/default.aspx?style=starbucks"
   val regUrl = s"$mainUrl&registration=true"

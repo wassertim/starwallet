@@ -1,4 +1,4 @@
-package service.prod.common
+package service.sql.common
 
 import play.api.db.DB
 import scala.slick.driver.JdbcDriver.simple._

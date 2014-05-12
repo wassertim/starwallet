@@ -1,6 +1,6 @@
-package service.prod
+package service.sql
 
-import service.prod.common.BaseService
+import service.sql.common.BaseService
 import model._
 
 import scala.slick.driver.JdbcDriver.simple._
@@ -9,7 +9,7 @@ import slick.jdbc.{StaticQuery => Q, GetResult}
 import Q.interpolation
 import play.api.libs.Crypto
 
-class IdentityService extends BaseService with service.common.IdentityService {
+class IdentityService extends BaseService with service.common.sql.IdentityService {
 
 
   def list(userId: Int) = database withDynSession {

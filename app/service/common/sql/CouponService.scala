@@ -1,4 +1,4 @@
-package service.common
+package service.common.sql
 
 import model.Coupon
 

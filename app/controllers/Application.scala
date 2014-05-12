@@ -3,8 +3,9 @@ package controllers
 import play.api.mvc._
 import com.google.inject.Inject
 import play.api.Routes
+import service.common.http.Starbucks
 
-class Application @Inject()(val starbucks: service.common.Starbucks) extends Controller {
+class Application @Inject()(val starbucks: Starbucks) extends Controller {
 
   def index = Action {
     Ok(views.html.index("Your new application is ready."))

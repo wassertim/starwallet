@@ -1,13 +1,13 @@
-package service.prod
+package service.sql
 
-import service.prod.common.BaseService
+import service.sql.common.BaseService
 import scala.slick.driver.JdbcDriver.simple._
 import Database.dynamicSession
 import slick.jdbc.{StaticQuery => Q, GetResult}
 import Q.interpolation
 import model._
 
-class CouponService extends BaseService with service.common.CouponService {
+class CouponService extends BaseService with service.common.sql.CouponService {
   def list(userId: Int): Seq[Coupon] = database withDynSession {
     implicit val getCouponListResult = GetResult(r => Coupon(r.<<, r.<<, r.<<, r.<<, r.<<, r.<<))
     sql"""

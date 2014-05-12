@@ -1,11 +1,11 @@
-package service.prod
+package service.pop
 
 import java.util.Properties
 import javax.mail.{Multipart, Folder, Session}
 import com.sun.mail.pop3.POP3Store
 import javax.mail.Message.RecipientType
 
-class EmailClient(userName: String, password: String) extends service.common.email.EmailClient {
+class EmailClient(userName: String, password: String) extends service.common.pop.EmailClient {
   lazy val emailStore = createEmailStore
   lazy val mailBox = connect()
 

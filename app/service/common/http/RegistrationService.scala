@@ -1,4 +1,4 @@
-package service.common
+package service.common.http
 
 import model._
 import scala.concurrent.Future

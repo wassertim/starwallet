@@ -8,6 +8,7 @@ import model._
 import controllers.common.BaseController
 import utility.{Authorized, JsonResults, Authenticated}
 import JsonResults._
+import service.common.sql.UserService
 
 class User @Inject()(val userService: UserService) extends BaseController {
   def checkAuth = Action {

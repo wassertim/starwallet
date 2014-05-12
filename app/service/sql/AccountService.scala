@@ -1,4 +1,4 @@
-package service.prod
+package service.sql
 
 import scala.slick.driver.JdbcDriver.simple._
 import Database.dynamicSession
@@ -7,7 +7,7 @@ import Q.interpolation
 import model._
 import org.joda.time.DateTime
 
-class AccountService(cardService: service.common.CardService) extends common.BaseService with service.common.AccountService {
+class AccountService(cardService: CardService) extends common.BaseService with service.common.sql.AccountService {
   def get(id: Int, userId: Int) = database withDynSession {
     implicit val getAccount = GetResult(r => StarbucksAccount(r.<<, r.<<, cardService.listByIdentity(id), getCoupons(id), r.<<, r.<<))
     sql"""

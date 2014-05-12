@@ -1,6 +1,6 @@
-package service.prod
+package service.sql
 
-import service.prod.common.BaseService
+import service.sql.common.BaseService
 
 import scala.slick.driver.JdbcDriver.simple._
 import Database.dynamicSession
@@ -8,7 +8,7 @@ import slick.jdbc.{StaticQuery => Q, GetResult}
 import Q.interpolation
 import model._
 
-class CardService extends BaseService with service.common.CardService {
+class CardService extends BaseService with service.common.sql.CardService {
   def listByUser(userId: Int) = database withDynSession {
     implicit val getGardListResult = GetResult(r => CardListItem(r.<<, r.<<, r.<<, r.<<, r.<<, AuthInfo(r.<<, r.<<, "")))
     sql"""

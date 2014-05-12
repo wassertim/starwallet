@@ -2,7 +2,7 @@ package specs
 
 import org.specs2.mutable.Specification
 import utility.closable
-import service.prod.EmailClient
+import service.pop.EmailClient
 
 class EmailTest extends Specification {
   "Test email" should {
