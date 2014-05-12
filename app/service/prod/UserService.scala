@@ -1,7 +1,7 @@
-package service.sql
+package service.prod
 
 import model._
-import service.sql.common.BaseService
+import service.prod.common.BaseService
 
 import scala.slick.driver.JdbcDriver.simple._
 import Database.dynamicSession

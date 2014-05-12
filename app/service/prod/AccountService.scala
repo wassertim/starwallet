@@ -1,4 +1,4 @@
-package service.sql
+package service.prod
 
 import scala.slick.driver.JdbcDriver.simple._
 import Database.dynamicSession

@@ -8,5 +8,5 @@ case class StarbucksAccount[T](
   cards: Seq[T],
   coupons: Seq[Coupon],
   syncDate: Timestamp,
-  email: Option[String]
+  email: Option[String] = None
 )

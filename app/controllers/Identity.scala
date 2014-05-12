@@ -6,7 +6,7 @@ import com.codahale.jerkson.Json
 import model._
 import play.api.libs.concurrent.Execution.Implicits._
 import utility.JsonResults._
-import utility.{DateTimeUtility, EmailClient, Authenticated, Authorized}
+import utility.{DateTimeUtility, Authenticated, Authorized}
 import scala.concurrent.Future
 import model.StarbucksAccount
 import model.AuthInfo
@@ -15,12 +15,13 @@ import scala.Some
 import org.joda.time.DateTime
 
 class Identity @Inject()(
-                          identityService: service.common.IdentityService,
-                          accountService: service.common.AccountService,
-                          starbucks: service.common.Starbucks,
-                          registrationService: service.common.RegistrationService,
-                          cardService: service.common.CardService
-                          ) extends BaseController {
+  identityService: service.common.IdentityService,
+  accountService: service.common.AccountService,
+  starbucks: service.common.Starbucks,
+  registrationService: service.common.RegistrationService,
+  cardService: service.common.CardService,
+  emailClient: service.common.email.EmailClient
+  ) extends BaseController {
 
   def add(userId: Int) = Authorized(parse.json)(Seq(userId), roles = Seq("admin")) {
     request =>
@@ -67,7 +68,6 @@ class Identity @Inject()(
     request =>
       accountService.get(id, userId) match {
         case Some(account) =>
-          val emailClient = new EmailClient("", "")
           Future {
             val activationUrl = emailClient.getActivationUrl(account.email.get)
             registrationService.activate(activationUrl)
@@ -77,7 +77,7 @@ class Identity @Inject()(
 
   }
 
-  def register(userId: Int) = Authorized.async(parse.json)(Seq(userId), roles = Seq("admin")) {
+  def register(userId: Int) = Authorized.async(parse.json)(userIds = Seq(userId), Seq("admin")) {
     request =>
       val acc = Json.parse[RegistrationInfo](request.body.toString())
       registrationService.register(acc).map {
@@ -86,7 +86,7 @@ class Identity @Inject()(
             authInfo => {
               val id = identityService.add(acc.auth, userId)
               cardService.savePin(acc.card)
-              syncAccount(acc, id)
+              //syncAccount(acc, id)
               json(id)
             },
             error => {

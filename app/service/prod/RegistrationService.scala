@@ -1,4 +1,4 @@
-package service
+package service.prod
 
 import org.jsoup.Jsoup
 import play.api.libs.ws.{Response, WS}
@@ -11,11 +11,11 @@ import play.api.libs.concurrent.Execution.Implicits._
 
 import scala.concurrent.duration.Duration
 import java.util.concurrent.TimeUnit
-import scala.concurrent.{Future, Await}
+import scala.concurrent.Await
 import scala.util.Random
 import java.net.URLEncoder.encode
 
-class RegistrationService extends common.RegistrationService {
+class RegistrationService extends service.common.RegistrationService {
 
   val mainUrl = "https://cabinet.plas-tek.ru/default.aspx?style=starbucks"
   val regUrl = s"$mainUrl&registration=true"

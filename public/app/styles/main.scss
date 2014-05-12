@@ -7,10 +7,17 @@ $fa-font-path: "../bower_components/font-awesome/fonts" !default;
 @import "components/list-group";
 @import "components/sidebar";
 
+
 /* Space out content a bit */
 body {
   padding-top: 60px;
   padding-bottom: 20px;
+}
+@media (min-width: 768px) {
+  .modal-dialog {
+    width: auto;
+    margin: 10px;
+  }
 }
 input {
   &.form-control {

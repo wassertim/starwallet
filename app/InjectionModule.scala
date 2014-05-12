@@ -1,5 +1,4 @@
-import service._
-import service.sql._
+import service.prod._
 import com.tzavellas.sse.guice.ScalaModule
 
 class InjectionModule extends ScalaModule {
@@ -11,5 +10,6 @@ class InjectionModule extends ScalaModule {
     bind[service.common.CardService].toInstance(new CardService)
     bind[service.common.CouponService].toInstance(new CouponService)
     bind[service.common.RegistrationService].toInstance(new RegistrationService)
+    bind[service.common.email.EmailClient].toInstance(new EmailClient("", ""))
   }
 }

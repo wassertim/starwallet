@@ -1,4 +1,4 @@
-package service
+package service.prod
 
 import model._
 import scala.Some

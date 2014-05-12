@@ -1,6 +1,6 @@
-package service.sql
+package service.prod
 
-import service.sql.common.BaseService
+import service.prod.common.BaseService
 import model._
 
 import scala.slick.driver.JdbcDriver.simple._

@@ -1,11 +1,11 @@
-package utility
+package service.prod
 
 import java.util.Properties
 import javax.mail.{Multipart, Folder, Session}
 import com.sun.mail.pop3.POP3Store
 import javax.mail.Message.RecipientType
 
-class EmailClient(userName: String, password: String) {
+class EmailClient(userName: String, password: String) extends service.common.email.EmailClient {
   lazy val emailStore = createEmailStore
   lazy val mailBox = connect()
 
@@ -46,8 +46,8 @@ class EmailClient(userName: String, password: String) {
   private def handleMultipart(multiPart: Multipart) = {
     val numberOfParts = multiPart.getCount
     (0 to numberOfParts - 1).map {
-      partCount =>
-        val part = multiPart.getBodyPart(partCount)
+      partIndex =>
+        val part = multiPart.getBodyPart(partIndex)
         val content = if (part.getContent != null) part.getContent.toString else ""
         content
     }.head
