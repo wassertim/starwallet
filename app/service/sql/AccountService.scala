@@ -46,10 +46,10 @@ class AccountService(cardService: CardService) extends common.BaseService with s
   }
 
   def syncCoupons(coupons: Seq[Coupon], id: Int) = database withDynSession {
-    //sqlu"delete from coupons where identity_id = ${id};".execute
+    sqlu"delete from coupons where identity_id = ${id};".execute
     coupons.foreach {
       coupon =>
-        sqlu"delete from coupons where number = ${coupon.number};".execute
+        //sqlu"delete from coupons where number = ${coupon.number};".execute
         sqlu"""
          insert into coupons(number, identity_id, is_active, issue_date, expiration_date, type, url_key)
          values(${coupon.number}, ${id}, ${coupon.isActive}, ${coupon.issueDate}, ${coupon.expirationDate}, ${coupon.couponType}, ${coupon.key})
