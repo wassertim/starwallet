@@ -1,6 +1,6 @@
-'user strict';
+'use strict';
 (function (app) {
-  MainController.$inject = ['$state', 'AuthService'];
+  var dependencies = ['$state', 'AuthService'];
   function MainController($state, authService) {
     authService.checkAuth().then(function (auth) {
       if (auth.isAuthenticated) {
@@ -10,7 +10,7 @@
       }
     });
   }
-
+  MainController.$inject = dependencies;
   app.controller('MainController', MainController);
   return MainController;
 }(angular.module('starwallet')));

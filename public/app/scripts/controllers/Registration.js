@@ -1,12 +1,13 @@
 'use strict';
-(function (app) {
-  RegistrationController.$inject = ['$scope', 'IdentityService', '$state', 'UserService'];
+/*global Chance */
+(function (app, chance) {
+  var dependencies = ['$scope', 'IdentityService', '$state', 'UserService'];
   function RegistrationController($scope, identityService, $state, userService) {
     $scope.vm = this;
     this.$state = $state;
     this.identityService = identityService;
     this.params = $state.params;
-    var chance = new Chance();
+
     var that = this;
     var userName = chance.word({syllables: 3});
     that.acc = {
@@ -21,7 +22,7 @@
       firstName: chance.first(),
       lastName: chance.last()
     };
-    userService.getSettings(this.params['userId']).then(function(settings){
+    userService.getSettings(this.params.userId).then(function(settings){
       that.acc.phoneNumber = settings.phone;
       that.acc.firstName = settings.firstName;
       that.acc.email = userName + '@' + settings.emailDomain;
@@ -34,12 +35,12 @@
       var that = this;
       that.alert = undefined;
       that.isUpdating = true;
-      this.identityService.register(account, this.params['userId']).then(function(accountId){
+      this.identityService.register(account, this.params.userId).then(function(){
         that.isUpdating = false;
         that.alert = {
           type: 'success',
           message: 'The card is successfully registered!'
-        }
+        };
       }, function (response) {
         that.isUpdating = false;
         that.alert = {
@@ -49,6 +50,7 @@
       });
     }
   };
+  RegistrationController.$inject = dependencies;
   app.controller('RegistrationController', RegistrationController);
   return RegistrationController;
-}(angular.module('starwallet')));
+}(angular.module('starwallet'), new Chance()));

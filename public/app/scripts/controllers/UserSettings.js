@@ -1,5 +1,6 @@
+'use strict';
 (function (app) {
-  UserSettingsController.$inject = ['$scope', 'UserService', '$state'];
+  var dependencies = ['$scope', 'UserService', '$state'];
   function UserSettingsController($scope, userService, $state) {
     $scope.vm = this;
     var that = this;
@@ -19,6 +20,7 @@
       });
     }
   };
+  UserSettingsController.$inject = dependencies;
   app.controller('UserSettingsController', UserSettingsController);
   return UserSettingsController;
 }(angular.module('starwallet')));

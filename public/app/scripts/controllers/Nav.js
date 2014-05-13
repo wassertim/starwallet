@@ -1,5 +1,6 @@
+'use strict';
 (function (app) {
-  NavController.$inject = ['$scope', '$state', '$stateParams'];
+  var dependencies = ['$scope', '$state', '$stateParams'];
   function NavController($scope, $state, $stateParams) {
     this.userId = $stateParams.userId;
   }
@@ -7,6 +8,7 @@
   NavController.prototype = {
 
   };
+  NavController.$inject = dependencies;
   app.controller('NavController', NavController);
   return NavController;
 }(angular.module('starwallet')));

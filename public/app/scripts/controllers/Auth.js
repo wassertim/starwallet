@@ -1,6 +1,6 @@
-'user strict';
+'use strict';
 (function (app) {
-  AuthController.$inject = ['$scope', 'AuthService', '$state'];
+  var dependencies = ['$scope', 'AuthService', '$state'];
   function AuthController($scope, authService, $state) {
     $scope.vm = this;
     this.$state = $state;
@@ -47,6 +47,7 @@
       });
     }
   };
+  AuthController.$inject = dependencies;
   app.controller('AuthController', AuthController);
   return AuthController;
 }(angular.module('starwallet')));
