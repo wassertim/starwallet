@@ -41,8 +41,11 @@
       var that = this;
       that.alert = undefined;
       that.isUpdating = true;
+      account.activationEmail = '';
+      account.isActive = false;
       if (!account.id) {
         account.id = 0;
+
         this.identityService.add(account, this.params.userId).then(function (accountId) {
           that.isUpdating = false;
           that.$state.go('withNav.accountList.editAccount', angular.extend(that.params, {accountId: accountId}));

@@ -28,7 +28,8 @@ class Starbucks extends service.common.http.Starbucks {
   }
   private val authErrors = Seq(
     "Ошибка : пользователь не зарегистрирован в системе!",
-    "Ошибка : введено неправильное имя пользователя или пароль."
+    "Ошибка : введено неправильное имя пользователя или пароль.",
+    "Ошибка : личный кабинет не активирован! Пройдите регистрацию до конца, воспользовавшись ссылкой отправленной Вам на e-mail."
   )
   private def authenticateInternal(authInfo: AuthInfo) = {
     val loginUrl = s"$mainUrl&mainlogin=true"
@@ -55,6 +56,7 @@ class Starbucks extends service.common.http.Starbucks {
         case Some(error) => error match {
           case "Ошибка : пользователь не зарегистрирован в системе!" => Right(AuthError("invalid auth data"))
           case "Ошибка : введено неправильное имя пользователя или пароль." => Right(AuthError("invalid auth data"))
+          case "Ошибка : личный кабинет не активирован! Пройдите регистрацию до конца, воспользовавшись ссылкой отправленной Вам на e-mail." => Right(AuthError("not active"))
           case e => Right(AuthError(e))
         }
         case None => Right(AuthError("error"))

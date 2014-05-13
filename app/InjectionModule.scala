@@ -1,5 +1,5 @@
-import service.fake.http._
-import service.fake.pop._
+import service.http._
+import service.pop._
 import service.sql._
 import com.tzavellas.sse.guice.ScalaModule
 
