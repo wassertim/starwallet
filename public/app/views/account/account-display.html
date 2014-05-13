@@ -4,6 +4,7 @@
   </h3>
 </div>
 <div class="alert alert-danger" ng-show="vm.alert">{{vm.alert && vm.alert.message}}</div>
+<button ng-show="vm.identity && !vm.identity.isActive" class="btn btn-primary" ng-click="vm.activate()">Activate</button>
 <div ng-hide="vm.isLoading || vm.alert">
   <div class="page-header">
 

@@ -1,6 +1,7 @@
 'use strict';
 (function (app) {
   var dependencies = ['$scope', 'AuthService', '$state'];
+
   function AuthController($scope, authService, $state) {
     $scope.vm = this;
     this.$state = $state;

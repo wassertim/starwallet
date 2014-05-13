@@ -9,6 +9,8 @@ import com.ning.http.client.Cookie
 import scala.collection.JavaConversions._
 import org.jsoup.nodes.{Element, Document}
 import org.joda.time.format.DateTimeFormat
+import play.api.libs.concurrent.Execution.Implicits._
+import scala.concurrent.Future
 
 class Starbucks extends service.common.http.Starbucks {
 
@@ -24,7 +26,10 @@ class Starbucks extends service.common.http.Starbucks {
       message => Right(message)
     )
   }
-
+  private val authErrors = Seq(
+    "Ошибка : пользователь не зарегистрирован в системе!",
+    "Ошибка : введено неправильное имя пользователя или пароль."
+  )
   private def authenticateInternal(authInfo: AuthInfo) = {
     val loginUrl = s"$mainUrl&mainlogin=true"
     val loginPageResponse = WS.client.prepareGet(loginUrl).execute().get()
@@ -44,10 +49,18 @@ class Starbucks extends service.common.http.Starbucks {
       .addParameter("LoginLinkButtonDynamic", "Войти")
     cookies.map(cookie => authenticatedResponse.addCookie(cookie))
     val result = Jsoup.parse(authenticatedResponse.execute().get.getResponseBody)
-    result.select("#pnlMessage").text.trim match {
-      case "Ошибка : пользователь не зарегистрирован в системе!" => Right(AuthError("invalid auth data"))
-      case "Ошибка : введено неправильное имя пользователя или пароль." => Right(AuthError("invalid auth data"))
-      case "" => Left(Page(result, cookies))
+    val errorMessage = result.select("#pnlMessage").text.trim
+    if (!errorMessage.isEmpty) {
+      authErrors.find(message => errorMessage.contains(message)) match {
+        case Some(error) => error match {
+          case "Ошибка : пользователь не зарегистрирован в системе!" => Right(AuthError("invalid auth data"))
+          case "Ошибка : введено неправильное имя пользователя или пароль." => Right(AuthError("invalid auth data"))
+          case e => Right(AuthError(e))
+        }
+        case None => Right(AuthError("error"))
+      }
+    } else {
+      Left(Page(result, cookies))
     }
   }
   private def changeScreen(screenName: String, cardsPage: Document, cookies: Seq[Cookie]) = {
@@ -141,6 +154,21 @@ class Starbucks extends service.common.http.Starbucks {
       error => None
     )
 
+  }
+
+  def activate(url: String) = {
+    WS.url(url).get().map {
+      response =>
+        val result = Jsoup.parse(response.body)
+        val pnlMessage = result.select("#pnlMessage")
+        if (pnlMessage.size() > 0)
+          pnlMessage.text match {
+            case m if m.contains("Регистрация успешно завершена, Ваш личный кабинет активирован") => Left()
+            case m => Right(m)
+          }
+        else
+          Right("unknownError")
+    }
   }
 }
 

@@ -11,22 +11,33 @@ import play.api.libs.Crypto
 
 class IdentityService extends BaseService with service.common.sql.IdentityService {
 
-
   def list(userId: Int) = database withDynSession {
-    implicit val getAuthInfo = GetResult(r => IdentityListItem(r.<<, r.<<, r.<<, r.<<, r.<<))
+    implicit val getAuthInfo = GetResult(r => IdentityListItem(r.<<, r.<<, r.<<, r.<<, r.<<, r.<<))
     sql"""
       select
         i.id,
         i.user_name,
         a.stars_count,
         (select count(*) from coupons where identity_id = i.id and is_active = true) as coupons_count,
-        a.sync_date
+        a.sync_date,
+        i.is_active
       from
         identities i
       left join accounts a on a.identity_id = i.id
       where
         user_id = ${userId};
     """.as[IdentityListItem].list
+  }
+
+  def register(info: RegistrationInfo, userId: Int): Int = database withDynSession {
+    val encryptedPassword = Crypto.encryptAES(info.auth.password)
+    sqlu"""
+      insert into
+        identities(user_name, password, user_id, activation_email)
+      values
+        (${info.auth.userName}, ${encryptedPassword}, ${userId}, ${info.email});
+    """.execute
+    Q.queryNA[Int](s"select $lastInsertId;").first()
   }
 
   def add(auth: AuthInfo, userId: Int): Int = database withDynSession {
@@ -41,12 +52,14 @@ class IdentityService extends BaseService with service.common.sql.IdentityServic
   }
 
   def get(id: Int, userId: Int): Option[AuthInfo] = database withDynSession {
-    implicit val getAuthInfo = GetResult(r => AuthInfo(r.<<, r.<<, Crypto.decryptAES(r.<<)))
+    implicit val getAuthInfo = GetResult(r => AuthInfo(r.<<, r.<<, Crypto.decryptAES(r.<<), r.<<, r.<<))
     sql"""
       select
         id,
         user_name,
-        password
+        password,
+        activation_email,
+        is_active
       from
         identities
       where
@@ -77,7 +90,7 @@ class IdentityService extends BaseService with service.common.sql.IdentityServic
   }
 
   override def encryptAllPasswords: Unit = database withDynSession {
-    implicit val getRes = GetResult(r => Tuple2[AuthInfo, Int](AuthInfo(r.<<, r.<<, r.<<), r.<<))
+    implicit val getRes = GetResult(r => Tuple2[AuthInfo, Int](AuthInfo(r.<<, r.<<, r.<<, None, false), r.<<))
     val unencryptedList = sql"""
       select
         id,
@@ -97,4 +110,6 @@ class IdentityService extends BaseService with service.common.sql.IdentityServic
   override def getOwnerId(identityId: Int): Int = database withDynSession {
     sql"select user_id from identities where id = ${identityId}".as[Int].first
   }
+
+
 }

@@ -14,7 +14,9 @@
       auth: {
         id: 0,
         userName: userName,
-        password: chance.string({pool:'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', length:12})
+        password: chance.string({pool:'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', length:12}),
+        activationEmail: '',
+        isActive: false
       },
       card: {
         number: 7280
@@ -35,6 +37,8 @@
       var that = this;
       that.alert = undefined;
       that.isUpdating = true;
+      //TODO: this extending should be temporal
+
       this.identityService.register(account, this.params.userId).then(function(){
         that.isUpdating = false;
         that.alert = {

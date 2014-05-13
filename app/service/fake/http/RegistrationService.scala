@@ -8,8 +8,4 @@ class RegistrationService extends service.common.http.RegistrationService {
   override def register(info: RegistrationInfo): Future[Either[Unit, String]] = Future {
     Left()
   }
-
-  override def activate(url: String): Future[Either[Unit, String]] = Future {
-    Left()
-  }
 }

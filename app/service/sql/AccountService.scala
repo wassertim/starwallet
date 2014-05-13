@@ -6,8 +6,10 @@ import slick.jdbc.{StaticQuery => Q, GetResult}
 import Q.interpolation
 import model._
 import org.joda.time.DateTime
+import utility.DateTimeUtility
 
 class AccountService(cardService: CardService) extends common.BaseService with service.common.sql.AccountService {
+
   def get(id: Int, userId: Int) = database withDynSession {
     implicit val getAccount = GetResult(r => StarbucksAccount(r.<<, r.<<, cardService.listByIdentity(id), getCoupons(id), r.<<, r.<<))
     sql"""
@@ -22,39 +24,6 @@ class AccountService(cardService: CardService) extends common.BaseService with s
       where
         i.id = ${id} and i.user_id = ${userId};
     """.as[StarbucksAccount[CardListItem]].firstOption
-  }
-
-  private def syncCards(cards: Seq[Card], id: Int) = database withDynSession {
-    import utility.DateTimeUtility._
-    sqlu"delete from cards where identity_id = ${id};".execute
-    cards.foreach {
-      card =>
-        //sqlu"delete from cards where number = ${card.data.number};".execute
-        sqlu"""
-        insert into cards(number, balance, is_active, last_transaction_date, identity_id, activation_date, last_update_date)
-        values(${card.data.number}, ${card.balance}, ${card.isActive}, ${lastTransactionDate(card.transactions)}, ${id}, ${activationDate(card.transactions)}, ${ts(DateTime.now)})
-       """.execute
-        sqlu"delete from transactions where card_number = ${card.data.number};".execute
-        card.transactions.foreach {
-          transaction =>
-            sqlu"""
-           insert into transactions(card_number, date, place, type, amount, balance)
-           values(${card.data.number}, ${transaction.date}, ${transaction.place}, ${transaction.transactionType}, ${transaction.amount}, ${transaction.balance})
-           """.execute
-        }
-    }
-  }
-
-  def syncCoupons(coupons: Seq[Coupon], id: Int) = database withDynSession {
-    sqlu"delete from coupons where identity_id = ${id};".execute
-    coupons.foreach {
-      coupon =>
-        //sqlu"delete from coupons where number = ${coupon.number};".execute
-        sqlu"""
-         insert into coupons(number, identity_id, is_active, issue_date, expiration_date, type, url_key)
-         values(${coupon.number}, ${id}, ${coupon.isActive}, ${coupon.issueDate}, ${coupon.expirationDate}, ${coupon.couponType}, ${coupon.key})
-        """.execute
-    }
   }
 
   def sync(account: StarbucksAccount[Card], id: Int) = database withDynSession {
@@ -95,6 +64,39 @@ class AccountService(cardService: CardService) extends common.BaseService with s
       where
         identity_id = ${id};
     """.as[Coupon].list
+  }
+
+  private def syncCards(cards: Seq[Card], id: Int) = database withDynSession {
+    import utility.DateTimeUtility._
+    sqlu"delete from cards where identity_id = ${id};".execute
+    cards.foreach {
+      card =>
+        //sqlu"delete from cards where number = ${card.data.number};".execute
+        sqlu"""
+        insert into cards(number, balance, is_active, last_transaction_date, identity_id, activation_date, last_update_date)
+        values(${card.data.number}, ${card.balance}, ${card.isActive}, ${lastTransactionDate(card.transactions)}, ${id}, ${activationDate(card.transactions)}, ${ts(DateTime.now)})
+       """.execute
+        sqlu"delete from transactions where card_number = ${card.data.number};".execute
+        card.transactions.foreach {
+          transaction =>
+            sqlu"""
+           insert into transactions(card_number, date, place, type, amount, balance)
+           values(${card.data.number}, ${transaction.date}, ${transaction.place}, ${transaction.transactionType}, ${transaction.amount}, ${transaction.balance})
+           """.execute
+        }
+    }
+  }
+
+  private def syncCoupons(coupons: Seq[Coupon], id: Int) = database withDynSession {
+    sqlu"delete from coupons where identity_id = ${id};".execute
+    coupons.foreach {
+      coupon =>
+        //sqlu"delete from coupons where number = ${coupon.number};".execute
+        sqlu"""
+         insert into coupons(number, identity_id, is_active, issue_date, expiration_date, type, url_key)
+         values(${coupon.number}, ${id}, ${coupon.isActive}, ${coupon.issueDate}, ${coupon.expirationDate}, ${coupon.couponType}, ${coupon.key})
+        """.execute
+    }
   }
 
 }

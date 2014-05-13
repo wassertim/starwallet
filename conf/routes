@@ -18,6 +18,7 @@ DELETE        /api/u:userId/identity/:id                @controllers.Identity.re
 POST          /api/u:userId/register-new                @controllers.Identity.register(userId: Int)
 # Account
 GET           /api/account/:id                          @controllers.Account.get(id: Int, resync: Boolean)
+GET           /api/u:userId/account/activate/:id        @controllers.Account.activate(id: Int, userId: Int)
 # Card
 GET           /api/u:userId/card                        @controllers.Card.list(userId: Int)
 GET           /api/u:userId/card/:number                @controllers.Card.get(number: String, userId: Int)

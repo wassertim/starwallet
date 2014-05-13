@@ -91,20 +91,7 @@ class RegistrationService extends service.common.http.RegistrationService {
   }
 
 
-  def activate(url: String) = {
-    WS.url(url).get().map {
-      response =>
-        val result = Jsoup.parse(response.body)
-        val pnlMessage = result.select("#pnlMessage")
-        if (pnlMessage.size() > 0)
-          pnlMessage.text match {
-            case m if m.contains("Регистрация успешно завершена, Ваш личный кабинет активирован") => Left()
-            case m => Right(m)
-          }
-        else
-          Right("unknownError")
-    }
-  }
+
 
   def register(authInfo: RegistrationInfo) = {
     val promise = WS.url(regUrl).get()

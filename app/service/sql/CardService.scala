@@ -10,7 +10,7 @@ import model._
 
 class CardService extends BaseService with service.common.sql.CardService {
   def listByUser(userId: Int) = database withDynSession {
-    implicit val getGardListResult = GetResult(r => CardListItem(r.<<, r.<<, r.<<, r.<<, r.<<, AuthInfo(r.<<, r.<<, "")))
+    implicit val getGardListResult = GetResult(r => CardListItem(r.<<, r.<<, r.<<, r.<<, r.<<, AuthInfo(r.<<, r.<<, "", r.<<, r.<<)))
     sql"""
       select
         c.number,
@@ -19,7 +19,9 @@ class CardService extends BaseService with service.common.sql.CardService {
         c.last_transaction_date,
         c.activation_date,
         i.id,
-        i.user_name
+        i.user_name,
+        i.activation_email,
+        i.is_active
       from identities i
       inner join cards c on i.id = c.identity_id
       where
@@ -47,7 +49,7 @@ class CardService extends BaseService with service.common.sql.CardService {
   }
 
   def listByIdentity(id: Int) = database withDynSession {
-    implicit val getCardsResult = GetResult(r => CardListItem(r.<<, r.<<, r.<<, r.<<, r.<<, AuthInfo(id, "", "")))
+    implicit val getCardsResult = GetResult(r => CardListItem(r.<<, r.<<, r.<<, r.<<, r.<<, AuthInfo(id, "", "", None, false)))
     sql"""
       select
         c.number,

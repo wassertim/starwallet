@@ -5,6 +5,7 @@
     $scope.vm = this;
     this.accountService = accountService;
     this.accountId = $state.params.accountId;
+    this.userId = $state.params.userId;
     this.isLoading = false;
     this.get(this.accountId);
     this.showAll = false;
@@ -20,6 +21,8 @@
   AccountDisplayController.prototype = {
     update: function (e) {
       var that = this;
+      that.alert = undefined;
+      that.identity = undefined;
       if (e) {
         e.preventDefault();
       }
@@ -47,18 +50,27 @@
         return {isActive: true};
       }
     },
+    activate: function(){
+      var that = this;
+      this.accountService.activate(this.accountId, this.userId).then(function(){
+        that.update();
+      });
+    },
     get: function (identityId) {
       var that = this;
       this.isLoading = true;
       this.accountService.getByIdentityId(identityId, false).then(function (accountInfo) {
+
         that.activeCouponsCount = that.countActiveCoupons(accountInfo.coupons);
         that.accountInfo = accountInfo;
         that.isLoading = false;
         if ((new Date() - new Date(accountInfo.syncDate)) > 120000) {
           that.update();
         }
-      }, function () {
+      }, function (response) {
+        that.identity = response.data;
         that.isLoading = false;
+        that.showActivationButton = true;
         that.alert = {
           message: 'Could not load the data from Starbucks'
         };

@@ -4,10 +4,9 @@ import com.google.inject.Inject
 import controllers.common.BaseController
 import com.codahale.jerkson.Json
 import model._
-import play.api.libs.concurrent.Execution.Implicits._
 import utility.JsonResults._
-import utility.{DateTimeUtility, Authenticated, Authorized}
-import scala.concurrent.Future
+import play.api.libs.concurrent.Execution.Implicits._
+import utility.{DateTimeUtility, Authorized}
 import model.StarbucksAccount
 import model.AuthInfo
 import model.RegistrationInfo
@@ -17,13 +16,12 @@ import service.common.http._
 import service.common.sql._
 
 class Identity @Inject()(
-  identityService: IdentityService,
-  accountService: AccountService,
-  starbucks: Starbucks,
-  registrationService: RegistrationService,
-  cardService: CardService,
-  emailClient: service.common.pop.EmailClient
-  ) extends BaseController {
+                          identityService: IdentityService,
+                          accountService: AccountService,
+                          starbucks: Starbucks,
+                          registrationService: RegistrationService,
+                          cardService: CardService
+                          ) extends BaseController {
 
   def add(userId: Int) = Authorized(parse.json)(Seq(userId), roles = Seq("admin")) {
     request =>
@@ -66,29 +64,16 @@ class Identity @Inject()(
       Ok("ok")
   }
 
-  def activate(id: Int, userId: Int) = Authenticated.async {
-    request =>
-      accountService.get(id, userId) match {
-        case Some(account) =>
-          Future {
-            val activationUrl = emailClient.getActivationUrl(account.email.get)
-            registrationService.activate(activationUrl)
-            Ok("ok")
-          }
-      }
-
-  }
-
   def register(userId: Int) = Authorized.async(parse.json)(userIds = Seq(userId), Seq("admin")) {
     request =>
-      val acc = Json.parse[RegistrationInfo](request.body.toString())
-      registrationService.register(acc).map {
+      val registrationInfo = Json.parse[RegistrationInfo](request.body.toString())
+      registrationService.register(registrationInfo).map {
         result =>
           result.fold(
             authInfo => {
-              val id = identityService.add(acc.auth, userId)
-              cardService.savePin(acc.card)
-              //syncAccount(acc, id)
+              val id = identityService.register(registrationInfo, userId)
+              //TODO: move to register method
+              cardService.savePin(registrationInfo.card)
               json(id)
             },
             error => {
@@ -96,18 +81,6 @@ class Identity @Inject()(
             }
           )
       }
-  }
-
-  def syncAccount(acc: RegistrationInfo, id: Int) {
-    val account = StarbucksAccount(
-      acc.auth.userName,
-      0,
-      List(Card(acc.card, 0, isActive = true, Nil)),
-      Nil,
-      DateTimeUtility.ts(DateTime.now),
-      Some(acc.email)
-    )
-    accountService.sync(account, id)
   }
 
   def list(userId: Int) = Authorized(Seq(userId), roles = Seq("admin")) {

@@ -14,6 +14,8 @@ create TABLE identities (
     user_id bigint(20) NOT NULL,
     user_name varchar(255) NOT NULL,
     password varchar(255) NOT NULL,
+    is_active bit not null default 0,
+    activation_email varchar(255) NULL,
     PRIMARY KEY (id)
 );
 

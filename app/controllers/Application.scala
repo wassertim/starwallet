@@ -19,6 +19,8 @@ class Application @Inject()(val starbucks: Starbucks) extends Controller {
           routes.javascript.User.checkAuth,
           routes.javascript.User.signIn,
           routes.javascript.User.signOut,
+          routes.javascript.User.saveSettings,
+          routes.javascript.User.getSettings,
           routes.javascript.Identity.add,
           routes.javascript.Identity.get,
           routes.javascript.Identity.list,
@@ -26,14 +28,13 @@ class Application @Inject()(val starbucks: Starbucks) extends Controller {
           routes.javascript.Identity.remove,
           routes.javascript.Identity.register,
           routes.javascript.Account.get,
+          routes.javascript.Account.activate,
           routes.javascript.Card.list,
           routes.javascript.Card.get,
+          routes.javascript.Card.savePin,
           routes.javascript.Coupon.list,
           routes.javascript.Coupon.get,
-          routes.javascript.BarCode.cardBarCode,
-          routes.javascript.Card.savePin,
-          routes.javascript.User.getSettings,
-          routes.javascript.User.saveSettings
+          routes.javascript.BarCode.cardBarCode
         )
       ).as("text/javascript")
   }

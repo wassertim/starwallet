@@ -3,6 +3,8 @@ package service.common.sql
 import model._
 
 trait IdentityService {
+  def register(info: RegistrationInfo, userId: Int): Int
+
   def getOwnerId(identityId: Int): Int
 
   def remove(id: Int, userId: Int)
