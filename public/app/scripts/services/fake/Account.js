@@ -1,6 +1,6 @@
 'use strict';
 (function(app){
-  AccountService.$inject = ['$http', 'PromiseWrapper'];
+  var dependencies = ['$http', 'PromiseWrapper'];
   function AccountService($http, promiseWrapper){
     this.$http = $http;
     this.pw = promiseWrapper;
@@ -53,6 +53,7 @@
       });
     }
   };
+  AccountService.$inject = dependencies;
   app.service('AccountService', AccountService);
   return AccountService;
 }(angular.module('starwallet')));

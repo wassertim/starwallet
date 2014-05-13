@@ -1,6 +1,6 @@
 'use strict';
 (function (app, routes) {
-  IdentityService.$inject = ['$http', 'PromiseWrapper'];
+  var dependencies = ['$http', 'PromiseWrapper'];
   function IdentityService($http, promiseWrapper) {
     this.$http = $http;
     this.pw = promiseWrapper;
@@ -38,6 +38,7 @@
       });
     }
   };
+  IdentityService.$inject = dependencies;
   app.service('IdentityService', IdentityService);
   return IdentityService;
 }(angular.module('starwallet'), jsRoutes.controllers));

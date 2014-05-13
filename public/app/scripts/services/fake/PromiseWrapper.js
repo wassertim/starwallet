@@ -1,5 +1,5 @@
 (function (app) {
-  PromiseWrapper.$inject = ['$q'];
+  var dependencies = ['$q'];
   function PromiseWrapper($q) {
     this.$q = $q;
   }
@@ -11,7 +11,7 @@
       return deferred.promise;
     }
   };
-
+  PromiseWrapper.$inject = dependencies;
   app.service('PromiseWrapper', PromiseWrapper);
   return PromiseWrapper;
 }(angular.module('starwallet')));

@@ -1,5 +1,5 @@
 (function (app, routes) {
-  UserService.$inject = ['$http'];
+  var dependencies = ['$http'];
   function UserService($http) {
     this.$http = $http;
   }
@@ -16,6 +16,7 @@
       });
     }
   };
+  UserService.$inject = dependencies;
   app.service('UserService', UserService);
   return UserService;
 }(angular.module('starwallet'), jsRoutes.controllers));

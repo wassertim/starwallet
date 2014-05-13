@@ -1,5 +1,5 @@
 (function (app, routes) {
-  AuthService.$inject = ['$http', 'PromiseWrapper'];
+  var dependencies = ['$http', 'PromiseWrapper'];
   function AuthService($http, promiseWrapper) {
     this.pw = promiseWrapper;
     this.$http = $http;
@@ -27,6 +27,7 @@
       });
     }
   };
+  AuthService.$inject = dependencies;
   app.service('AuthService', AuthService);
   return AuthService;
 }(angular.module('starwallet'), jsRoutes.controllers));

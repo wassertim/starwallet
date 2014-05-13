@@ -1,5 +1,5 @@
 (function (app, routes) {
-  CouponService.$inject = ['$http'];
+  var dependencies = ['$http'];
   function CouponService($http) {
     this.$http = $http;
   }
@@ -16,6 +16,7 @@
       });
     }
   };
+  CouponService.$inject = dependencies;
   app.service('CouponService', CouponService);
   return CouponService;
 }(angular.module('starwallet'), jsRoutes.controllers));

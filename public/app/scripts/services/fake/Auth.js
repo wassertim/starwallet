@@ -1,5 +1,5 @@
 (function (app) {
-  AuthService.$inject = ['PromiseWrapper'];
+  var dependencies = ['PromiseWrapper'];
   function AuthService(promiseWrapper) {
     this.pw = promiseWrapper;
   }
@@ -47,6 +47,7 @@
       });
     }
   };
+  AuthService.$inject = dependencies;
   app.service('AuthService', AuthService);
   return AuthService;
 }(angular.module('starwallet')));
