@@ -28,16 +28,19 @@ class Account @Inject()(
     request =>
       identityService.get(id, userId) match {
         case Some(account) =>
-          Future {
-            account.activationEmail match {
-              case Some(email) => {
-                val activationUrl = emailClient.getActivationUrl(email)
-                starbucksService.activate(activationUrl)
-                Ok("ok")
+          account.activationEmail match {
+            case Some(email) => {
+              val activationUrl = emailClient.getActivationUrl(email)
+              starbucksService.activate(activationUrl) map {
+                e =>
+                  e.fold(
+                    ok => Ok("ok"),
+                    error => BadRequest(error)
+                  )
               }
-              case None => {
-                BadRequest("This account can not be activated automatically")
-              }
+            }
+            case None => {
+              Future(BadRequest("This account can not be activated automatically"))
             }
           }
       }
