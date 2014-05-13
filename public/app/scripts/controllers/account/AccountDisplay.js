@@ -1,5 +1,6 @@
-(function (app) {
-  AccountDisplayController.$inject = ['$scope', '$stateParams', 'AccountService', '$state'];
+'use strict';
+(function (app, _) {
+  var dependencies = ['$scope', '$stateParams', 'AccountService', '$state'];
   function AccountDisplayController($scope, $stateParams, accountService, $state) {
     $scope.vm = this;
     this.accountService = accountService;
@@ -19,13 +20,15 @@
   AccountDisplayController.prototype = {
     update: function (e) {
       var that = this;
-      e && e.preventDefault();
+      if (e) {
+        e.preventDefault();
+      }
       that.isRefreshing = true;
       this.accountService.getByIdentityId(this.accountId, true).then(function (accountInfo) {
         that.activeCouponsCount = that.countActiveCoupons(accountInfo.coupons);
         that.accountInfo = accountInfo;
         that.isRefreshing = false;
-      }, function (response) {
+      }, function () {
         that.isRefreshing = false;
         that.alert = {
           message: 'Could not load the data from Starbucks'
@@ -54,7 +57,7 @@
         if ((new Date() - new Date(accountInfo.syncDate)) > 120000) {
           that.update();
         }
-      }, function (response) {
+      }, function () {
         that.isLoading = false;
         that.alert = {
           message: 'Could not load the data from Starbucks'
@@ -65,6 +68,7 @@
       return _.filter(coupons, 'isActive').length;
     }
   };
+  AccountDisplayController.$inject = dependencies;
   app.controller('AccountDisplayController', AccountDisplayController);
   return AccountDisplayController;
-}(angular.module('starwallet')));
+}(angular.module('starwallet'), _));

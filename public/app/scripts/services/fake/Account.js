@@ -12,15 +12,15 @@
         return {
           name: accountId,
           password: 'test'
-        }
+        };
       });
     },
-    list: function(userId) {
+    list: function() {
       return this.pw.wrap(function(){
         return [
           {id:1,name:'account1'},
           {id:2,name:'account2'}
-        ]
+        ];
       });
     },
     getAccountInfo: function(account) {
@@ -34,7 +34,7 @@
           coupons: [{
             number: '342323223434'
           }]
-        }
+        };
       });
     },
     add: function(accountInfo) {
@@ -42,12 +42,12 @@
         return accountInfo.name;
       });
     },
-    update: function(accountInfo) {
+    update: function() {
       return this.pw.wrap(function(){
 
       });
     },
-    remove: function(accountId) {
+    remove: function() {
       return this.pw.wrap(function(){
 
       });

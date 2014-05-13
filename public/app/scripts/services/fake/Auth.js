@@ -1,3 +1,4 @@
+'use strict';
 (function (app) {
   var dependencies = ['PromiseWrapper'];
   function AuthService(promiseWrapper) {
@@ -10,7 +11,7 @@
         return {
           isAuthenticated: true,
           userId: 1
-        }
+        };
       });
     },
     signIn: function(user) {
@@ -19,11 +20,11 @@
           return {
             isAuthenticated: true,
             userId: 1
-          }
+          };
         } else {
           return {
             isAuthenticated: false
-          }
+          };
         }
       });
     },
@@ -33,11 +34,11 @@
           return {
             isAuthenticated: true,
             userId: 1
-          }
+          };
         } else {
           return {
             isAuthenticated: false
-          }
+          };
         }
       });
     },

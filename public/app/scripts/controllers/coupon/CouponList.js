@@ -1,16 +1,19 @@
+'use strict';
 (function (app) {
-    CouponListController.$inject = ['$scope', 'CouponService', '$state'];
-    function CouponListController($scope, couponService, $state) {
-      $scope.vm = this;
-      var that = this;
-      couponService.list($state.params.userId).then(function(coupons){
-        that.coupons = coupons;
-      });
-    }
+  var dependencies = ['$scope', 'CouponService', '$state'];
 
-    CouponListController.prototype = {
+  function CouponListController($scope, couponService, $state) {
+    $scope.vm = this;
+    var that = this;
+    couponService.list($state.params.userId).then(function (coupons) {
+      that.coupons = coupons;
+    });
+  }
 
-    };
-    app.controller('CouponListController', CouponListController);
-    return CouponListController;
+  CouponListController.prototype = {
+
+  };
+  CouponListController.$inject = dependencies;
+  app.controller('CouponListController', CouponListController);
+  return CouponListController;
 }(angular.module('starwallet')));

@@ -1,3 +1,4 @@
+'use strict';
 (function (app) {
   var dependencies = ['$q'];
   function PromiseWrapper($q) {

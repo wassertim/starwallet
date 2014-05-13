@@ -3,7 +3,7 @@
   var dependencies = ['$scope'];
 
   function CardImageListController($scope) {
-
+    $scope.l = '';
   }
 
   CardImageListController.prototype = {

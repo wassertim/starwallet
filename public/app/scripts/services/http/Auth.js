@@ -1,3 +1,4 @@
+'use strict';
 (function (app, routes) {
   var dependencies = ['$http', 'PromiseWrapper'];
   function AuthService($http, promiseWrapper) {

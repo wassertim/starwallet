@@ -1,5 +1,6 @@
+'use strict';
 (function (app) {
-  CardListController.$inject = ['$scope', '$state', 'CardService'];
+  var dependencies = ['$scope', '$state', 'CardService'];
   function CardListController($scope, $state, cardService) {
     $scope.vm = this;
     var that = this;
@@ -12,6 +13,7 @@
   CardListController.prototype = {
 
   };
+  CardListController.$inject = dependencies;
   app.controller('CardListController', CardListController);
   return CardListController;
 }(angular.module('starwallet')));

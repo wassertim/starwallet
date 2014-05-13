@@ -1,6 +1,7 @@
+'use strict';
 (function (app) {
-  IdentityListController.$inject = ['$scope', 'IdentityService', 'AccountService', '$stateParams', '$state', 'AccountService', '$timeout'];
-  function IdentityListController($scope, identityService, accountService, $stateParams, $state, accountService, $timeout) {
+  var dependencies = ['$scope', 'IdentityService', 'AccountService', '$stateParams', '$state', '$timeout'];
+  function IdentityListController($scope, identityService, accountService, $stateParams, $state, $timeout) {
     $scope.vm = this;
     this.$state = $state;
     $scope.href = $state.href;
@@ -9,16 +10,16 @@
     this.identityService = identityService;
     this.accountService = accountService;
     this.params = $state.params;
-    this.list($stateParams['userId']);
+    this.list($stateParams.userId);
     var that = this;
-    that.responsiveClasses = "";
+    that.responsiveClasses = '';
     this.getResponsiveClasses();
     this.$timeout = $timeout;
     that.refresh();
-    $scope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
+    $scope.$on('$stateChangeSuccess', function (event, toState, toParams) {
       that.setActive(+toParams.accountId);
       that.getResponsiveClasses(+toParams.accountId);
-      that.list($stateParams['userId']);
+      that.list($stateParams.userId);
     });
   }
 
@@ -47,15 +48,13 @@
         that.items = items;
         that.setActive(+that.$state.params.accountId);
         return items;
-      }).then(function(items){
-
       });
     },
     getResponsiveClasses: function(accountId){
       if (accountId) {
-        this.responsiveClasses = " visible-lg visible-md visible-sm";
+        this.responsiveClasses = ' visible-lg visible-md visible-sm';
       } else {
-        this.responsiveClasses = "";
+        this.responsiveClasses = '';
       }
     },
     setActive: function(id){
@@ -66,6 +65,7 @@
       }
     }
   };
+  IdentityListController.$inject = dependencies;
   app.controller('IdentityListController', IdentityListController);
   return IdentityListController;
 }(angular.module('starwallet')));

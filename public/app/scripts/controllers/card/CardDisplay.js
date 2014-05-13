@@ -1,5 +1,6 @@
+'use strict';
 (function (app, routes) {
-  CardDisplayController.$inject = ['$scope', 'CardService', '$state'];
+  var dependencies = ['$scope', 'CardService', '$state'];
   function CardDisplayController($scope, cardService, $state) {
     $scope.vm = this;
     var that = this;
@@ -25,9 +26,9 @@
     getBarcodeUrl: function (card) {
       if (card.data.pin) {
         var v = Math.round(Math.random() * 1000000000);
-        return routes.BarCode.cardBarCode(this.$state.params.number, this.$state.params.userId).url + "?v=" + v;
+        return routes.BarCode.cardBarCode(this.$state.params.number, this.$state.params.userId).url + '?v=' + v;
       } else {
-        return "";
+        return '';
       }
     },
     showPinCode: function(e) {
@@ -35,6 +36,7 @@
       this.isPinCodeVisible = !this.isPinCodeVisible;
     }
   };
+  CardDisplayController.$inject = dependencies;
   app.controller('CardDisplayController', CardDisplayController);
   return CardDisplayController;
 }(angular.module('starwallet'), jsRoutes.controllers));

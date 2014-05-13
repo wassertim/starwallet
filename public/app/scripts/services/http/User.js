@@ -1,3 +1,4 @@
+'use strict';
 (function (app, routes) {
   var dependencies = ['$http'];
   function UserService($http) {
