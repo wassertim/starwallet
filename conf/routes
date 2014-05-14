@@ -19,6 +19,7 @@ POST          /api/u:userId/register-new                @controllers.Identity.re
 # Account
 GET           /api/account/:id                          @controllers.Account.get(id: Int, resync: Boolean)
 GET           /api/u:userId/account/activate/:id        @controllers.Account.activate(id: Int, userId: Int)
+GET           /api/activation-email                     @controllers.Application.activationEmail
 # Card
 GET           /api/u:userId/card                        @controllers.Card.list(userId: Int)
 GET           /api/u:userId/card/:number                @controllers.Card.get(number: String, userId: Int)

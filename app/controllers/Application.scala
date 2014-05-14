@@ -2,8 +2,10 @@ package controllers
 
 import play.api.mvc._
 import com.google.inject.Inject
-import play.api.Routes
+import play.api.{Play, Routes}
 import service.common.http.Starbucks
+import utility.Authenticated
+import Play.{current => p}
 
 class Application @Inject()(val starbucks: Starbucks) extends Controller {
 
@@ -37,5 +39,10 @@ class Application @Inject()(val starbucks: Starbucks) extends Controller {
           routes.javascript.BarCode.cardBarCode
         )
       ).as("text/javascript")
+  }
+
+  def activationEmail = Authenticated {
+    r =>
+      Ok(p.configuration.getString("activation.email").get)
   }
 }
