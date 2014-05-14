@@ -65,8 +65,17 @@ CREATE TABLE pin_codes (
   pin_code varchar(6) not null,
   primary key (card_number)
 );
-# --- !Downs
 
+CREATE TABLE user_settings (
+  user_id bigint(20) NOT NULL,
+  phone varchar(20),
+  first_name varchar(50),
+  last_name varchar(50),
+  email_domain varchar(128),
+  PRIMARY KEY (user_id)
+);
+# --- !Downs
+DROP TABLE user_settings;
 DROP TABLE pin_codes;
 DROP TABLE users;
 DROP TABLE identities;
