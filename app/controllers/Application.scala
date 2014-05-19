@@ -9,10 +9,6 @@ import Play.{current => p}
 
 class Application @Inject()(val starbucks: Starbucks) extends Controller {
 
-  def index = Action {
-    Ok(views.html.index("Your new application is ready."))
-  }
-
   def javascriptRoutes = Action {
     implicit request =>
       Ok(

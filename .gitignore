@@ -13,3 +13,6 @@ tmp
 /RUNNING_PID
 /.settings
 /test/local
+node_modules
+.tmp
+.sass-cache

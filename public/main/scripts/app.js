@@ -11,7 +11,7 @@ angular.module('starwallet', [
   function ($routeProvider, $stateProvider, stateHelperProvider, $httpProvider) {
 
     function vw(url) {
-      return '../' + url;
+      return 'public/main/' + url;
     }
 
     $httpProvider.interceptors.push(['$q', '$location', function ($q, $location) {
