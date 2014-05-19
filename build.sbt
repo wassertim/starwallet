@@ -10,7 +10,6 @@ playAssetsDirectories <+= baseDirectory / "public/app"
 
 libraryDependencies ++= Seq(
   jdbc,
-  anorm,
   cache,
   "org.jsoup" % "jsoup" % "1.7.2",
   "postgresql" % "postgresql" % "9.1-901-1.jdbc4",
