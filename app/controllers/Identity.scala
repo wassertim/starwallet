@@ -2,18 +2,15 @@ package controllers
 
 import com.google.inject.Inject
 import controllers.common.BaseController
-import com.codahale.jerkson.Json
-import model._
-import utility.JsonResults._
 import play.api.libs.concurrent.Execution.Implicits._
-import utility.{DateTimeUtility, Authorized}
-import model.StarbucksAccount
-import model.AuthInfo
-import model.RegistrationInfo
+import utility.Authorized
+import model.{IdentityListItem, AuthInfo, RegistrationInfo}
 import scala.Some
-import org.joda.time.DateTime
 import service.common.http._
 import service.common.sql._
+import play.api.libs.json.Json
+import AuthInfo.{reads,writes}
+import IdentityListItem.writes
 
 class Identity @Inject()(
                           identityService: IdentityService,
@@ -25,11 +22,11 @@ class Identity @Inject()(
 
   def add(userId: Int) = Authorized(parse.json)(Seq(userId), roles = Seq("admin")) {
     request =>
-      val authInfo = Json.parse[AuthInfo](request.body.toString())
+      val authInfo = request.body.as[AuthInfo]
       starbucks.authenticate(authInfo).fold(
         success => {
           val id = identityService.add(authInfo, request.user.userId)
-          Ok(Json.generate(id))
+          Ok(Json.toJson(id))
         },
         error =>
           BadRequest(error.errorMessage)
@@ -38,7 +35,7 @@ class Identity @Inject()(
 
   def update(userId: Int) = Authorized(parse.json)(Seq(userId), roles = Seq("admin")) {
     request =>
-      val authInfo = Json.parse[AuthInfo](request.body.toString())
+      val authInfo = request.body.as[AuthInfo]
       starbucks.authenticate(authInfo).fold(
         success => {
           identityService.update(authInfo, request.user.userId)
@@ -53,7 +50,7 @@ class Identity @Inject()(
   def get(id: Int, userId: Int) = Authorized(Seq(userId), roles = Seq("admin")) {
     request =>
       identityService.get(id, userId) match {
-        case Some(authInfo) => Ok(Json.generate(authInfo))
+        case Some(authInfo) => Ok(Json.toJson(authInfo))
         case _ => BadRequest("Could not find auth info")
       }
   }
@@ -66,7 +63,7 @@ class Identity @Inject()(
 
   def register(userId: Int) = Authorized.async(parse.json)(userIds = Seq(userId), Seq("admin")) {
     request =>
-      val registrationInfo = Json.parse[RegistrationInfo](request.body.toString())
+      val registrationInfo = request.body.as[RegistrationInfo]
       registrationService.register(registrationInfo).map {
         result =>
           result.fold(
@@ -74,7 +71,7 @@ class Identity @Inject()(
               val id = identityService.register(registrationInfo, userId)
               //TODO: move to register method
               cardService.savePin(registrationInfo.card)
-              json(id)
+              Ok(Json.toJson(id))
             },
             error => {
               BadRequest(error)
@@ -85,7 +82,7 @@ class Identity @Inject()(
 
   def list(userId: Int) = Authorized(Seq(userId), roles = Seq("admin")) {
     request =>
-      json(identityService.list(userId))
+      Ok(Json.toJson(identityService.list(userId)))
   }
 
 }

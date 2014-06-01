@@ -1,6 +1,6 @@
 package model
 
-import play.api.libs.json.{JsPath, Writes}
+import play.api.libs.json.{Reads, JsPath, Writes}
 import play.api.libs.functional.syntax._
 
 case class AuthInfo(id: Int, userName: String, password: String, activationEmail: Option[String] = None, isActive: Boolean = false)
@@ -12,5 +12,13 @@ object AuthInfo {
       (JsPath \ "activationEmail").write[Option[String]] and
       (JsPath \ "isActive").write[Boolean]
     )(unlift(AuthInfo.unapply))
+
+  implicit val reads: Reads[AuthInfo] = (
+    (JsPath \ "id").read[Int] and
+      (JsPath \ "userName").read[String] and
+      (JsPath \ "password").read[String] and
+      (JsPath \ "activationEmail").read[Option[String]] and
+      (JsPath \ "isActive").read[Boolean]
+    )(AuthInfo.apply _)
 }
 
