@@ -3,10 +3,10 @@
 # ~~~~
 GET           /api/jsRoutes                             @controllers.Application.javascriptRoutes
 # Security
-POST          /api/signup                               @controllers.User.signUp
-POST          /api/checkAuth                            @controllers.User.checkAuth
-POST          /api/signIn                               @controllers.User.signIn
-GET           /api/signOut                              @controllers.User.signOut
+POST          /api/signup                               @controllers.Security.signUp
+POST          /api/checkAuth                            @controllers.Security.checkAuth
+POST          /api/signIn                               @controllers.Security.signIn
+GET           /api/signOut                              @controllers.Security.signOut
 
 
 # Identity

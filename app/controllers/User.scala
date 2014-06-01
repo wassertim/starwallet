@@ -11,26 +11,6 @@ import JsonResults._
 import service.common.sql.UserService
 
 class User @Inject()(val userService: UserService) extends BaseController {
-  def checkAuth = Action {
-    request =>
-      request.session.get("identity") match {
-        case Some(cookie) => Ok(cookie)
-        case _ => Ok(Json.generate(User(0, "", false)))
-      }
-
-  }
-
-  def signIn = Action(BodyParsers.parse.json) {
-    request =>
-      val user = Json.parse[Login](request.body.toString())
-      val identity = userService.authenticate(user)
-      val result = json(identity)
-      if (identity.isAuthenticated)
-        result.withSession("identity" -> Json.generate(identity))
-      else
-        result
-
-  }
 
   def getSettings(userId: Int) = Authorized(Seq(userId), roles = Seq("admin")) {
     request =>
@@ -48,19 +28,8 @@ class User @Inject()(val userService: UserService) extends BaseController {
       Ok("ok")
   }
 
-  def signOut = Action {
-      Ok("").withNewSession
-  }
 
-  def signUp = Action(BodyParsers.parse.json) {
-    request =>
-      val user = Json.parse[Login](request.body.toString())
-      userService.register(user, userId => {
-        val identity = User(userId, user.userName, isAuthenticated = true)
-        json(identity).withSession("identity" -> Json.generate(identity))
-      }, errorMessage => {
-        BadRequest(errorMessage)
-      })
-  }
+
+
 
 }

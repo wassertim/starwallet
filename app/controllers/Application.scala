@@ -12,7 +12,7 @@ class Application @Inject()(val starbucks: Starbucks) extends Controller {
 
   def index = Action {
     val pathToApp = play.Play.application().path().getAbsolutePath
-    val file = if (!Play.isProd) {
+    val file = if (Play.isProd) {
       "public/dist/index.html"
     } else {
       "index.html"
@@ -28,10 +28,10 @@ class Application @Inject()(val starbucks: Starbucks) extends Controller {
     implicit request =>
       Ok(
         Routes.javascriptRouter("jsRoutes")(
-          routes.javascript.User.signUp,
-          routes.javascript.User.checkAuth,
-          routes.javascript.User.signIn,
-          routes.javascript.User.signOut,
+          routes.javascript.Security.signUp,
+          routes.javascript.Security.checkAuth,
+          routes.javascript.Security.signIn,
+          routes.javascript.Security.signOut,
           routes.javascript.User.saveSettings,
           routes.javascript.User.getSettings,
           routes.javascript.Identity.add,
