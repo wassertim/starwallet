@@ -11,6 +11,7 @@ import service.common.sql._
 import play.api.libs.json.Json
 import AuthInfo.{reads,writes}
 import IdentityListItem.writes
+import RegistrationInfo.reads
 
 class Identity @Inject()(
                           identityService: IdentityService,

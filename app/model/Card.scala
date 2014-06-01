@@ -1,8 +1,9 @@
 package model
 
 import java.sql.Timestamp
-import play.api.libs.json.{JsPath, Writes}
+import play.api.libs.json.{Reads, JsPath, Writes}
 import play.api.libs.functional.syntax._
+
 case class CardListItem(
                          number: String,
                          balance: Double,
@@ -13,7 +14,9 @@ case class CardListItem(
                          )
 
 object CardListItem {
+
   import AuthInfo.writes
+
   implicit val writes: Writes[CardListItem] = (
     (JsPath \ "number").write[String] and
       (JsPath \ "balance").write[Double] and
@@ -31,12 +34,18 @@ object CardData {
     (JsPath \ "number").write[String] and
       (JsPath \ "pin").write[String]
     )(unlift(CardData.unapply))
+  implicit val reads: Reads[CardData] = (
+    (JsPath \ "number").read[String] and
+      (JsPath \ "pin").read[String]
+    )(CardData.apply _)
 }
 
 case class Card(data: CardData, balance: Double, isActive: Boolean, transactions: Seq[Transaction])
 
 object Card {
+
   import Transaction.writes
+
   implicit val writes: Writes[Card] = (
     (JsPath \ "data").write[CardData] and
       (JsPath \ "balance").write[Double] and

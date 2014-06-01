@@ -6,6 +6,7 @@ import controllers.common.BaseController
 import utility.Authorized
 import service.common.sql.UserService
 import play.api.libs.json.Json
+import UserSettings.{reads, writes}
 
 class User @Inject()(val userService: UserService) extends BaseController {
 
