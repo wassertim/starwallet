@@ -6,8 +6,23 @@ import play.api.{Play, Routes}
 import service.common.http.Starbucks
 import utility.Authenticated
 import Play.{current => p}
+import java.io.File
 
 class Application @Inject()(val starbucks: Starbucks) extends Controller {
+
+  def index = Action {
+    val pathToApp = play.Play.application().path().getAbsolutePath
+    val file = if (!Play.isProd) {
+      "public/dist/index.html"
+    } else {
+      "index.html"
+    }
+    Ok.sendFile(
+      content = new File(s"$pathToApp/$file"),
+      fileName = _ => "index.html",
+      inline = true
+    )
+  }
 
   def javascriptRoutes = Action {
     implicit request =>

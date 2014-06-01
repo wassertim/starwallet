@@ -6377,6 +6377,10 @@ body {
   padding-top: 60px;
   padding-bottom: 20px; }
 
+@media (min-width: 768px) {
+  .modal-dialog {
+    width: auto;
+    margin: 10px; } }
 input.form-control {
   height: 33px; }
 

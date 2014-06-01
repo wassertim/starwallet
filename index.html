@@ -14,9 +14,11 @@
   <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
   <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
-  <!-- build:css({.tmp,app}) styles/main.css -->
+  <!-- build:[href] public/dist/styles/ -->
+  <!-- build:css styles/main.css -->
   <link rel="stylesheet" href="public/main/styles/main.css">
   <!-- endbuild -->
+  <!-- /build -->
 </head>
 <body ng-app="starwallet">
 <!--[if lt IE 7]>
@@ -49,9 +51,10 @@
 <script src="public/main/bower_components/json3/lib/json3.min.js"></script>
 <![endif]-->
 
+<!-- build:[src] public/dist/scripts/ -->
 <!-- build:js scripts/vendor.js -->
-<!-- bower:js -->
 <script src="public/main/bower_components/jquery/dist/jquery.js"></script>
+<script src="public/main/bower_components/lodash/dist/lodash.js"></script>
 <script src="public/main/bower_components/angular/angular.js"></script>
 <script src="public/main/bower_components/sass-bootstrap/dist/js/bootstrap.js"></script>
 <script src="public/main/bower_components/angular-resource/angular-resource.js"></script>
@@ -60,18 +63,16 @@
 <script src="public/main/bower_components/angular-route/angular-route.js"></script>
 <script src="public/main/bower_components/angular-ui-router/release/angular-ui-router.js"></script>
 <script src="public/main/bower_components/angular-ui-router.stateHelper/statehelper.js"></script>
-<script src="public/main/bower_components/lodash/dist/lodash.js"></script>
 <script src="public/main/bower_components/chance/chance.js"></script>
-<!-- endbower -->
-<!-- endbuild -->
-
-<!-- build:js({.tmp,app}) scripts/scripts.js -->
 <script src="public/main/bower_components/moment/moment.js"></script>
 <script src="public/main/bower_components/moment/lang/en-gb.js"></script>
 <script src="public/main/bower_components/angular-moment/angular-moment.js"></script>
+<!-- endbuild -->
+<!-- /build -->
 <script src="/api/jsRoutes"></script>
+<!-- build:[src] public/dist/scripts/ -->
+<!-- build:js scripts/scripts.js -->
 <script src="public/main/scripts/app.js"></script>
-
 <script src="public/main/scripts/controllers/identity/IdentityList.js"></script>
 <script src="public/main/scripts/controllers/identity/IdentityEdit.js"></script>
 <script src="public/main/scripts/controllers/account/AccountDisplay.js"></script>
@@ -85,8 +86,6 @@
 <script src="public/main/scripts/controllers/coupon/CouponDisplay.js"></script>
 <script src="public/main/scripts/controllers/Registration.js"></script>
 <script src="public/main/scripts/controllers/UserSettings.js"></script>
-
-
 <script src="public/main/scripts/services/http/Identity.js"></script>
 <script src="public/main/scripts/services/http/Coupon.js"></script>
 <script src="public/main/scripts/services/http/Card.js"></script>
@@ -94,8 +93,7 @@
 <script src="public/main/scripts/services/http/Auth.js"></script>
 <script src="public/main/scripts/services/http/User.js"></script>
 <script src="public/main/scripts/services/fake/PromiseWrapper.js"></script>
-
-
 <!-- endbuild -->
+<!-- /build -->
 </body>
 </html>
