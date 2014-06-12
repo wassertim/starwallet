@@ -1,16 +1,22 @@
 package service.http
 
 import model._
-import scala.Some
-import org.jsoup.Jsoup
+
+import java.net.URLEncoder._
 import java.sql.Timestamp
-import play.api.libs.ws.WS
+import java.util.concurrent.TimeUnit
 import com.ning.http.client.Cookie
-import scala.collection.JavaConversions._
-import org.jsoup.nodes.{Element, Document}
+import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
+import org.jsoup.Jsoup
+import org.jsoup.nodes.{Document, Element}
 import play.api.libs.concurrent.Execution.Implicits._
-import scala.concurrent.Future
+import play.api.libs.ws.{Response, WS}
+import utility.DateTimeUtility
+import scala.collection.JavaConversions._
+import scala.concurrent.Await
+import scala.concurrent.duration.Duration
+import scala.util.Random
 
 class Starbucks extends service.common.http.Starbucks {
 
@@ -18,7 +24,7 @@ class Starbucks extends service.common.http.Starbucks {
 
   val mainUrl = "https://cabinet.plas-tek.ru/default.aspx?style=starbucks"
 
-  val registrationUrl = s"$mainUrl&registration=true"
+  val regUrl = s"$mainUrl&registration=true"
 
   def authenticate(authInfo: AuthInfo) = {
     authenticateInternal(authInfo).fold(
@@ -170,6 +176,110 @@ class Starbucks extends service.common.http.Starbucks {
           }
         else
           Right("unknownError")
+    }
+  }
+
+  def register(authInfo: RegistrationInfo) = {
+    val promise = WS.url(regUrl).get()
+    val pageResponse = Await.result(promise, Duration(20000, TimeUnit.MILLISECONDS))
+    val (registrationDoc, cookies) = (Jsoup.parse(pageResponse.body), pageResponse.cookies)
+    val params = getParams(authInfo, registrationDoc).map {
+      e =>
+        val (key, value) = (e._1, e._2.head)
+        s"$key=${encode(value, "UTF-8")}"
+    }.mkString("&")
+    val c = cookies.map(cookie => s"${cookie.name.get}=${cookie.value.get}").mkString("; ")
+    getHeaders(c).foldLeft(WS.url(regUrl))((requestHolder, header) => requestHolder.withHeaders(header)).post(params).map {
+      r => handleResponse(r)
+    }
+  }
+
+  private def randomAnswer = {
+    val random = new Random()
+    Math.abs(random.nextLong()).toString
+  }
+
+  private def getParams(authInfo: RegistrationInfo, registrationDoc: Document) = {
+    def fromField(value: String) = Seq(registrationDoc.getElementsByAttributeValue("name", value).`val`)
+    Map(
+      "ToolkitScriptManager1_HiddenField" -> fromField("ToolkitScriptManager1_HiddenField"),
+      "offset" -> Seq(""),
+      "__EVENTTARGET" -> Seq(""),
+      "__EVENTARGUMENT" -> fromField("__EVENTARGUMENT"),
+      "__EVENTVALIDATION" -> fromField("__EVENTVALIDATION"),
+      "__VIEWSTATE" -> fromField("__VIEWSTATE"),
+      "ImageButton12" -> fromField("ImageButton12"),
+      "ImageButton5" -> fromField("ImageButton5"),
+      "TextBoxWatermarkExtender1_ClientState" -> fromField("TextBoxWatermarkExtender1_ClientState"),
+      "TextBoxWatermarkExtender13_ClientState" -> fromField("TextBoxWatermarkExtender13_ClientState"),
+      "TextBoxWatermarkExtender4_ClientState" -> fromField("TextBoxWatermarkExtender4_ClientState"),
+      "TextBoxWatermarkExtender5_ClientState" -> fromField("TextBoxWatermarkExtender5_ClientState"),
+      "meeBirthDate_ClientState" -> fromField("meeBirthDate_ClientState"),
+      "TextBoxWatermarkExtender7_ClientState" -> fromField("TextBoxWatermarkExtender7_ClientState"),
+      "meePhone_ClientState" -> fromField("meePhone_ClientState"),
+      "TextBoxWatermarkExtender8_ClientState" -> fromField("TextBoxWatermarkExtender8_ClientState"),
+      "TextBoxWatermarkExtender9_ClientState" -> fromField("TextBoxWatermarkExtender9_ClientState"),
+      "TextBoxWatermarkExtender10_ClientState" -> fromField("TextBoxWatermarkExtender10_ClientState"),
+      "TextBoxWatermarkExtender102_ClientState" -> fromField("TextBoxWatermarkExtender102_ClientState"),
+      "TextBoxWatermarkExtender6_ClientState" -> fromField("TextBoxWatermarkExtender6_ClientState"),
+
+      "RegistrationCardNumberTextBox" -> Seq(authInfo.card.number),
+      "RegistrationPinTextBox" -> Seq(authInfo.card.pin),
+      "RegistrationLoginTextBox" -> Seq(authInfo.auth.userName),
+      "RegistrationPasswordTextBox" -> Seq(authInfo.auth.password),
+      "tbRegistrationPasswordConfirmation" -> Seq(authInfo.auth.password),
+      "RegistrationNameTextBox" -> Seq(authInfo.firstName),
+      "RegistrationSurnameTextBox" -> Seq(authInfo.lastName),
+      "RegistrationBirthDateTextBox" -> Seq(DateTimeUtility.formatted(DateTime.now.plusDays(1).minusYears(30))),
+      "RegistrationSexDropDownList" -> Seq("1"),
+      "RegistrationAddressTextBox" -> Seq("Улица Ленина"),
+      "ddlRegistrationPhoneNumberCode" -> Seq("7"),
+      "RegistrationPhoneNumberTextBox" -> Seq(authInfo.phoneNumber),
+      "ddlRegistrationSecretQuestion" -> Seq("3"),
+      "tbRegistrationSecretQuestion" -> Seq(randomAnswer),
+      "RegistrationProfessionTextBox" -> Seq("Рабочий"),
+      "tbRegistrationEmail" -> Seq(authInfo.email),
+      "tbRegistrationEmailConfirmation" -> Seq(authInfo.email),
+      "ddlSurvey" -> Seq("3"),
+      "NotifyCheckBox" -> Seq("on"),
+      "chbSendCouponByEmail" -> Seq("on"),
+      "chkAccept" -> Seq("on"),
+      "btnRegister.x" -> Seq("46"),
+      "btnRegister.y" -> Seq("11")
+    )
+  }
+
+  private def getHeaders(cookies: String) = {
+    Map(
+      "User-Agent" -> "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/34.0.1847.116 Safari/537.36",
+      "Content-Type" -> "application/x-www-form-urlencoded ; charset=UTF-8",
+      "Host" -> "cabinet.plas-tek.ru",
+      "Cache-Control" -> "no-cache",
+      "Pragma" -> "no-cache",
+      "Accept" -> "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+      "Accept-Language" -> "en-US,en;q=0.8,ru;q=0.6,de;q=0.4,uk;q=0.2",
+      "Origin" -> "https://cabinet.plas-tek.ru",
+      "Accept-Charset" -> "utf-8",
+      "Cookie" -> cookies
+    )
+  }
+
+  def handleResponse(response: Response): Either[Unit, String] = {
+    if (response.getAHCResponse.getUri.getPath.contains("error")) {
+      Right("unknownError")
+    } else {
+      val result = Jsoup.parse(response.body)
+      val pnlMessage = result.select("#pnlMessage")
+      if (pnlMessage.size() > 0) {
+        pnlMessage.text match {
+          case m if m.contains("Ваши данные приняты") => {
+            Left()
+          }
+          case m => Right(m)
+        }
+      } else {
+        Right("unknownError")
+      }
     }
   }
 }

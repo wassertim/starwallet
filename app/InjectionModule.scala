@@ -16,14 +16,12 @@ class InjectionModule extends ScalaModule {
       case "prod" => {
         import service.http._
         import service.pop._
-        bind[service.common.http.RegistrationService].toInstance(new RegistrationService)
         bind[service.common.http.Starbucks].toInstance(new Starbucks)
         bind[service.common.pop.EmailClient].toInstance(new EmailClient(email, password))
       }
       case "dev" => {
         import service.fake.http._
         import service.fake.pop._
-        bind[service.common.http.RegistrationService].toInstance(new RegistrationService)
         bind[service.common.http.Starbucks].toInstance(new Starbucks)
         bind[service.common.pop.EmailClient].toInstance(new EmailClient(email, password))
       }

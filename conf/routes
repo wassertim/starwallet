@@ -37,5 +37,5 @@ PUT           /api/u:userId/settings                    @controllers.User.saveSe
 #GET        /                @controllers.Application.index
 
 # Map static resources from the /public folder to the /assets URL path
-GET           /public/*file                                                    controllers.dev.DAssets.at(path="/public", file)
-GET           /                                                                @controllers.Application.index
+GET           /public/*file                             controllers.dev.DAssets.at(path="/public", file)
+GET           /                                         @controllers.Application.index

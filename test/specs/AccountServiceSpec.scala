@@ -13,6 +13,7 @@ class AccountServiceSpec extends Specification {
 
   private lazy val injector = Guice.createInjector(new InjectionModule)
   "AccountService" should {
+
     "return authInfo" in {
       val accountService = injector.getInstance(classOf[IdentityService])
       val starbucksService = injector.getInstance(classOf[Starbucks])

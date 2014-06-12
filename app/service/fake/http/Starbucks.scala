@@ -63,4 +63,6 @@ class Starbucks extends service.common.http.Starbucks {
       case _ => Right("Error")
     }
   }
+
+  def register(info: RegistrationInfo) = ???
 }

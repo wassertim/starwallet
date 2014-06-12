@@ -17,7 +17,6 @@ class Identity @Inject()(
                           identityService: IdentityService,
                           accountService: AccountService,
                           starbucks: Starbucks,
-                          registrationService: RegistrationService,
                           cardService: CardService
                           ) extends BaseController {
 
@@ -65,7 +64,7 @@ class Identity @Inject()(
   def register(userId: Int) = Authorized.async(parse.json)(userIds = Seq(userId), Seq("admin")) {
     request =>
       val registrationInfo = request.body.as[RegistrationInfo]
-      registrationService.register(registrationInfo).map {
+      starbucks.register(registrationInfo).map {
         result =>
           result.fold(
             authInfo => {
