@@ -15,7 +15,7 @@ class Application @Inject()(val starbucks: Starbucks) extends Controller {
     val file = if (!Play.isProd) {
       "public/dist/index.html"
     } else {
-      "index.html"
+      "bin/starwallet/index.html"
     }
     Ok.sendFile(
       content = new File(s"$pathToApp/$file"),
