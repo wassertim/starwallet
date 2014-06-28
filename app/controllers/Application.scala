@@ -11,11 +11,11 @@ import java.io.File
 class Application @Inject()(val starbucks: Starbucks) extends Controller {
 
   def index = Action {
-    val pathToApp = play.Play.application().path().getAbsolutePath
+    val pathToApp = play.Play.application().path().getAbsolutePath.replace("target/universal/stage", "")
     val file = if (!Play.isProd) {
       "public/dist/index.html"
     } else {
-      "bin/starwallet/index.html"
+      "index.html"
     }
     Ok.sendFile(
       content = new File(s"$pathToApp/$file"),
@@ -53,7 +53,6 @@ class Application @Inject()(val starbucks: Starbucks) extends Controller {
   }
 
   def activationEmail = Authenticated {
-    r =>
-      Ok(p.configuration.getString("activation.email").get)
+    r => Ok(p.configuration.getString("activation.email").get)
   }
 }
