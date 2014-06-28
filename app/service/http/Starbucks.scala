@@ -146,7 +146,7 @@ class Starbucks extends service.common.http.Starbucks {
   }
 
   private def starsCount(implicit cardsPage: Document): Int = {
-    val starsText = cardsPage.select("#pnlCardInfo > div").text
+    val starsText = cardsPage.select("#pnlCardInfo div").text
     "[0-9]+".r findFirstIn starsText match {
       case Some(x) => x.toInt
       case None => 0
