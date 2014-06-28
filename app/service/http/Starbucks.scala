@@ -41,7 +41,6 @@ class Starbucks extends service.common.http.Starbucks {
     val loginUrl = s"$mainUrl&mainlogin=true"
     val loginPageResponse = WS.client.prepareGet(loginUrl).execute().get()
     val (loginDoc, cookies) = (Jsoup.parse(loginPageResponse.getResponseBody), loginPageResponse.getCookies)
-
     val authenticatedResponse = WS.client.preparePost(loginUrl)
       .addParameter("ToolkitScriptManager1_HiddenField", loginDoc.getElementsByAttributeValue("name", "ToolkitScriptManager1_HiddenField").`val`)
       .addParameter("offset", loginDoc.getElementsByAttributeValue("name", "offset").`val`)
