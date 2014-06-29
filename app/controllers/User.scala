@@ -25,9 +25,4 @@ class User @Inject()(val userService: UserService) extends BaseController {
       userService.saveSettings(settings, userId)
       Ok("ok")
   }
-
-
-
-
-
 }
