@@ -1,5 +1,8 @@
-<ul class="list-group">
-  <li class="list-group-item" ng-repeat="item in vm.cards">
+<div class="list-group">
+  <div class="list-group-item">
+    <input class="form-control" type="text" ng-model="card.number" placeholder="filter by number" />
+  </div>
+  <div class="list-group-item" ng-repeat="item in vm.cards | filter:card">
     <div class="item-container">
       <a ng-href="{{href('withNav.cardDisplay', {number:item.number}, {inherit:true})}}" class="thumbnail" style="margin-right: 5px">
         <img style="width: 54px;height: 33px" ng-src="https://plas-tek.ru/cardimage.ashx?c={{item.number}}"/>
@@ -12,5 +15,5 @@
     </div>
     </div>
 
-  </li>
-</ul>
+  </div>
+</div>

@@ -13,7 +13,7 @@ class Application @Inject()(val starbucks: Starbucks) extends Controller {
   def index = Action {
     //replace is only needed for staged play deployment
     val pathToApp = play.Play.application().path().getAbsolutePath.replace("target/universal/stage", "")
-    val file = if (!Play.isProd) {
+    val file = if (Play.isProd) {
       "public/dist/index.html"
     } else {
       "index.html"
@@ -27,29 +27,30 @@ class Application @Inject()(val starbucks: Starbucks) extends Controller {
 
   def javascriptRoutes = Action {
     implicit request =>
+      import routes.javascript._
       Ok(
         Routes.javascriptRouter("jsRoutes")(
-          routes.javascript.Security.signUp,
-          routes.javascript.Security.checkAuth,
-          routes.javascript.Security.signIn,
-          routes.javascript.Security.signOut,
-          routes.javascript.User.saveSettings,
-          routes.javascript.User.getSettings,
-          routes.javascript.Identity.add,
-          routes.javascript.Identity.get,
-          routes.javascript.Identity.list,
-          routes.javascript.Identity.update,
-          routes.javascript.Identity.remove,
-          routes.javascript.Identity.register,
-          routes.javascript.Account.get,
-          routes.javascript.Account.activate,
-          routes.javascript.Card.list,
-          routes.javascript.Card.get,
-          routes.javascript.Card.savePin,
-          routes.javascript.Coupon.list,
-          routes.javascript.Coupon.get,
-          routes.javascript.BarCode.cardBarCode,
-          routes.javascript.Account.refreshAll
+          Security.signUp,
+          Security.checkAuth,
+          Security.signIn,
+          Security.signOut,
+          Account.refreshAll,
+          Account.get,
+          Account.activate,
+          BarCode.cardBarCode,
+          User.saveSettings,
+          User.getSettings,
+          Identity.add,
+          Identity.get,
+          Identity.list,
+          Identity.update,
+          Identity.remove,
+          Identity.register,
+          Card.list,
+          Card.get,
+          Card.savePin,
+          Coupon.list,
+          Coupon.get
         )
       ).as("text/javascript")
   }

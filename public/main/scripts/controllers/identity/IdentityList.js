@@ -27,7 +27,6 @@
     refresh: function() {
       var that = this;
       if (this.items && this.items.length) {
-        //TODO: Rewrite to one server call
         that.accountService.refreshAll().then(function(){
           that.list(that.$state.params.userId);
         });
