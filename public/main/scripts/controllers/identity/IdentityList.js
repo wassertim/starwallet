@@ -15,7 +15,7 @@
     that.responsiveClasses = '';
     this.getResponsiveClasses();
     this.$timeout = $timeout;
-    that.refresh();
+    //that.refresh();
     $scope.$on('$stateChangeSuccess', function (event, toState, toParams) {
       that.setActive(+toParams.accountId);
       that.getResponsiveClasses(+toParams.accountId);
@@ -24,23 +24,14 @@
   }
 
   IdentityListController.prototype = {
-    refresh: function(){
+    refresh: function() {
       var that = this;
       if (this.items && this.items.length) {
         //TODO: Rewrite to one server call
-        _.forEach(this.items, function (item) {
-          if ((new Date() - new Date(item.lastUpdate)) > 120000) {
-            that.accountService.getByIdentityId(item.id, true).then(function (account) {
-              item.lastUpdate = new Date();
-              item.starsCount = account.starsCount;
-              item.activeCouponsCount = account.activeCouponsCount;
-            });
-          }
+        that.accountService.refreshAll().then(function(){
+          that.list(that.$state.params.userId);
         });
       }
-      this.$timeout(function(){
-        that.refresh();
-      }, 120000);
     },
     list: function(userId){
       var that = this;

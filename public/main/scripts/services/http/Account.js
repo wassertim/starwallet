@@ -16,6 +16,11 @@
       return this.$http(routes.Account.activate(accountId, userId)).then(function(response){
         return response.data;
       });
+    },
+    refreshAll: function() {
+      return this.$http(routes.Account.refreshAll()).then(function(response){
+
+      });
     }
   };
   AccountService.$inject = dependencies;

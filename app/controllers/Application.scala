@@ -48,7 +48,8 @@ class Application @Inject()(val starbucks: Starbucks) extends Controller {
           routes.javascript.Card.savePin,
           routes.javascript.Coupon.list,
           routes.javascript.Coupon.get,
-          routes.javascript.BarCode.cardBarCode
+          routes.javascript.BarCode.cardBarCode,
+          routes.javascript.Account.refreshAll
         )
       ).as("text/javascript")
   }
