@@ -27,7 +27,9 @@
     refresh: function() {
       var that = this;
       if (this.items && this.items.length) {
+        that.isLoading = true;
         that.accountService.refreshAll().then(function(){
+          that.isLoading = false;
           that.list(that.$state.params.userId);
         });
       }

@@ -17,5 +17,7 @@ trait IdentityService {
 
   def list(userId: Int): Seq[IdentityListItem]
 
+  def listAuth(userId: Int): Seq[AuthInfo]
+
   def encryptAllPasswords
 }

@@ -29,6 +29,8 @@ class IdentityService extends BaseService with service.common.sql.IdentityServic
     """.as[IdentityListItem].list
   }
 
+
+
   def register(info: RegistrationInfo, userId: Int): Int = database withDynSession {
     val encryptedPassword = Crypto.encryptAES(info.auth.password)
     sqlu"""
@@ -111,5 +113,19 @@ class IdentityService extends BaseService with service.common.sql.IdentityServic
     sql"select user_id from identities where id = ${identityId}".as[Int].first
   }
 
-
+  def listAuth(userId: Int) = database withDynSession {
+    implicit val getAuthInfo = GetResult(r => AuthInfo(r.<<, r.<<, Crypto.decryptAES(r.<<), r.<<, r.<<))
+    sql"""
+      select
+        id,
+        user_name,
+        password,
+        activation_email,
+        is_active
+      from
+        identities
+      where
+        user_id = ${userId};
+    """.as[AuthInfo].list
+  }
 }

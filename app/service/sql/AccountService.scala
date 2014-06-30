@@ -97,5 +97,4 @@ class AccountService(cardService: CardService) extends common.BaseService with s
         """.execute
     }
   }
-
 }

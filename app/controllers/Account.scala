@@ -48,7 +48,13 @@ class Account @Inject()(
 
   def refreshAll = Authenticated {
     request =>
-      //accountService.syncAll(request.user.userId)
+      identityService.listAuth(request.user.userId).map {
+        auth =>
+          starbucksService.getAccount(auth) match {
+            case Some(starbucksAccount) =>
+              accountService.sync(starbucksAccount, auth.id)
+          }
+      }
       Ok("")
   }
   def getAccount(resync: Boolean, id: Int, userId: Int, recursionCounter: Int): SimpleResult = resync match {

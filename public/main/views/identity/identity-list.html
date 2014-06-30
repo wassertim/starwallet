@@ -2,7 +2,7 @@
 <div>
   <div class="col-sm-4">
     <div class="btn-group">
-      <button class="btn btn-default" ng-click="vm.refresh()"><span class="fa fa-refresh"></span> Refresh</button>
+      <button class="btn btn-default" ng-click="vm.refresh()"><span class="fa fa-refresh" ng-class="{'fa-spin':vm.isLoading}"></span> Refresh</button>
       <a class="btn btn-default" ng-href="{{href('withNav.accountList.addAccount')}}"><span class="fa fa-plus"></span>
         Add account</a>
     </div>
