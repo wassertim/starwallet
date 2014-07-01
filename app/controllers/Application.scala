@@ -13,7 +13,7 @@ class Application @Inject()(val starbucks: Starbucks) extends Controller {
   def index = Action {
     //replace is only needed for staged play deployment
     val pathToApp = play.Play.application().path().getAbsolutePath.replace("target/universal/stage", "")
-    val file = if (!Play.isProd) {
+    val file = if (Play.isProd) {
       "public/dist/index.html"
     } else {
       "index.html"
