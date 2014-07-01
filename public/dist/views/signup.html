@@ -1,0 +1,10 @@
+<div>
+  <div class="alert alert-danger" ng-show="vm.alert">{{vm.alert.message}}</div>
+  <form class="form-signin" name="signinForm" ng-submit="vm.signUp()">
+    <h3 class="form-signin-heading">Please sign up or <a ui-sref="login">sign in</a></h3>
+    <hr/>
+    <input type="email" class="form-control" placeholder="Email address" ng-model="vm.user.userName" required autofocus>
+    <input type="password" class="form-control" placeholder="Password" ng-model="vm.user.password" required>
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Sign up</button>
+  </form>
+</div>

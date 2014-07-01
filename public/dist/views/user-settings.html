@@ -1,0 +1,21 @@
+<div class="col-md-12">
+  <form name="settingsForm">
+    <div class="form-group">
+      <label>First Name</label>
+      <input class="form-control" type="text" ng-model="vm.settings.firstName"/>
+    </div>
+    <div class="form-group">
+      <label>Last Name</label>
+      <input class="form-control" type="text" ng-model="vm.settings.lastName"/>
+    </div>
+    <div class="form-group">
+      <label>Phone</label>
+      <input class="form-control" type="text" ng-model="vm.settings.phone"/>
+    </div>
+    <div class="form-group">
+      <label>Email Domain</label>
+      <input class="form-control" type="text" ng-model="vm.settings.emailDomain" />
+    </div>
+    <button class="btn btn-primary" ng-click="vm.save()">Save</button>
+  </form>
+</div>

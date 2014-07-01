@@ -1,0 +1,55 @@
+<div class="col-md-12">
+<div class="alert alert-{{vm.alert.type}}" ng-show="vm.alert">
+  {{vm.alert.message}}
+</div>
+
+  <form class="form-horizontal" name="newAccountForm">
+    <fieldset>
+      <legend>New Account</legend>
+      <div>
+        <label>Card number</label>
+        <input class="form-control" type="text" ng-model="vm.acc.card.number" maxlength="12" placeholder="Card number" />
+      </div>
+      <div>
+        <label>Pin code</label>
+        <input class="form-control" type="text" ng-model="vm.acc.card.pin" maxlength="6" placeholder="Pin code" />
+      </div>
+      <div>
+        <label>Email</label>
+        <input class="form-control" type="email" ng-model="vm.acc.email" placeholder="Email" />
+      </div>
+      <div>
+        <label>Phone number</label>
+        <input class="form-control" type="text" ng-model="vm.acc.phoneNumber" placeholder="Phone number"/>
+      </div>
+      <div class="">
+        <label>User name</label>
+        <input class="form-control" ng-model="vm.acc.auth.userName" placeholder="User name" type="text"/>
+      </div>
+      <div class="">
+        <label>Password</label>
+        <input class="form-control" ng-model="vm.acc.auth.password" type="text" placeholder="Password" ng-hide="vm.revealPassword"/>
+      </div>
+
+
+      <div>
+        <label>First name</label>
+        <input class="form-control" type="text" ng-model="vm.acc.firstName" placeholder="First name"/>
+      </div>
+      <div>
+        <label>Last name</label>
+        <input class="form-control" type="text" ng-model="vm.acc.lastName" placeholder="Last name" />
+      </div>
+
+      <br/>
+
+      <div class="">
+        <button class="btn btn-primary" ng-click="vm.saveNew(vm.acc)" ng-disabled="vm.isUpdating">
+          Save
+        </button>
+
+        <a class="btn btn-default" ng-href="{{href('withNav.accountList', {}, {inherit:true})}}">Return</a>
+      </div>
+    </fieldset>
+  </form>
+</div>

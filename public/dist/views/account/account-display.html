@@ -1,0 +1,81 @@
+<div class="page-header" ng-show="vm.isLoading">
+  <h3>
+  <span class="fa fa-cog fa-spin"></span> Loading ...
+  </h3>
+</div>
+<div class="alert alert-danger" ng-show="vm.alert">{{vm.alert && vm.alert.message}}</div>
+<button ng-show="vm.identity && !vm.identity.isActive" class="btn btn-primary" ng-click="vm.activate()">Activate</button>
+<div ng-hide="vm.isLoading || vm.alert">
+  <div class="page-header">
+
+    <h3>{{vm.accountInfo.userName}}</h3>
+
+    <div class="small">
+
+      <span class="fa fa-credit-card"></span>
+      <span>{{vm.accountInfo.cards.length}}</span>
+
+      <span class="fa fa-star"></span>
+      <span>{{vm.accountInfo.starsCount}}</span>
+
+      <span class="fa fa-ticket"></span>
+      <span>
+      {{ vm.activeCouponsCount }}
+      </span>
+    </div>
+    <span class="small" ng-show="vm.isRefreshing">
+      Refreshing ...
+    </span>
+    <a href="#" ng-show="!vm.isRefreshing" class="small" ng-click="vm.update($event)">
+      Last update: <span am-time-ago="vm.accountInfo.syncDate"></span>
+    </a>
+  </div>
+  <div class="form-group">
+
+  </div>
+
+  <div class="form-group">
+    <ul class="list-group">
+      <li class="list-group-item" ng-repeat="card in vm.accountInfo.cards">
+        <div class="item-container clearfix">
+          <a ng-href="{{href('withNav.cardDisplay', {number:card.number}, {inherit:true})}}" class="thumbnail" style="margin-right: 5px">
+            <img style="width: 54px;height: 33px" ng-src="https://plas-tek.ru/cardimage.ashx?c={{card.number}}"/>
+          </a>
+          <div>
+            number: {{card.number}}
+          </div>
+          <div>
+            balance: {{card.balance}} rub
+          </div>
+          <div>Last operation: {{card.lastTransactionDate | amDateFormat:'DD/MM/YYYY'}}</div>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div class="form-group">
+    <label class="checkbox"><input type="checkbox" class="checkbox" ng-model="vm.showAll" /> Show all</label>
+
+  </div>
+  <div class="form-group">
+
+    <ul class="list-group">
+      <li class="list-group-item" ng-repeat="coupon in vm.accountInfo.coupons | filter:vm.couponsFilter">
+
+        <div ng-show="coupon.isActive">
+          <h5><a ng-href="http://plas-tek.ru/Coupon.aspx?Number={{coupon.key}}">{{coupon.couponType}}</a></h5>
+          <hr/>
+          <a ng-href="http://plas-tek.ru/Passbook.ashx?Number={{coupon.key}}" class="btn btn-default btn-passbook">
+            <div>Add to</div>
+            <span>Passbook</span>
+          </a>
+
+
+        </div>
+        <span ng-show="!coupon.isActive">{{coupon.number}} - {{coupon.couponType}}</span>
+
+      </li>
+    </ul>
+  </div>
+
+</div>
+<a class="btn btn-default" ng-href="{{href('withNav.accountList.editAccount', {accountId:vm.accountId}, {inherit:true})}}">Edit</a>

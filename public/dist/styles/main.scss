@@ -1,0 +1,127 @@
+$icon-font-path: "/bower_components/sass-bootstrap/fonts/";
+@import "../bower_components/sass-bootstrap/lib/bootstrap";
+@import "components/form-signin";
+$fa-font-path: "../bower_components/font-awesome/fonts" !default;
+@import "../bower_components/font-awesome/scss/font-awesome";
+@import "components/icon-brand";
+@import "components/list-group";
+@import "components/sidebar";
+
+
+/* Space out content a bit */
+body {
+  padding-top: 60px;
+  padding-bottom: 20px;
+}
+@media (min-width: 768px) {
+  .modal-dialog {
+    width: auto;
+    margin: 10px;
+  }
+}
+input {
+  &.form-control {
+    height: 33px;
+  }
+}
+.page-header {
+  margin: 5px 0 20px;
+  h3 {
+    margin-top: 0;
+  }
+}
+.thumbnail {
+  padding: 1px;
+  float: left;
+  margin: 0;
+  &.barcode {
+    border: 0;
+    text-align: center;
+    font-size: 1.3em;
+    .card-number {
+      margin: 5px;
+
+      letter-spacing: 10px;
+      display: inline-block;
+    }
+  }
+}
+.btn-passbook {
+  @include img-retina("../images/passbook-hero-small.png", "../images/passbook-hero-big.png", 32px, 32px);
+  padding: 5px;
+  padding-bottom: 4px;
+  background-position: 7px 5px;
+  padding-left: 48px;
+  padding-right: 10px;
+  background-repeat: no-repeat;
+  div {
+    margin-top:4px;
+    color: #808080;
+
+    font-size: 0.75em;
+    line-height: 0.75em;
+    text-align: left;
+  }
+  span {
+    font-size: 1.2em;
+
+    line-height: 1.2em;
+  }
+}
+
+/* Everything but the jumbotron gets side spacing for mobile first views */
+.header,
+.marketing,
+.footer {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+/* Custom page header */
+.header {
+  border-bottom: 1px solid #e5e5e5;
+}
+
+/* Make the masthead heading the same height as the navigation */
+.header h3 {
+  margin-top: 0;
+  margin-bottom: 0;
+  line-height: 40px;
+  padding-bottom: 19px;
+}
+
+/* Custom page footer */
+.footer {
+  padding-top: 19px;
+  color: #777;
+  border-top: 1px solid #e5e5e5;
+}
+
+.container-narrow > hr {
+  margin: 30px 0;
+}
+
+
+
+/* Responsive: Portrait tablets and up */
+@media screen and (min-width: 768px) {
+  .container {
+    max-width: 730px;
+  }
+
+  /* Remove the padding we set earlier */
+  .header,
+  .marketing,
+  .footer {
+    padding-left: 0;
+    padding-right: 0;
+  }
+  /* Space out the masthead */
+  .header {
+    margin-bottom: 30px;
+  }
+  /* Remove the bottom border on the jumbotron for visual effect */
+  .jumbotron {
+    border-bottom: 0;
+  }
+}

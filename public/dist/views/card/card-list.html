@@ -1,0 +1,19 @@
+<div class="list-group">
+  <div class="list-group-item">
+    <input class="form-control" type="text" ng-model="card.number" placeholder="filter by number" />
+  </div>
+  <div class="list-group-item" ng-repeat="item in vm.cards | filter:card">
+    <div class="item-container">
+      <a ng-href="{{href('withNav.cardDisplay', {number:item.number}, {inherit:true})}}" class="thumbnail" style="margin-right: 5px">
+        <img style="width: 54px;height: 33px" ng-src="https://plas-tek.ru/cardimage.ashx?c={{item.number}}"/>
+      </a>
+      <div>number: {{item.number}}</div>
+      <div>balance: {{item.balance}}</div>
+      <div>activation date: <span am-time-ago="item.activationDate"></span></div>
+      <div>last operation: <span am-time-ago="item.lastTransactionDate"></span></div>
+      <div>user name: <a ng-href="{{href('withNav.accountList.accountDisplay', {accountId: item.identity.id})}}">{{item.identity.userName}}</a></div>
+    </div>
+    </div>
+
+  </div>
+</div>

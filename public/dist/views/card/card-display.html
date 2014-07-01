@@ -1,0 +1,42 @@
+<div class="col col-lg-12">
+  <div class="page-header">
+    <div style="display: inline-block" class="thumbnail">
+      <img style="width: 54px;height: 33px" ng-src="https://plas-tek.ru/cardimage.ashx?c={{vm.card.data.number}}"/>
+    </div>
+    <div style="display: inline-block; margin-left: 10px">
+      <div style="font-weight: bold">
+        Starbucks Card
+      </div>
+      <div style="color: #808080">
+        Balance: {{vm.card.balance}} rub
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+
+      <div class="thumbnail barcode">
+        <img ng-src="{{vm.barcodeUrl}}"/>
+
+        <div class="card-number">
+          {{vm.card.data.number}}
+        </div>
+      </div>
+    </div>
+  </div>
+  <hr/>
+  <div style="text-align: center" ng-show="!vm.isPinCodeVisible">
+    <a href="#" ng-click="vm.showPinCode($event)">Pin Code</a>
+  </div>
+  <div class="row" ng-show="vm.isPinCodeVisible">
+    <div class="input-group col-md-3">
+      <input class="form-control" type="text" ng-model="vm.card.data.pin"/>
+      <span class="input-group-btn">
+        <button class="btn btn-default" type="button" ng-click="vm.savePin()">Save Pin</button>
+      </span>
+    </div>
+    <div class="col-md-9"></div>
+  </div>
+
+</div>
+
