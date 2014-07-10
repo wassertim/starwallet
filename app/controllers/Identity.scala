@@ -82,7 +82,8 @@ class Identity @Inject()(
 
   def list(userId: Int) = Authorized(Seq(userId), roles = Seq("admin")) {
     request =>
-      Ok(Json.toJson(identityService.list(userId)))
+      val list = identityService.list(userId)
+      Ok(Json.toJson(list))
   }
 
 }
