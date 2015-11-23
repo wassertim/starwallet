@@ -11,7 +11,7 @@ trait IdentityService {
 
   def update(auth: AuthInfo, userId: Int)
 
-  def get(id: Int, userId: Int): Option[AuthInfo]
+  def get(id: Int): Option[AuthInfo]
 
   def add(info: AuthInfo, userId: Int): Int
 

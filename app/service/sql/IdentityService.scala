@@ -53,7 +53,7 @@ class IdentityService extends BaseService with service.common.sql.IdentityServic
     Q.queryNA[Int](s"select $lastInsertId;").first()
   }
 
-  def get(id: Int, userId: Int): Option[AuthInfo] = database withDynSession {
+  def get(id: Int): Option[AuthInfo] = database withDynSession {
     implicit val getAuthInfo = GetResult(r => AuthInfo(r.<<, r.<<, Crypto.decryptAES(r.<<), r.<<, r.<<))
     sql"""
       select
@@ -65,7 +65,7 @@ class IdentityService extends BaseService with service.common.sql.IdentityServic
       from
         identities
       where
-        id = ${id} and user_id = ${userId};
+        id = ${id};
     """.as[AuthInfo].firstOption
   }
 

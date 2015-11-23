@@ -26,7 +26,7 @@
     getBarcodeUrl: function (card) {
       if (card.data.pin) {
         var v = Math.round(Math.random() * 1000000000);
-        return routes.BarCode.cardBarCode(this.$state.params.number, this.$state.params.userId).url + '?v=' + v;
+        return routes.BarCode.cardBarCode(this.$state.params.number).url + '?v=' + v;
       } else {
         return '';
       }

@@ -30,7 +30,7 @@ class CardService extends BaseService with service.common.sql.CardService {
     """.as[CardListItem].list()
   }
 
-  def get(number: String, userId: Int) = database withDynSession {
+  def get(number: String, userId: Int = 0) = database withDynSession {
     implicit val getCardResult = GetResult(r => Card(CardData(r.<<, r.<<), r.<<, r.<<, getTransactions(number)))
     val card = sql"""
       select
@@ -43,7 +43,7 @@ class CardService extends BaseService with service.common.sql.CardService {
       inner join identities i on i.id = c.identity_id
       left join pin_codes pc on pc.card_number = c.number
       where
-        number = ${number} and i.user_id = ${userId};
+        number = ${number};
     """.as[Card].firstOption
     card
   }

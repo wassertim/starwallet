@@ -9,7 +9,7 @@ import scala.slick.jdbc.{GetResult, StaticQuery => Q}
 
 class AccountService(cardService: CardService) extends common.BaseService with service.common.sql.AccountService {
 
-  def get(id: Int, userId: Int) = database withDynSession {
+  def get(id: Int) = database withDynSession {
     implicit val getAccount = GetResult(r => StarbucksAccount(r.<<, r.<<, cardService.listByIdentity(id), getCoupons(id), r.<<, r.<<))
     sql"""
       select
@@ -21,7 +21,7 @@ class AccountService(cardService: CardService) extends common.BaseService with s
         identities i
       inner join accounts a on a.identity_id = i.id
       where
-        i.id = ${id} and i.user_id = ${userId};
+        i.id = ${id};
     """.as[StarbucksAccount[CardListItem]].firstOption
   }
 

@@ -49,7 +49,7 @@ class Identity @Inject()(
 
   def get(id: Int, userId: Int) = Authorized(Seq(userId), roles = Seq("admin")) {
     request =>
-      identityService.get(id, userId) match {
+      identityService.get(id) match {
         case Some(authInfo) => Ok(Json.toJson(authInfo))
         case _ => BadRequest("Could not find auth info")
       }
