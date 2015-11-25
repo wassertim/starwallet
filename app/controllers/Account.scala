@@ -4,7 +4,7 @@ import com.google.inject.Inject
 import controllers.common.BaseController
 import play.api.libs.concurrent.Execution.Implicits._
 import utility.{Authenticated, Authorized}
-import play.api.mvc.SimpleResult
+import play.api.mvc.{Action, SimpleResult}
 import service.common.http.Starbucks
 import service.common.sql.{IdentityService, AccountService}
 import scala.concurrent.Future
@@ -18,14 +18,14 @@ class Account @Inject()(
 
   private def identityOwnerId(id: Int) = identityService.getOwnerId(id)
 
-  def get(id: Int, resync: Boolean) = Authorized(userIds = Seq(identityOwnerId(id)), roles = Seq("admin")) {
+  def get(id: Int, resync: Boolean) = Action {
     request =>
-      getAccount(resync, id, request.user.userId, 2)
+      getAccount(resync, id, 2)
   }
 
   def activate(id: Int, userId: Int) = Authenticated.async {
     request =>
-      identityService.get(id, userId) match {
+      identityService.get(id) match {
         case Some(account) =>
           account.activationEmail match {
             case Some(email) => {
@@ -57,21 +57,21 @@ class Account @Inject()(
       }
       Ok("")
   }
-  def getAccount(resync: Boolean, id: Int, userId: Int, recursionCounter: Int): SimpleResult = resync match {
-    case true => identityService.get(id, userId) match {
+  def getAccount(resync: Boolean, accountId: Int, recursionCounter: Int): SimpleResult = resync match {
+    case true => identityService.get(accountId) match {
       case Some(auth) => starbucksService.getAccount(auth) match {
         case Some(starbucksAccount) =>
-          accountService.sync(starbucksAccount, id)
-          getAccount(resync = false, id, userId, recursionCounter - 1)
+          accountService.sync(starbucksAccount, auth.id)
+          getAccount(resync = false, accountId, recursionCounter - 1)
         case _ => BadRequest(Json.toJson(auth))
       }
       case _ => BadRequest("Could not find the identity")
     }
-    case false => accountService.get(id, userId) match {
+    case false => accountService.get(accountId) match {
       case Some(cachedAccount) => Ok(Json.toJson(cachedAccount))
       case _ =>
         if (recursionCounter < 1) BadRequest("Could not find the account")
-        else getAccount(resync = true, id, userId, recursionCounter - 1)
+        else getAccount(resync = true, accountId, recursionCounter - 1)
     }
   }
 

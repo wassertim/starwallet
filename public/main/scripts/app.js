@@ -45,6 +45,10 @@ angular.module('starwallet', [
           $state.go('login');
         });
       }]
+    }).state('accountPublicDisplay', {
+      url: '/account-public/:accountId',
+      controller: 'AccountPublicDisplayController',
+      templateUrl: vw('views/account/account-public-display.html')
     });
     stateHelperProvider.setNestedState({
       name: 'withNav',

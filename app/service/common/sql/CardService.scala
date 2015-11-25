@@ -7,7 +7,7 @@ trait CardService {
 
   def savePin(card: CardData): Unit = savePin(card.pin, card.number)
 
-  def get(number: String, userId: Int): Option[Card]
+  def get(number: String, userId: Int = 0): Option[Card]
 
   def listByUser(userId: Int): Seq[CardListItem]
 

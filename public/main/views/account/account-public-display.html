@@ -1,0 +1,76 @@
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#"><i class="icon-brand"></i></a>
+    </div>
+  </div><!-- /.container-fluid -->
+</nav>
+<div class="container">
+  <div class="page-header" ng-show="vm.isLoading">
+    <h3>
+      <span class="fa fa-cog fa-spin"></span> Loading ...
+    </h3>
+  </div>
+  <div class="alert alert-danger" ng-show="vm.alert">{{vm.alert && vm.alert.message}}</div>
+
+  <div ng-hide="vm.isLoading || vm.alert">
+    <div class="page-header">
+      <span class="small" ng-show="vm.isRefreshing">
+        Refreshing ...
+      </span>
+      <a href="#" ng-show="!vm.isRefreshing" class="small" ng-click="vm.update($event)">
+        Last update: <span am-time-ago="vm.accountInfo.syncDate"></span>
+      </a>
+    </div>
+    <div class="form-group">
+
+    </div>
+
+    <div class="form-group">
+      <ul class="list-group">
+        <li class="list-group-item" ng-repeat="card in vm.accountInfo.cards">
+          <div class="item-container clearfix">
+            <img style="width: 54px;height: 33px" ng-src="https://plas-tek.ru/cardimage.ashx?c={{card.number}}"/>
+            <div style="display: inline-block; margin-left: 5px; font-size: 1.3em; font-weight: bold">
+              {{card.balance}} &#8381;
+            </div>
+            <div style="margin: 10px 0">
+              Last operation: {{card.lastTransactionDate | amDateFormat:'DD/MM/YYYY'}} (<span am-time-ago="card.lastTransactionDate"></span>)</div>
+            <div class="thumbnail barcode">
+              <img ng-src="{{card.number | Barcode}}"/>
+              <div class="card-number">
+                {{card.number}}
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="form-group">
+      <label class="checkbox"><input type="checkbox" class="checkbox" ng-model="vm.showAll" /> Show all</label>
+    </div>
+    <div class="form-group">
+
+      <ul class="list-group">
+        <li class="list-group-item" ng-repeat="coupon in vm.accountInfo.coupons | filter:vm.couponsFilter">
+
+          <div ng-show="coupon.isActive">
+            <h5><a ng-href="http://plas-tek.ru/Coupon.aspx?Number={{coupon.key}}">{{coupon.couponType}}</a></h5>
+            <hr/>
+            <a ng-href="http://plas-tek.ru/Passbook.ashx?Number={{coupon.key}}" class="btn btn-default btn-passbook">
+              <div>Add to</div>
+              <span>Passbook</span>
+            </a>
+
+
+          </div>
+          <span ng-show="!coupon.isActive">{{coupon.number}} - {{coupon.couponType}}</span>
+
+        </li>
+      </ul>
+    </div>
+
+  </div>
+  <h3>{{vm.accountInfo.userName}}</h3>
+</div>

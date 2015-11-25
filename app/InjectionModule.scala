@@ -12,7 +12,11 @@ class InjectionModule extends ScalaModule {
     bind[service.common.sql.AccountService].toInstance(new AccountService(new CardService))
     bind[service.common.sql.CardService].toInstance(new CardService)
     bind[service.common.sql.CouponService].toInstance(new CouponService)
-    p.configuration.getString("application.mode").get match {
+    import service.http._
+    import service.pop._
+    bind[service.common.http.Starbucks].toInstance(new Starbucks)
+    bind[service.common.pop.EmailClient].toInstance(new EmailClient(email, password))
+    /*p.configuration.getString("application.mode").get match {
       case "prod" => {
         import service.http._
         import service.pop._
@@ -25,7 +29,7 @@ class InjectionModule extends ScalaModule {
         bind[service.common.http.Starbucks].toInstance(new Starbucks)
         bind[service.common.pop.EmailClient].toInstance(new EmailClient(email, password))
       }
-    }
+    }*/
 
   }
 }
